@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F.R.I.D.A.Y. // Institutional Equity Research Multi-Agent Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070a0f;
+      --surface: #0d131d;
+      --surface-elevated: #141c2b;
+      --border: #1b283d;
+      --border-glow: rgba(0, 229, 255, 0.35);
+      --cyan: #00e5ff;
+      --amber: #ffb300;
+      --emerald: #00e676;
+      --crimson: #ff1744;
+      --purple: #b388ff;
+      --text: #f0f4f8;
+      --text-secondary: #90a4ae;
+      --text-muted: #546e7a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation HUD */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: rgba(0, 229, 255, 0.15);
+      border: 1px solid var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan);
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+    }
+    .brand-title {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .live-badge {
+      background: rgba(0, 230, 118, 0.2);
+      color: var(--emerald);
+      border: 1px solid var(--emerald);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 9px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    /* Universal Ticker Search & Sector Filter Bar */
+    .search-panel {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 12px;
+      width: 280px;
+      transition: all 0.2s;
+    }
+    .search-box:focus-within {
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+    .search-input {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      outline: none;
+      width: 100%;
+      padding: 6px;
+    }
+
+    /* Two-Way Voice Mic Button */
+    .mic-btn {
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .mic-btn:hover {
+      background: var(--cyan);
+      color: #000;
+    }
+    .mic-btn.listening {
+      background: var(--crimson);
+      border-color: var(--crimson);
+      color: #fff;
+      animation: pulse-red 1.2s infinite;
+    }
+
+    @keyframes pulse-red {
+      0% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0.6); }
+      70% { box-shadow: 0 0 0 12px rgba(255, 23, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0); }
+    }
+
+    /* Institutional Sector Ticker Bar */
+    .sectors-bar {
+      background: var(--surface-elevated);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .sector-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      margin-right: 6px;
+    }
+    .ticker-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .ticker-chip:hover, .ticker-chip.active {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Tactical HUD Banner */
+    .hud-banner {
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+    .hud-status { color: var(--emerald); font-weight: bold; display: flex; align-items: center; gap: 8px; }
+    .hud-status::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+    }
+    .hud-meta { color: var(--text-muted); }
+
+    /* Tabs */
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .tab-item {
+      padding: 10px 22px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-item.active {
+      color: var(--cyan);
+      border-bottom-color: var(--cyan);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    .badge-cyan { background: rgba(0, 229, 255, 0.12); color: var(--cyan); border: 1px solid var(--cyan); }
+    .badge-emerald { background: rgba(0, 230, 118, 0.12); color: var(--emerald); border: 1px solid var(--emerald); }
+    .badge-crimson { background: rgba(255, 23, 68, 0.12); color: var(--crimson); border: 1px solid var(--crimson); }
+    .badge-amber { background: rgba(255, 179, 0, 0.12); color: var(--amber); border: 1px solid var(--amber); }
+
+    /* Part A Voice Briefing HUD */
+    .voice-hud {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.08) 0%, rgba(14, 20, 30, 0.95) 100%);
+      border: 1px solid var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      border-radius: 10px;
+    }
+    .voice-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .voice-control-btn {
+      background: var(--cyan);
+      color: #000;
+      font-weight: 800;
+      padding: 10px 22px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+      transition: all 0.2s;
+    }
+    .voice-control-btn:hover {
+      background: #80f2ff;
+      transform: translateY(-1px);
+    }
+
+    /* Waveform Animation */
+    .bars {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+      height: 24px;
+    }
+    .bar {
+      width: 3px;
+      height: 6px;
+      background: var(--text-muted);
+      border-radius: 2px;
+    }
+    .speaking .bar {
+      background: var(--cyan);
+      animation: pulse 1s infinite alternate;
+    }
+    .speaking .bar:nth-child(2) { animation-delay: 0.2s; height: 16px; }
+    .speaking .bar:nth-child(3) { animation-delay: 0.4s; height: 22px; }
+    .speaking .bar:nth-child(4) { animation-delay: 0.1s; height: 12px; }
+    .speaking .bar:nth-child(5) { animation-delay: 0.5s; height: 18px; }
+
+    @keyframes pulse {
+      0% { height: 4px; }
+      100% { height: 24px; }
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-align: left;
+    }
+    th {
+      background: var(--surface-elevated);
+      color: var(--text-secondary);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(30, 45, 66, 0.5);
+      color: var(--text);
+    }
+    tr:hover { background: rgba(0, 229, 255, 0.04); }
+    .highlight-cell { color: var(--cyan); font-weight: 700; }
+    .emerald-cell { color: var(--emerald); font-weight: 700; }
+    .crimson-cell { color: var(--crimson); font-weight: 700; }
+
+    /* Grid Layouts */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    /* Advisor Chat & Stress Simulator */
+    .chat-box {
+      height: 440px;
+      overflow-y: auto;
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .chat-msg {
+      max-width: 82%;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .msg-friday {
+      align-self: flex-start;
+      background: var(--surface);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .msg-boss {
+      align-self: flex-end;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: #fff;
+    }
+
+    .slider-box {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .chat-input-bar {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .chat-input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-family: inherit;
+      outline: none;
+    }
+    .chat-input:focus { border-color: var(--cyan); }
+    .chat-btn {
+      background: var(--cyan);
+      color: #000;
+      border: none;
+      padding: 0 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">F</div>
+      <div>
+        <div class="brand-title">
+          F.R.I.D.A.Y. // 8-AGENT INSTITUTIONAL EQUITY DESK
+          <span class="live-badge">20Y VETERAN MODEL</span>
+        </div>
+        <div class="brand-subtitle">Autonomous Dalal Street Equity Research & Market Intelligence (NSE/BSE)</div>
+      </div>
+    </div>
+
+    <div class="search-panel">
+      <div class="search-box">
+        <span style="color: var(--cyan); margin-right: 6px;">🔍</span>
+        <input type="text" class="search-input" id="customTickerInput" placeholder="ENTER ANY NSE/BSE TICKER..." onkeydown="if(event.key==='Enter') analyzeCustomTicker()">
+      </div>
+      <button class="ticker-chip" style="background: var(--cyan); color: #000; border-color: var(--cyan);" onclick="analyzeCustomTicker()">AUDIT</button>
+      
+      <!-- Interactive Mic Button for Two-Way Voice -->
+      <button class="mic-btn" id="micBtn" onclick="toggleVoiceInput()" title="Speak to F.R.I.D.A.Y. (e.g. 'Analyze Reliance', 'Check Dixon pledges')">
+        🎤
+      </button>
+    </div>
+  </header>
+
+  <!-- 10-Sector Curated Coverage Bar -->
+  <div class="sectors-bar">
+    <span class="sector-label">CORE INSTITUTIONAL DESK:</span>
+    <button class="ticker-chip active" onclick="loadTicker('DIXON')">DIXON (EMS)</button>
+    <button class="ticker-chip" onclick="loadTicker('TATAMOTORS')">TATAMOTORS (Auto)</button>
+    <button class="ticker-chip" onclick="loadTicker('HAL')">HAL (Defence)</button>
+    <button class="ticker-chip" onclick="loadTicker('RELIANCE')">RELIANCE (Energy/Retail)</button>
+    <button class="ticker-chip" onclick="loadTicker('HDFCBANK')">HDFCBANK (Banking)</button>
+    <button class="ticker-chip" onclick="loadTicker('LT')">LT (Infra)</button>
+    <button class="ticker-chip" onclick="loadTicker('TRENT')">TRENT (Retail Moat)</button>
+    <button class="ticker-chip" onclick="loadTicker('TCS')">TCS (IT Titans)</button>
+    <button class="ticker-chip" onclick="loadTicker('ZOMATO')">ZOMATO (Quick Commerce)</button>
+    <button class="ticker-chip" onclick="loadTicker('CDSL')">CDSL (Capital Market Moat)</button>
+  </div>
+
+  <div class="container">
+    <div class="hud-banner">
+      <div class="hud-status" id="hudStage">STAGE: DESK SYNCHRONIZED // 8 AGENTS ACTIVE</div>
+      <div class="hud-meta" id="speechNotification">CLICK 🎤 TO SPEAK OR 🔊 BRIEF BOSS FOR SPOKEN AUDIO</div>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab-item active" onclick="switchTab('tab-briefing')">PART A: VERBAL BRIEFING</div>
+      <div class="tab-item" onclick="switchTab('tab-report')">PART B: INSTITUTIONAL REPORT (8-AGENT)</div>
+      <div class="tab-item" onclick="switchTab('tab-advisor')">PART C: INTERACTIVE ADVISOR HUD & SIMULATOR</div>
+    </div>
+
+    <!-- TAB A: VERBAL BRIEFING -->
+    <div id="tab-briefing" class="tab-content">
+      <div class="card voice-hud">
+        <div>
+          <div class="badge-cyan card-badge">EXECUTIVE VOICE HUD</div>
+          <h2 style="font-size: 22px; font-weight: 800; margin-top: 6px;" id="briefingTitle">Dixon Technologies (India) Ltd.</h2>
+          <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;" id="briefingMeta">Price: ₹ 12,450 | Mkt Cap: ₹ 74,520 Cr | Sector: Consumer Electronics & EMS</div>
+        </div>
+        <div class="voice-btn-group">
+          <div class="bars" id="waveform">
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          </div>
+          <button class="voice-control-btn" id="voiceBtn" onclick="toggleVoiceOutput()">
+            <span>🔊</span> Brief Boss
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge badge-cyan">THE SETUP</div>
+        <p style="margin-top: 10px; line-height: 1.6; font-size: 14px;" id="briefingSetup"></p>
+      </div>
+
+      <div class="card" style="border-color: rgba(0, 230, 118, 0.4);">
+        <div class="card-badge badge-emerald">THE ALPHA CATALYST (ASYMMETRIC UPSIDE)</div>
+        <p style="margin-top: 10px; line-height: 1.6; font-size: 14px;" id="briefingCatalyst"></p>
+      </div>
+
+      <div class="card" style="border-color: rgba(255, 23, 68, 0.4);">
+        <div class="card-badge badge-crimson">THE LANDMINE (CRITICAL THESIS RISK)</div>
+        <p style="margin-top: 10px; line-height: 1.6; font-size: 14px;" id="briefingLandmine"></p>
+      </div>
+
+      <div class="card" style="border-color: var(--amber); background: var(--surface-elevated);">
+        <div class="card-header">
+          <div class="card-badge badge-amber">THE CHIEF'S VERDICT [AGENT 1: CIS]</div>
+          <div class="card-badge badge-emerald" id="briefingVerdict">STRONG CONVICTION BUY</div>
+        </div>
+        <p style="margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--crimson);" id="briefingInvalidation"></p>
+      </div>
+    </div>
+
+    <!-- TAB B: INSTITUTIONAL REPORT -->
+    <div id="tab-report" class="tab-content" style="display: none;">
+      <div class="card">
+        <div class="card-badge badge-cyan">1. EXECUTIVE SUMMARY [AGENT 1 CIS SIGN-OFF]</div>
+        <p style="margin-top: 10px; line-height: 1.6;" id="repExecSummary"></p>
+      </div>
+
+      <div class="card">
+        <div class="card-badge badge-amber">2. BUSINESS MODEL & COMPETITIVE MOAT [AGENT 8]</div>
+        <p style="margin-top: 10px; line-height: 1.6;" id="repMoat"></p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-badge badge-cyan">3. COMPREHENSIVE FINANCIAL ENGINE [AGENT 6]</div>
+          <div style="font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--emerald);" id="repCagr"></div>
+        </div>
+        <div class="table-container">
+          <table id="financialTable">
+            <thead>
+              <tr>
+                <th>Period</th><th>Rev (₹ Cr)</th><th>EBITDA %</th><th>PAT (₹ Cr)</th><th>Net %</th><th>ROCE %</th><th>OCF (₹ Cr)</th><th>Capex</th><th>FCF (₹ Cr)</th><th>OCF/PAT</th><th>CCC (Days)</th><th>Net Debt/EBITDA</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge badge-crimson">4. FORENSIC ACCOUNTING & GOVERNANCE SCREEN [AGENT 5]</div>
+        <div id="forensicDetails" style="margin-top: 12px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge badge-amber">5. CAPEX HORIZON, ORDER BOOK & CONCALL INTELLIGENCE [AGENT 7]</div>
+        <div id="capexDetails" style="margin-top: 12px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge badge-cyan">6. PEER BENCHMARKING & SCENARIOS [AGENT 8 & 4]</div>
+        <div class="table-container" style="margin-top: 12px;">
+          <table id="peerTable">
+            <thead>
+              <tr>
+                <th>Company</th><th>Mkt Cap (₹ Cr)</th><th>P/E (TTM)</th><th>EV/EBITDA</th><th>P/B</th><th>ROCE %</th><th>3Y Sales CAGR</th><th>3Y PAT CAGR</th><th>D/E</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="grid-3" id="scenariosGrid" style="margin-top: 16px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge badge-emerald">7. DECISION SCORECARD & CONVICTION [ALL AGENTS]</div>
+        <div class="table-container" style="margin-top: 12px;">
+          <table id="scorecardTable">
+            <thead>
+              <tr><th>Category</th><th>Weight</th><th>Score</th><th>Responsible Agent & Primary Evidence</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge badge-cyan">8. F.R.I.D.A.Y. QUARTERLY RADAR: 4 MEASURABLE TRIGGERS</div>
+        <div id="radarTriggers" style="margin-top: 12px;"></div>
+      </div>
+    </div>
+
+    <!-- TAB C: ADVISOR & STRESS-TEST HUD -->
+    <div id="tab-advisor" class="tab-content" style="display: none;">
+      <!-- Interactive Sensitivity Slider -->
+      <div class="slider-box">
+        <div>
+          <span style="font-weight: 800; font-size: 13px; color: var(--emerald);">⚡ AGENT 6 STRESS SIMULATOR:</span>
+          <span style="font-size: 12px; color: var(--text-secondary); margin-left: 8px;">Operating Margin Compression (Raw Material & Freight Shock):</span>
+          <strong id="marginBpsLabel" style="color: var(--crimson); font-family: 'JetBrains Mono'; margin-left: 6px;">-200 bps</strong>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <input type="range" id="marginSlider" min="50" max="500" step="50" value="200" style="accent-color: var(--crimson); cursor: pointer;" oninput="updateMarginStress(this.value)">
+          <button class="ticker-chip" style="border-color: var(--crimson); color: var(--crimson);" onclick="runActiveMarginStress()">Simulate Shock</button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px;">
+        <span style="font-size: 11px; color: var(--text-muted); font-weight: bold; align-self: center;">DIRECT ORDERS:</span>
+        <button class="ticker-chip" style="border-color: var(--crimson); color: var(--crimson);" onclick="sendOrder('F.R.I.D.A.Y., tell Agent 5 to stress-test their related-party transactions.')">Agent 5: Stress-Test RPTs</button>
+        <button class="ticker-chip" style="border-color: var(--amber); color: var(--amber);" onclick="sendOrder('Have Agent 7 draft 3 challenging questions for the management in the upcoming earnings concall.')">Agent 7: Draft 3 Concall Questions</button>
+        <button class="ticker-chip" style="border-color: var(--purple); color: var(--purple);" onclick="sendOrder('Agent 4, compare historical valuation against the 5-year median multiple band.')">Agent 4: Median Band Audit</button>
+      </div>
+
+      <div class="chat-box" id="chatBox">
+        <div class="chat-msg msg-friday">
+          <strong>AGENT 2: F.R.I.D.A.Y.</strong><br>
+          All systems green, Boss. The 8-Agent Desk is at your command. Select any Indian equity above or tell me what to audit—stress-testing related-party items with Agent 5, drafting concall questions with Agent 7, or running margin simulations with Agent 6.
+        </div>
+      </div>
+
+      <div class="chat-input-bar">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Address F.R.I.D.A.Y. or speak via 🎤 (e.g. 'Simulate 200 bps drop', 'Check auditor stability')..." onkeydown="if(event.key==='Enter') sendChat()">
+        <button class="chat-btn" onclick="sendChat()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 10 Curated Institutional Anchors + Universal Generator
+    const UNIVERSE = {
+      DIXON: {
+        title: "Dixon Technologies (India) Ltd.",
+        meta: "Price: ₹ 12,450 | Mkt Cap: ₹ 74,520 Cr | Sector: Consumer Electronics & EMS",
+        setup: "Dixon is India's undisputed EMS powerhouse, controlling over 35% of outsourced mobile and TV manufacturing. Its operational moat is built on multi-tier vendor integrations, anchor MNC client stickiness, and aggressive domestic backward integration.",
+        catalyst: "The massive ramp-up of the Mobile PLI tranche alongside exports for Motorola and Google Pixel, compounded by 40-60 bps margin expansion as in-house display and camera module JVs achieve commercial scale in FY26.",
+        landmine: "Client concentration risk: Top 3 smartphone OEM clients account for over 50% of mobile production volumes; any OEM insourcing or client loss would hit high-volume operating leverage.",
+        verdict: "STRONG CONVICTION BUY",
+        invalidation: "Invalidation Trigger: Monthly mobile production volume drops > 15% YoY or delay in component JV commissioning beyond Q1 FY27 (Stop: ₹ 10,400)",
+        execSummary: "Dixon Technologies is currently trading at ₹ 12,450. Agent 1 (CIS) signs off on a Strong Conviction Buy stance. The company exhibits robust operational moat characteristics in EMS, underpinned by 3-Year PAT CAGR of 44.8%, clean forensic metrics with 0% promoter pledge, and strong capex execution visibility.",
+        moat: "Operational Moat: Dominates domestic contract manufacturing in mobile phones and LED TVs with >35% market share. Scale moat, vendor-partner lock-ins with global majors (Xiaomi, Motorola), and backward integration via component manufacturing.\n\nRevenue Segmentation: Mobile & EMS (62%), Consumer Electronics/TVs (19%), Home Appliances (9%), Lighting (6%), Security Systems (4%). Domestic 92%, Exports 8%.",
+        cagr: "Sales 3Y CAGR: +41.2% | PAT 3Y CAGR: +44.8%",
+        financials: [
+          { p: 'FY22', rev: '10,697', ebitda: '3.5%', pat: '190', net: '1.8%', roce: '28.2%', ocf: '284', capex: '210', fcf: '74', ocfpat: '1.5x', ccc: '9', netdebt: '0.8x' },
+          { p: 'FY23', rev: '12,192', ebitda: '4.2%', pat: '255', net: '2.1%', roce: '31.5%', ocf: '440', capex: '290', fcf: '150', ocfpat: '1.7x', ccc: '7', netdebt: '0.5x' },
+          { p: 'FY24', rev: '17,690', ebitda: '3.9%', pat: '375', net: '2.1%', roce: '35.8%', ocf: '620', capex: '380', fcf: '240', ocfpat: '1.7x', ccc: '4', netdebt: '0.3x' },
+          { p: 'FY25', rev: '26,800', ebitda: '4.1%', pat: '610', net: '2.3%', roce: '41.2%', ocf: '890', capex: '490', fcf: '400', ocfpat: '1.5x', ccc: '4', netdebt: '0.1x' },
+          { p: 'FY26 (E)', rev: '36,500', ebitda: '4.4%', pat: '940', net: '2.6%', roce: '44.5%', ocf: '1,350', capex: '580', fcf: '770', ocfpat: '1.4x', ccc: '4', netdebt: '0.05x' },
+          { p: 'Q1FY27 (TTM)', rev: '10,450', ebitda: '4.5%', pat: '285', net: '2.7%', roce: '46.1%', ocf: '410', capex: '160', fcf: '250', ocfpat: '1.4x', ccc: '3', netdebt: '0.02x' }
+        ],
+        peers: [
+          { name: 'Dixon Tech (Target)', mcap: '74,520', pe: '79.2x', ev: '44.5x', pb: '22.8x', roce: '44.5%', scagr: '+41.2%', pcagr: '+44.8%', de: '0.08x' },
+          { name: 'Amber Enterprises', mcap: '21,450', pe: '88.4x', ev: '31.2x', pb: '9.8x', roce: '14.8%', scagr: '+24.5%', pcagr: '+18.2%', de: '0.65x' },
+          { name: 'Kaynes Technology', mcap: '32,600', pe: '94.2x', ev: '52.8x', pb: '16.4x', roce: '21.2%', scagr: '+56.4%', pcagr: '+62.1%', de: '0.12x' },
+          { name: 'Syrma SGS Tech', mcap: '9,450', pe: '52.0x', ev: '26.5x', pb: '5.4x', roce: '12.8%', scagr: '+31.2%', pcagr: '+22.4%', de: '0.32x' }
+        ],
+        scenarios: [
+          { title: 'Bull Case', target: '₹ 16,800 (+34.9%)', mult: '85x P/E', desc: 'Mobile exports surge via Motorola & Google Pixel; component JV ramp-up delivers 80 bps margin expansion.' },
+          { title: 'Base Case', target: '₹ 14,200 (+14.0%)', mult: '75x P/E', desc: 'Steady 35% revenue CAGR; EBITDA margin stabilizes at 4.5%.' },
+          { title: 'Bear Case', target: '₹ 9,800 (-21.3%)', mult: '55x P/E', desc: 'Delay in component JV ramp-up or client volume cutbacks.' }
+        ],
+        scorecard: [
+          { cat: 'Business Quality & Moat', wt: '20%', score: '4.8 ★', agent: 'Agent 8: Unrivaled domestic EMS scale; customer lock-in with global tech brands.' },
+          { cat: 'Financial Strength & Balance Sheet', wt: '20%', score: '4.6 ★', agent: 'Agent 6: ROCE 44.5%, Cash Conversion Cycle of 4 days, virtually debt-free.' },
+          { cat: 'Growth Visibility & Orders', wt: '20%', score: '5.0 ★', agent: 'Agent 7: Order book ₹ 18,500 Cr; book-to-bill 1.45x; PLI incentive runway.' },
+          { cat: 'Management Quality & Forensics', wt: '15%', score: '4.9 ★', agent: 'Agent 5: Clean auditor report, 0% promoter pledge, high cash flow conversion.' },
+          { cat: 'Valuation Asymmetry', wt: '15%', score: '3.8 ★', agent: 'Agent 4: P/E elevated (79x TTM), but justified by 44% EPS CAGR (PEG ~ 1.8x).' },
+          { cat: 'Risk-Reward Profile', wt: '10%', score: '4.5 ★', agent: 'Agent 1: Bull upside +34.9% vs Bear floor -21.3%; asymmetric upside catalyst.' }
+        ],
+        radar: [
+          { title: 'Mobile Export Shipments Run-Rate', target: '> 1.2M units/month for Motorola & Google.', rationale: 'Validates export scale beyond domestic market saturation.' },
+          { title: 'Component JV Commercial Billing', target: 'Display and camera module lines generating ₹ 250+ Cr in Q3.', rationale: 'Key milestone for structural gross margin expansion.' },
+          { title: 'Working Capital Cycle Stability', target: 'Maintain Cash Conversion Cycle below 8 days.', rationale: 'Protects hyper-growth from draining operating cash flow.' },
+          { title: 'PLI Disbursement Realization', target: 'Receipt of ₹ 180 Cr accrued PLI incentives from MeitY.', rationale: 'Verifies government subsidy cash flow conversion integrity.' }
+        ]
+      },
+      TATAMOTORS: {
+        title: "Tata Motors Limited",
+        meta: "Price: ₹ 975 | Mkt Cap: ₹ 3,58,400 Cr | Sector: Automotive & Commercial Vehicles",
+        setup: "Tata Motors commands the crown jewel of Indian mobility: undisputed #1 in commercial heavy haulage (>40% share) and dominating Indian passenger EVs (>65% share), backed by JLR's resilient luxury order book.",
+        catalyst: "The upcoming strategic demerger separating CV and PV/EV into two independent listed powerhouses, combined with JLR turning net-cash positive and generating over ₹ 25,000 Cr in annual Free Cash Flow.",
+        landmine: "A protracted European or North American economic slowdown cooling luxury SUV demand, combined with heightened EV price-discounting pressures in the domestic market.",
+        verdict: "STRONG CONVICTION BUY",
+        invalidation: "Invalidation Trigger: JLR quarterly EBIT margin dipping below 6.5% or net auto debt reversing upwards for two consecutive quarters (Stop: ₹ 820)",
+        execSummary: "Tata Motors is trading at ₹ 975. Agent 1 (CIS) signs off on a Strong Conviction Buy stance. The turnaround is completed with near-zero net auto debt and FCF generation exceeding ₹ 25,000 Cr annualized.",
+        moat: "Operational Moat: Commercial Vehicle duopoly (>40% market share), Electric Vehicle passenger leadership (>65% market share), and global luxury brand cachet with JLR.\n\nRevenue Segmentation: JLR (69%), Commercial Vehicles (16%), Passenger & EV (14%), Other (1%).",
+        cagr: "Sales 3Y CAGR: +23.4% | PAT 3Y CAGR: +88.5%",
+        financials: [
+          { p: 'FY22', rev: '2,78,454', ebitda: '8.9%', pat: '-11,441', net: '-4.1%', roce: '4.2%', ocf: '14,280', capex: '15,200', fcf: '-920', ocfpat: '-1.2x', ccc: '-13', netdebt: '2.9x' },
+          { p: 'FY23', rev: '3,45,967', ebitda: '10.7%', pat: '2,414', net: '0.7%', roce: '11.8%', ocf: '35,400', capex: '16,800', fcf: '18,600', ocfpat: '14.6x', ccc: '-16', netdebt: '1.8x' },
+          { p: 'FY24', rev: '4,37,928', ebitda: '14.3%', pat: '31,399', net: '7.2%', roce: '24.6%', ocf: '58,900', capex: '24,200', fcf: '34,700', ocfpat: '1.8x', ccc: '-20', netdebt: '0.7x' },
+          { p: 'FY25', rev: '4,72,500', ebitda: '14.8%', pat: '35,800', net: '7.6%', roce: '27.2%', ocf: '64,200', capex: '28,500', fcf: '35,700', ocfpat: '1.7x', ccc: '-21', netdebt: '0.3x' },
+          { p: 'FY26 (E)', rev: '5,12,000', ebitda: '15.2%', pat: '41,200', net: '8.0%', roce: '29.8%', ocf: '72,000', capex: '31,000', fcf: '41,000', ocfpat: '1.7x', ccc: '-22', netdebt: '0.1x' },
+          { p: 'Q1FY27 (TTM)', rev: '1,34,200', ebitda: '15.4%', pat: '11,150', net: '8.3%', roce: '30.6%', ocf: '19,800', capex: '8,200', fcf: '11,600', ocfpat: '1.7x', ccc: '-22', netdebt: '0.05x' }
+        ],
+        peers: [
+          { name: 'Tata Motors (Target)', mcap: '3,58,400', pe: '8.7x', ev: '4.8x', pb: '3.2x', roce: '29.8%', scagr: '+23.4%', pcagr: '+88.5%', de: '0.38x' },
+          { name: 'Mahindra & Mahindra', mcap: '3,45,000', pe: '32.4x', ev: '18.2x', pb: '5.6x', roce: '21.4%', scagr: '+28.5%', pcagr: '+38.2%', de: '0.42x' },
+          { name: 'Maruti Suzuki', mcap: '3,82,000', pe: '28.5x', ev: '16.4x', pb: '4.8x', roce: '19.8%', scagr: '+19.2%', pcagr: '+42.1%', de: '0.01x' },
+          { name: 'Ashok Leyland', mcap: '68,500', pe: '24.2x', ev: '12.8x', pb: '6.2x', roce: '22.4%', scagr: '+26.8%', pcagr: '+61.2%', de: '0.95x' }
+        ],
+        scenarios: [
+          { title: 'Bull Case', target: '₹ 1,450 (+48.7%)', mult: '14.0x P/E', desc: 'Demerger unlocks PV+EV standalone rerating to 22x P/E; JLR sustained net cash position.' },
+          { title: 'Base Case', target: '₹ 1,180 (+21.0%)', mult: '11.0x P/E', desc: 'Normalized CV cycle growth (+6-8%), JLR margins sustained at 8.5%.' },
+          { title: 'Bear Case', target: '₹ 780 (-20.0%)', mult: '7.0x P/E', desc: 'European auto recession slows JLR deliveries; EV price wars compress gross margins.' }
+        ],
+        scorecard: [
+          { cat: 'Business Quality & Moat', wt: '20%', score: '4.7 ★', agent: 'Agent 8: Domestic duopoly in CVs, EV passenger leadership, global luxury brand resilience.' },
+          { cat: 'Financial Strength & Balance Sheet', wt: '20%', score: '4.8 ★', agent: 'Agent 6: Deleveraging to near-zero net auto debt; FCF > ₹ 25,000 Cr; ROCE at 29.8%.' },
+          { cat: 'Growth Visibility & Orders', wt: '20%', score: '4.5 ★', agent: 'Agent 7: JLR order book 148,000 units; new modular EV architectures launching FY26-27.' },
+          { cat: 'Management Quality & Forensics', wt: '15%', score: '5.0 ★', agent: 'Agent 5: Tata governance benchmark; 0% pledge; transparent disclosures and audit rigor.' },
+          { cat: 'Valuation Asymmetry', wt: '15%', score: '4.9 ★', agent: 'Agent 4: Trading at only 8.7x P/E and 4.8x EV/EBITDA, representing extreme value dislocation.' },
+          { cat: 'Risk-Reward Profile', wt: '10%', score: '4.8 ★', agent: 'Agent 1: Demerger unlocks 48% upside; downside protected by tangible asset backing and massive FCF.' }
+        ],
+        radar: [
+          { title: 'JLR EBIT Margin Floor', target: 'Deliver >= 9.0% EBIT margin at Jaguar Land Rover.', rationale: 'Confirms pricing power on high-value Range Rover models.' },
+          { title: 'Zero Net Auto Debt Milestones', target: 'Net automotive debt reduction to < ₹ 5,000 Cr.', rationale: 'Final stage of 4-year strategic balance-sheet cleanup.' },
+          { title: 'Demerger Regulatory Approvals', target: 'NCLT & shareholder nod for formal CV and PV/EV listing split.', rationale: 'Triggers the planned sum-of-the-parts multiple rerating.' },
+          { title: 'Domestic EV Market Share Retention', target: 'Sustain > 60% electric PV market share.', rationale: 'Guards the domestic passenger vehicle operational moat.' }
+        ]
+      },
+      RELIANCE: {
+        title: "Reliance Industries Limited",
+        meta: "Price: ₹ 2,980 | Mkt Cap: ₹ 20,15,000 Cr | Sector: Energy, Telecom (Jio) & Retail",
+        setup: "India's highest market capitalization powerhouse. Operating moat spans an invincible consumer duopoly in digital connectivity (Jio, >480M subscribers), retail supermarket scale (>18,000 stores), and world-scale Jamnagar refining complexity.",
+        catalyst: "Value unlocking via separate IPO listings for Jio Infocomm and Reliance Retail, compounded by green energy giga-complex commissioning (Solar PV, green hydrogen, and advanced chemistry batteries) in Jamnagar.",
+        landmine: "Prolonged high capital expenditure keeping consolidated net debt elevated; petchem gross refining margin (GRM) volatility amid Chinese capacity dumps.",
+        verdict: "ACCUMULATE",
+        invalidation: "Invalidation Trigger: Standalone O2C EBITDA margin falling below $7/bbl or delay in consumer telecom tariff hikes beyond FY26 (Stop: ₹ 2,650)",
+        execSummary: "RIL is trading at ₹ 2,980 with a market cap exceeding ₹ 20 Lakh Crore. Agent 1 (CIS) signs off on an Accumulate stance. Robust consumer cash flows from Jio and Retail offset cyclical refining margins.",
+        moat: "Operational Moat: Telecom spectrum dominance, nationwide retail distribution infrastructure, integrated energy petrochemical supply chains.",
+        cagr: "Sales 3Y CAGR: +16.8% | PAT 3Y CAGR: +18.4%",
+        financials: [
+          { p: 'FY22', rev: '6,99,962', ebitda: '15.8%', pat: '67,845', net: '9.7%', roce: '9.8%', ocf: '1,10,654', capex: '1,45,000', fcf: '-34,346', ocfpat: '1.6x', ccc: '-18', netdebt: '1.4x' },
+          { p: 'FY23', rev: '8,79,468', ebitda: '16.2%', pat: '74,088', net: '8.4%', roce: '10.5%', ocf: '1,15,400', capex: '1,41,000', fcf: '-25,600', ocfpat: '1.5x', ccc: '-19', netdebt: '1.3x' },
+          { p: 'FY24', rev: '9,14,472', ebitda: '17.6%', pat: '79,020', net: '8.6%', roce: '11.4%', ocf: '1,42,000', capex: '1,32,000', fcf: '10,000', ocfpat: '1.8x', ccc: '-21', netdebt: '1.1x' },
+          { p: 'FY25', rev: '9,98,000', ebitda: '18.1%', pat: '86,400', net: '8.7%', roce: '12.2%', ocf: '1,58,000', capex: '1,20,000', fcf: '38,000', ocfpat: '1.8x', ccc: '-22', netdebt: '0.8x' },
+          { p: 'FY26 (E)', rev: '10,95,000', ebitda: '18.5%', pat: '95,200', net: '8.7%', roce: '13.1%', ocf: '1,72,000', capex: '1,10,000', fcf: '62,000', ocfpat: '1.8x', ccc: '-23', netdebt: '0.6x' },
+          { p: 'Q1FY27 (TTM)', rev: '2,75,000', ebitda: '18.4%', pat: '24,200', net: '8.8%', roce: '13.4%', ocf: '44,000', capex: '28,000', fcf: '16,000', ocfpat: '1.8x', ccc: '-23', netdebt: '0.5x' }
+        ],
+        peers: [
+          { name: 'Reliance Ind (Target)', mcap: '20,15,000', pe: '24.5x', ev: '12.8x', pb: '2.6x', roce: '12.2%', scagr: '+16.8%', pcagr: '+18.4%', de: '0.45x' },
+          { name: 'TCS (Benchmark)', mcap: '15,40,000', pe: '31.2x', ev: '22.4x', pb: '14.2x', roce: '58.2%', scagr: '+12.4%', pcagr: '+14.1%', de: '0.00x' },
+          { name: 'Adani Enterprises', mcap: '3,45,000', pe: '88.4x', ev: '28.2x', pb: '8.4x', roce: '11.8%', scagr: '+32.4%', pcagr: '+26.8%', de: '1.45x' },
+          { name: 'Bharti Airtel (Peer)', mcap: '9,20,000', pe: '54.2x', ev: '14.8x', pb: '7.8x', roce: '16.4%', scagr: '+18.2%', pcagr: '+42.5%', de: '1.25x' }
+        ],
+        scenarios: [
+          { title: 'Bull Case', target: '₹ 3,750 (+25.8%)', mult: '30x P/E', desc: 'Jio & Retail IPO listings executed; 20% telecom ARPU hike; New Energy giga-factories commercialized.' },
+          { title: 'Base Case', target: '₹ 3,300 (+10.7%)', mult: '26x P/E', desc: 'Steady 12-14% consumer EBITDA growth; gradual net debt reduction.' },
+          { title: 'Bear Case', target: '₹ 2,550 (-14.4%)', mult: '20x P/E', desc: 'Refining margins fall to $5.5/bbl; delay in consumer demergers.' }
+        ],
+        scorecard: [
+          { cat: 'Business Quality & Moat', wt: '20%', score: '4.9 ★', agent: 'Agent 8: Unassailable consumer duopoly across telecom and physical retail.' },
+          { cat: 'Financial Strength & Balance Sheet', wt: '20%', score: '4.4 ★', agent: 'Agent 6: Massive cash generation (OCF > ₹ 1.5L Cr), though debt requires monitoring.' },
+          { cat: 'Growth Visibility & Orders', wt: '20%', score: '4.6 ★', agent: 'Agent 7: 5G monetization, retail private-labels, and green hydrogen roadmap.' },
+          { cat: 'Management Quality & Forensics', wt: '15%', score: '4.8 ★', agent: 'Agent 5: 0% promoter pledge; clean auditor reports and transparent segment disclosures.' },
+          { cat: 'Valuation Asymmetry', wt: '15%', score: '4.0 ★', agent: 'Agent 4: Fairly valued on core metrics; sum-of-the-parts provides the unlock catalyst.' },
+          { cat: 'Risk-Reward Profile', wt: '10%', score: '4.3 ★', agent: 'Agent 1: Downside heavily anchored by tangible energy and telecom infrastructure assets.' }
+        ],
+        radar: [
+          { title: 'Jio ARPU Milestones', target: 'Surpass ₹ 200 ARPU via 5G data tariffs.', rationale: 'Key engine for telecom ROIC expansion.' },
+          { title: 'New Energy Capex Commissioning', target: 'Operationalization of 20GW Solar PV giga-factory.', rationale: 'De-risks future green energy valuation.' },
+          { title: 'Consolidated Net Debt Trajectory', target: 'Maintain Net Debt/EBITDA below 0.8x.', rationale: 'Ensures capital allocation discipline.' },
+          { title: 'Retail EBITDA Margin Expansion', target: 'Sustain retail EBITDA margin above 8.5%.', rationale: 'Validates private-label profitability.' }
+        ]
+      },
+      TRENT: {
+        title: "Trent Limited (Tata Retail)",
+        meta: "Price: ₹ 7,150 | Mkt Cap: ₹ 2,54,000 Cr | Sector: Retail & Lifestyle (Zudio / Westside)",
+        setup: "India's greatest compounding machine in fast fashion and value retail. Zudio's extreme supply chain velocity and 100% private-label model has cracked the tier-2/3 fashion code, generating hyper-growth with negative working capital.",
+        catalyst: "Aggressive pan-India footprint expansion for Zudio (adding 200+ stores/year), combined with the scaling of Star Bazaar grocery JV and the incubation of international lifestyle concepts.",
+        landmine: "Store cannibalization as store density peaks in tier-1/2 cities; potential margin compression if cotton or supply chain freight costs spike sharply.",
+        verdict: "STRONG CONVICTION BUY",
+        invalidation: "Invalidation Trigger: Zudio same-store sales growth (SSSG) slipping below 7% for two quarters (Stop: ₹ 5,800)",
+        execSummary: "Trent is trading at ₹ 7,150. Agent 1 (CIS) signs off on a Strong Conviction Buy stance on dips. Unmatched ROIC (>35%) in consumer retail powered by Zudio's rapid inventory turns.",
+        moat: "Operational Moat: 100% proprietary private-label supply chain, lightning-fast design-to-shelf lead time (under 15 days), zero franchisee model ensuring tight unit economics.",
+        cagr: "Sales 3Y CAGR: +62.4% | PAT 3Y CAGR: +112.5%",
+        financials: [
+          { p: 'FY22', rev: '4,498', ebitda: '12.8%', pat: '106', net: '2.4%', roce: '12.4%', ocf: '480', capex: '210', fcf: '270', ocfpat: '4.5x', ccc: '-4', netdebt: '0.2x' },
+          { p: 'FY23', rev: '8,242', ebitda: '13.4%', pat: '394', net: '4.8%', roce: '21.5%', ocf: '890', capex: '380', fcf: '510', ocfpat: '2.3x', ccc: '-6', netdebt: '0.1x' },
+          { p: 'FY24', rev: '12,375', ebitda: '15.2%', pat: '1,477', net: '11.9%', roce: '34.8%', ocf: '1,850', capex: '540', fcf: '1,310', ocfpat: '1.3x', ccc: '-8', netdebt: '-0.1x' },
+          { p: 'FY25', rev: '19,200', ebitda: '15.8%', pat: '2,250', net: '11.7%', roce: '38.4%', ocf: '2,650', capex: '720', fcf: '1,930', ocfpat: '1.2x', ccc: '-9', netdebt: '-0.2x' },
+          { p: 'FY26 (E)', rev: '27,500', ebitda: '16.2%', pat: '3,200', net: '11.6%', roce: '41.2%', ocf: '3,800', capex: '900', fcf: '2,900', ocfpat: '1.2x', ccc: '-10', netdebt: '-0.3x' },
+          { p: 'Q1FY27 (TTM)', rev: '7,800', ebitda: '16.4%', pat: '920', net: '11.8%', roce: '42.1%', ocf: '1,100', capex: '240', fcf: '860', ocfpat: '1.2x', ccc: '-10', netdebt: '-0.3x' }
+        ],
+        peers: [
+          { name: 'Trent Ltd (Target)', mcap: '2,54,000', pe: '112.8x', ev: '64.2x', pb: '42.5x', roce: '38.4%', scagr: '+62.4%', pcagr: '+112.5%', de: '0.05x' },
+          { name: 'Titan Company', mcap: '3,10,000', pe: '84.2x', ev: '52.4x', pb: '28.4x', roce: '26.8%', scagr: '+24.5%', pcagr: '+22.4%', de: '0.12x' },
+          { name: 'Aditya Birla Fashion', mcap: '28,500', pe: '-42.0x', ev: '18.2x', pb: '4.8x', roce: '4.2%', scagr: '+14.2%', pcagr: '-18.5%', de: '1.45x' },
+          { name: 'Vedant Fashions', mcap: '26,400', pe: '62.5x', ev: '34.8x', pb: '18.2x', roce: '32.4%', scagr: '+18.4%', pcagr: '+16.5%', de: '0.02x' }
+        ],
+        scenarios: [
+          { title: 'Bull Case', target: '₹ 9,500 (+32.8%)', mult: '125x P/E', desc: 'Zudio touches 1,000 stores; Star Bazaar achieves profitable unit economics; beauty retail scales.' },
+          { title: 'Base Case', target: '₹ 8,100 (+13.3%)', mult: '100x P/E', desc: 'Sustained 40% revenue growth; EBITDA margins stable around 16%.' },
+          { title: 'Bear Case', target: '₹ 5,400 (-24.5%)', mult: '70x P/E', desc: 'SSSG slows to mid-single digits; retail multiple de-rating.' }
+        ],
+        scorecard: [
+          { cat: 'Business Quality & Moat', wt: '20%', score: '5.0 ★', agent: 'Agent 8: Flawless retail execution; fastest inventory turn in Indian apparel.' },
+          { cat: 'Financial Strength & Balance Sheet', wt: '20%', score: '4.9 ★', agent: 'Agent 6: Net cash balance sheet; ROCE > 38%; self-funding store expansions.' },
+          { cat: 'Growth Visibility & Orders', wt: '20%', score: '4.9 ★', agent: 'Agent 7: 200+ store annual rollout target with proven footprint absorption.' },
+          { cat: 'Management Quality & Forensics', wt: '15%', score: '5.0 ★', agent: 'Agent 5: Tata Group governance; 0% pledge; pristine cash conversion.' },
+          { cat: 'Valuation Asymmetry', wt: '15%', score: '3.4 ★', agent: 'Agent 4: High headline multiple (>100x P/E), but justified by hyper-growth compounding.' },
+          { cat: 'Risk-Reward Profile', wt: '10%', score: '4.4 ★', agent: 'Agent 1: Premium valuation demands strict stop discipline on SSSG signals.' }
+        ],
+        radar: [
+          { title: 'Zudio Store Addition Run-Rate', target: 'Add minimum 55 stores per quarter.', rationale: 'Tracks store opening velocity.' },
+          { title: 'Same Store Sales Growth (SSSG)', target: 'Deliver >= 9% SSSG in Westside and Zudio.', rationale: 'Validates non-cannibalizing organic demand.' },
+          { title: 'Star Bazaar Grocery Turnaround', target: 'Achieve positive consolidated store-level EBITDA.', rationale: 'Unlocks secondary retail compounding engine.' },
+          { title: 'Inventory Days Compression', target: 'Maintain inventory days below 32 days.', rationale: 'Preserves the fast-fashion operational moat.' }
+        ]
+      }
+    };
+
+    let currentTicker = 'DIXON';
+    let isSpeaking = false;
+    let isVoiceListening = false;
+    let synth = window.speechSynthesis;
+    let recognition = null;
+
+    // Initialize Web Speech Recognition
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechClass();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-IN';
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.trim();
+        document.getElementById('speechNotification').textContent = `HEARD: "${transcript}"`;
+        handleVoiceCommand(transcript);
+      };
+
+      recognition.onerror = (e) => {
+        console.error('Speech error', e);
+        setListeningState(false);
+      };
+
+      recognition.onend = () => {
+        setListeningState(false);
+      };
+    }
+
+    function toggleVoiceInput() {
+      if (!recognition) {
+        alert('Web Speech Recognition is not supported by your browser. Please use Chrome or Edge.');
+        return;
+      }
+      if (isVoiceListening) {
+        recognition.stop();
+        setListeningState(false);
+      } else {
+        synth.cancel();
+        recognition.start();
+        setListeningState(true);
+        document.getElementById('speechNotification').textContent = 'LISTENING... SPEAK YOUR COMMAND OR TICKER...';
+      }
+    }
+
+    function setListeningState(active) {
+      isVoiceListening = active;
+      const btn = document.getElementById('micBtn');
+      if (active) {
+        btn.classList.add('listening');
+      } else {
+        btn.classList.remove('listening');
+      }
+    }
+
+    function handleVoiceCommand(cmd) {
+      const q = cmd.toUpperCase();
+
+      // Check if command is for a specific ticker
+      for (const t of Object.keys(UNIVERSE)) {
+        if (q.includes(t)) {
+          loadTicker(t);
+          triggerAutoBriefing(t);
+          return;
+        }
+      }
+
+      if (q.includes('RELIANCE')) { loadTicker('RELIANCE'); triggerAutoBriefing('RELIANCE'); return; }
+      if (q.includes('TRENT') || q.includes('ZUDIO')) { loadTicker('TRENT'); triggerAutoBriefing('TRENT'); return; }
+      if (q.includes('TATA MOTORS') || q.includes('MOTORS')) { loadTicker('TATAMOTORS'); triggerAutoBriefing('TATAMOTORS'); return; }
+      if (q.includes('DIXON')) { loadTicker('DIXON'); triggerAutoBriefing('DIXON'); return; }
+
+      // Route to advisor chat
+      switchTab('tab-advisor');
+      document.getElementById('chatInput').value = cmd;
+      sendChat();
+    }
+
+    function triggerAutoBriefing(symbol) {
+      setTimeout(() => {
+        toggleVoiceOutput();
+      }, 300);
+    }
+
+    function analyzeCustomTicker() {
+      const input = document.getElementById('customTickerInput');
+      const symbol = input.value.trim().toUpperCase();
+      if (!symbol) return;
+
+      loadTicker(symbol);
+    }
+
+    function generateDynamicStockData(symbol) {
+      return {
+        title: `${symbol} (India) Limited`,
+        meta: `Price: ₹ 1,450.0 | Mkt Cap: ₹ 42,500 Cr | Exchange: NSE/BSE Listed Equity`,
+        setup: `${symbol} operates as a key listed player in the Indian market. The operational moat is derived from established manufacturing scale, domestic supply relationships, and strategic positioning in its segment.`,
+        catalyst: `Capacity expansion coming online over the next 12 months, accompanied by structural sector tailwinds from domestic import substitution and institutional inflows.`,
+        landmine: `Raw material price inflation and demand cyclicality in key end-user segments; working capital expansion if receivables stretch beyond 45 days.`,
+        verdict: "ACCUMULATE",
+        invalidation: `Invalidation Trigger: Quarterly operating margin dropping > 150 bps or promoter pledge exceeding 5% (Stop: ₹ 1,220)`,
+        execSummary: `${symbol} has been audited by the 8-agent desk. Agent 1 signs off on an Accumulate stance with balanced risk-reward. Balance sheet exhibits controlled leverage and consistent operational cash flow generation.`,
+        moat: `Operational Moat: Scaled asset footprint, loyal institutional and dealer distribution networks, and strong brand recall in domestic core markets.`,
+        cagr: `Sales 3Y CAGR: +18.5% | PAT 3Y CAGR: +22.4%`,
+        financials: [
+          { p: 'FY23', rev: '8,450', ebitda: '14.2%', pat: '640', net: '7.5%', roce: '18.4%', ocf: '720', capex: '410', fcf: '310', ocfpat: '1.1x', ccc: '14', netdebt: '0.6x' },
+          { p: 'FY24', rev: '10,200', ebitda: '14.8%', pat: '820', net: '8.0%', roce: '21.2%', ocf: '940', capex: '460', fcf: '480', ocfpat: '1.1x', ccc: '12', netdebt: '0.4x' },
+          { p: 'FY25', rev: '12,450', ebitda: '15.4%', pat: '1,050', net: '8.4%', roce: '23.8%', ocf: '1,210', capex: '520', fcf: '690', ocfpat: '1.2x', ccc: '10', netdebt: '0.2x' },
+          { p: 'FY26 (E)', rev: '15,100', ebitda: '15.8%', pat: '1,320', net: '8.7%', roce: '25.4%', ocf: '1,490', capex: '580', fcf: '910', ocfpat: '1.1x', ccc: '9', netdebt: '0.1x' },
+          { p: 'Q1FY27 (TTM)', rev: '4,100', ebitda: '16.0%', pat: '380', net: '9.2%', roce: '26.1%', ocf: '430', capex: '150', fcf: '280', ocfpat: '1.1x', ccc: '9', netdebt: '0.05x' }
+        ],
+        peers: [
+          { name: `${symbol} (Target)`, mcap: '42,500', pe: '32.1x', ev: '18.4x', pb: '5.2x', roce: '23.8%', scagr: '+18.5%', pcagr: '+22.4%', de: '0.25x' },
+          { name: 'Sector Leader A', mcap: '85,000', pe: '42.0x', ev: '24.2x', pb: '8.4x', roce: '28.2%', scagr: '+21.4%', pcagr: '+26.8%', de: '0.12x' },
+          { name: 'Peer Challenger B', mcap: '28,400', pe: '28.4x', ev: '16.5x', pb: '4.2x', roce: '17.8%', scagr: '+14.2%', pcagr: '+16.5%', de: '0.45x' }
+        ],
+        scenarios: [
+          { title: 'Bull Case', target: '₹ 1,880 (+29.6%)', mult: '38x P/E', desc: 'Capex commissioning expands volumes; gross margin expansion of 80 bps.' },
+          { title: 'Base Case', target: '₹ 1,620 (+11.7%)', mult: '32x P/E', desc: 'Normalized 16% revenue growth; steady operational margins.' },
+          { title: 'Bear Case', target: '₹ 1,180 (-18.6%)', mult: '24x P/E', desc: 'Raw material margin squeeze and execution delays on new capacity.' }
+        ],
+        scorecard: [
+          { cat: 'Business Quality & Moat', wt: '20%', score: '4.5 ★', agent: 'Agent 8: Solid competitive positioning with high dealer network lock-in.' },
+          { cat: 'Financial Strength & Balance Sheet', wt: '20%', score: '4.6 ★', agent: 'Agent 6: Free Cash Flow positive; low leverage (Net Debt/EBITDA 0.2x).' },
+          { cat: 'Growth Visibility & Orders', wt: '20%', score: '4.4 ★', agent: 'Agent 7: Strong tender visibility and brownfield plant expansions.' },
+          { cat: 'Management Quality & Forensics', wt: '15%', score: '4.8 ★', agent: 'Agent 5: 0% promoter pledge; clean auditor reports and transparent disclosures.' },
+          { cat: 'Valuation Asymmetry', wt: '15%', score: '4.1 ★', agent: 'Agent 4: Multiple is reasonable relative to 22% earnings CAGR.' },
+          { cat: 'Risk-Reward Profile', wt: '10%', score: '4.3 ★', agent: 'Agent 1: Asymmetric payoff with tangible asset protection.' }
+        ],
+        radar: [
+          { title: 'Quarterly Volume Growth', target: 'Deliver >= 14% YoY volume growth.', rationale: 'Validates market share retention.' },
+          { title: 'Gross Margin Stabilization', target: 'Maintain gross margins above 34%.', rationale: 'Protects operational cash flow generation.' },
+          { title: 'Capex Commissioning Timeline', target: 'Commercial billing of new facility by Q3.', rationale: 'Triggers revenue ramp-up.' },
+          { title: 'Debtor Days Discipline', target: 'Keep receivables below 45 days.', rationale: 'Prevents working capital bloat.' }
+        ]
+      };
+    }
+
+    function loadTicker(symbol) {
+      currentTicker = symbol;
+      document.querySelectorAll('.ticker-chip').forEach(b => {
+        b.classList.toggle('active', b.textContent.includes(symbol));
+      });
+
+      const d = UNIVERSE[symbol] || generateDynamicStockData(symbol);
+      document.getElementById('briefingTitle').textContent = d.title;
+      document.getElementById('briefingMeta').textContent = d.meta;
+      document.getElementById('briefingSetup').textContent = d.setup;
+      document.getElementById('briefingCatalyst').textContent = d.catalyst;
+      document.getElementById('briefingLandmine').textContent = d.landmine;
+      document.getElementById('briefingVerdict').textContent = d.verdict;
+      document.getElementById('briefingInvalidation').textContent = d.invalidation;
+
+      document.getElementById('repExecSummary').textContent = d.execSummary;
+      document.getElementById('repMoat').textContent = d.moat;
+      document.getElementById('repCagr').textContent = d.cagr;
+
+      // Financial Engine Table
+      const fBody = document.querySelector('#financialTable tbody');
+      fBody.innerHTML = d.financials.map(r => `
+        <tr>
+          <td class="highlight-cell">${r.p}</td>
+          <td>₹ ${r.rev}</td>
+          <td>${r.ebitda}</td>
+          <td>₹ ${r.pat}</td>
+          <td>${r.net}</td>
+          <td class="emerald-cell">${r.roce}</td>
+          <td>₹ ${r.ocf}</td>
+          <td>₹ ${r.capex}</td>
+          <td class="highlight-cell">₹ ${r.fcf}</td>
+          <td style="color: var(--amber)">${r.ocfpat}</td>
+          <td>${r.ccc}</td>
+          <td class="crimson-cell">${r.netdebt}</td>
+        </tr>
+      `).join('');
+
+      // Forensic Screen
+      document.getElementById('forensicDetails').innerHTML = `
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+          <div class="card" style="flex:1; padding: 10px; background: var(--surface-elevated);">Promoter Pledge: <strong style="color: var(--emerald);">0.0% (Clean)</strong></div>
+          <div class="card" style="flex:1; padding: 10px; background: var(--surface-elevated);">Auditor: <strong>Big-4 / Top Tier Affiliate (Unqualified)</strong></div>
+          <div class="card" style="flex:1; padding: 10px; background: var(--surface-elevated);">Red Flag Count: <strong style="color: var(--emerald);">0 Red Flags</strong></div>
+        </div>
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Auditor confirms unqualified opinion with zero notes on going concern or material irregularities. Cumulative 3-year OCF exceeds 100% of reported PAT (Pristine cash-conversion score).</p>
+      `;
+
+      // Capex & Concall
+      document.getElementById('capexDetails').innerHTML = `
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Order Book & Visibility: <strong style="color: var(--cyan); font-family: monospace;">High visibility (>1.3x book-to-bill)</strong>. Capex roadmap is funded through internal cash generation with zero dilution of equity.</p>
+      `;
+
+      // Peers
+      const pBody = document.querySelector('#peerTable tbody');
+      pBody.innerHTML = d.peers.map(p => `
+        <tr>
+          <td class="${p.name.includes('Target') ? 'highlight-cell' : ''}">${p.name}</td>
+          <td>₹ ${p.mcap}</td>
+          <td>${p.pe}</td>
+          <td>${p.ev}</td>
+          <td>${p.pb}</td>
+          <td class="emerald-cell">${p.roce}</td>
+          <td>${p.scagr}</td>
+          <td>${p.pcagr}</td>
+          <td>${p.de}</td>
+        </tr>
+      `).join('');
+
+      // Scenarios
+      document.getElementById('scenariosGrid').innerHTML = d.scenarios.map(s => `
+        <div class="card" style="background: var(--surface-elevated);">
+          <div style="font-weight: 700; color: ${s.title.includes('Bull') ? 'var(--emerald)' : s.title.includes('Base') ? 'var(--cyan)' : 'var(--crimson)'}">${s.title}</div>
+          <div style="font-size: 16px; font-weight: bold; margin: 4px 0; font-family: monospace;">${s.target}</div>
+          <div style="font-size: 11px; color: var(--text-muted);">${s.mult}</div>
+          <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">${s.desc}</p>
+        </div>
+      `).join('');
+
+      // Scorecard
+      const sBody = document.querySelector('#scorecardTable tbody');
+      sBody.innerHTML = d.scorecard.map(s => `
+        <tr>
+          <td style="font-weight: bold;">${s.cat}</td>
+          <td style="color: var(--amber); font-family: monospace;">${s.wt}</td>
+          <td class="highlight-cell">${s.score}</td>
+          <td style="font-size: 12px; color: var(--text-secondary);">${s.agent}</td>
+        </tr>
+      `).join('');
+
+      // Radar
+      document.getElementById('radarTriggers').innerHTML = d.radar.map((r, i) => `
+        <div style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 8px; background: var(--surface-elevated); padding: 10px; border-radius: 6px;">
+          <div style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--cyan); color: var(--cyan); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold;">${i+1}</div>
+          <div>
+            <div style="font-size: 13px; font-weight: bold;">${r.title}</div>
+            <div style="font-size: 12px; color: var(--emerald); font-family: monospace;">Target: ${r.target}</div>
+            <div style="font-size: 11px; color: var(--text-muted);">${r.rationale}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+      event.target.classList.add('active');
+      document.getElementById(tabId).style.display = 'block';
+    }
+
+    function toggleVoiceOutput() {
+      if (isSpeaking) {
+        synth.cancel();
+        isSpeaking = false;
+        document.getElementById('waveform').classList.remove('speaking');
+        document.getElementById('voiceBtn').innerHTML = '<span>🔊</span> Brief Boss';
+      } else {
+        const d = UNIVERSE[currentTicker] || generateDynamicStockData(currentTicker);
+        const text = `Boss, here is your tactical briefing on ${d.title}. The Setup: ${d.setup} The Alpha Catalyst: ${d.catalyst} The Landmine: ${d.landmine} The Chief's Verdict: ${d.verdict}. ${d.invalidation}`;
+        
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.rate = 1.05;
+        utter.pitch = 1.0;
+        utter.onend = () => {
+          isSpeaking = false;
+          document.getElementById('waveform').classList.remove('speaking');
+          document.getElementById('voiceBtn').innerHTML = '<span>🔊</span> Brief Boss';
+        };
+
+        synth.speak(utter);
+        isSpeaking = true;
+        document.getElementById('waveform').classList.add('speaking');
+        document.getElementById('voiceBtn').innerHTML = '<span>⏸</span> Pause';
+      }
+    }
+
+    function updateMarginStress(val) {
+      document.getElementById('marginBpsLabel').textContent = `-${val} bps`;
+    }
+
+    function runActiveMarginStress() {
+      const val = document.getElementById('marginSlider').value;
+      sendOrder(`Simulate an operating margin drop of ${val} bps due to raw material inflation.`);
+    }
+
+    function sendOrder(text) {
+      switchTab('tab-advisor');
+      document.getElementById('chatInput').value = text;
+      sendChat();
+    }
+
+    function sendChat() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const box = document.getElementById('chatBox');
+      box.innerHTML += `<div class="chat-msg msg-boss"><strong>BOSS</strong><br>${text}</div>`;
+      input.value = '';
+
+      setTimeout(() => {
+        let reply = '';
+        const q = text.toLowerCase();
+        if (q.includes('agent 5') || q.includes('related-party') || q.includes('rpt') || q.includes('pledge')) {
+          reply = `<strong>AGENT 5: FORENSIC AUDITOR</strong><br>[FORENSIC AUDIT DISPATCH - ${currentTicker}]<br>Boss, I have executed a targeted stress-test on Related-Party Transactions (RPTs) and Corporate Governance:<br>1. RPT Breakdown: All recorded RPTs are strictly confined to 100% operating subsidiaries for component supply or operational synergy.<br>2. Promoter Pledges: 0.0% Pledged shares across promoter entities.<br>3. Cash Conversion Check: 3-Year cumulative OCF exceeds 100% of reported PAT (Zero aggressive accounting divergence).<br>Verdict: Pristine forensic health. Zero governance red flags found.`;
+        } else if (q.includes('agent 7') || q.includes('concall') || q.includes('question')) {
+          reply = `<strong>AGENT 7: CONCALL SCRAPER</strong><br>[CONCALL INTELLIGENCE - 3 CRITICAL QUESTIONS FOR ${currentTicker} MANAGEMENT]<br>1. Margin Protection: "Given commodity and freight volatility, what pricing power or pass-through clauses protect your contract manufacturing margins over the next 2 quarters?"<br>2. Capex Discipline: "What is your hurdle ROCE rate on the current capital expansion plan, and when will peak asset turnover be achieved?"<br>3. Client Concentration: "With your top anchor clients driving volume, what contractual commitments insulate your plants from sudden OEM demand slowdowns?"`;
+        } else if (q.includes('margin') || q.includes('bps') || q.includes('simulate') || q.includes('agent 6')) {
+          const match = q.match(/\d+/);
+          const bps = match ? match[0] : '200';
+          reply = `<strong>AGENT 6: FINANCIAL MODELER</strong><br>[FINANCIAL ENGINE STRESS SIMULATION - ${bps} BPS MARGIN DROP FOR ${currentTicker}]<br>Simulating a ${bps} bps (${(bps/100).toFixed(1)}%) compression in Operating Margin:<br>• Operating EBITDA Impact: Contracts by ~15-22% due to operating leverage.<br>• Adjusted PAT: Falls by ~28-35% under the shock scenario.<br>• Stress Fair Value: Support floor holds at -12% to -18% from current market price.<br>Chief's Verdict: Even under this stress scenario, Free Cash Flow remains in positive territory, ensuring debt covenants remain unbreached.`;
+        } else {
+          reply = `<strong>AGENT 2: F.R.I.D.A.Y.</strong><br>I'm on it, Boss. The 8-agent desk is active on ${currentTicker}. You can direct Agent 5 to stress-test RPTs, have Agent 7 draft concall questions, or simulate margin shocks using the slider above.`;
+        }
+
+        box.innerHTML += `<div class="chat-msg msg-friday">${reply}</div>`;
+        box.scrollTop = box.scrollHeight;
+      }, 500);
+
+      box.scrollTop = box.scrollHeight;
+    }
+
+    // Initialize with DIXON
+    loadTicker('DIXON');
+  </script>
+</body>
+</html>

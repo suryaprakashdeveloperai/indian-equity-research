@@ -1,0 +1,19 @@
+name: indian_equity_multiagent_engine
+description: Institutional 8-Agent Equity Research & Market Intelligence Desk for Indian Listed Companies (NSE/BSE) led by F.R.I.D.A.Y.
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
