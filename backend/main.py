@@ -5,9 +5,11 @@ Built with FastAPI for asynchronous Indian market data processing and multi-agen
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from typing import List, Optional
 import datetime
+import os
 
 app = FastAPI(
     title="F.R.I.D.A.Y. Indian Equity Research API",
@@ -33,7 +35,33 @@ class MarginSimulationRequest(BaseModel):
     symbol: str
     bps_drop: float
 
-# --- Endpoints ---
+# --- Root Endpoint: Serves the Complete F.R.I.D.A.Y. Web App ---
+@app.get("/", response_class=HTMLResponse)
+def serve_frontend():
+    candidates = [
+        "index.html",
+        "/app/index.html",
+        os.path.join(os.path.dirname(__file__), "..", "index.html"),
+        os.path.join(os.path.dirname(__file__), "index.html"),
+    ]
+    for path in candidates:
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    return f.read()
+            except Exception:
+                pass
+    return """
+    <html>
+      <head><title>F.R.I.D.A.Y. Backend Online</title></head>
+      <body style="background:#080b10; color:#00e5ff; font-family:sans-serif; text-align:center; padding:50px;">
+        <h1>F.R.I.D.A.Y. 8-Agent Institutional Desk is LIVE</h1>
+        <p>Interactive API documentation is available at: <a style="color:#00e676" href="/docs">/docs</a></p>
+      </body>
+    </html>
+    """
+
+# --- API Endpoints ---
 
 @app.get("/api/health")
 def health_check():
