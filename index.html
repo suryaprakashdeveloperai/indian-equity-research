@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -745,6 +745,191 @@
     .btn-end { background: var(--crimson); color: #fff; }
     .btn-end:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(255, 23, 68, 0.8); }
     .btn-buy { background: var(--emerald); color: #000; font-weight: 900; font-size: 13px; width: auto; border-radius: 26px; padding: 0 20px; }
+
+    /* PART H: N8N AUTOMATION STUDIO & PIPELINES */
+    .n8n-studio-banner {
+      background: linear-gradient(135deg, rgba(255, 109, 0, 0.15), rgba(124, 77, 255, 0.15));
+      border: 1px solid rgba(255, 109, 0, 0.4);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .n8n-pipeline-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .n8n-pipe-btn {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .n8n-pipe-btn.active {
+      background: rgba(255, 109, 0, 0.15);
+      border-color: #ff6d00;
+      color: #ff6d00;
+      box-shadow: 0 0 15px rgba(255, 109, 0, 0.3);
+    }
+    .n8n-canvas {
+      background: #070b12;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow-x: auto;
+    }
+    .n8n-flow-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 980px;
+      margin-bottom: 24px;
+    }
+    .n8n-node {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      width: 210px;
+      flex-shrink: 0;
+      transition: all 0.3s;
+      position: relative;
+    }
+    .n8n-node.active-exec {
+      border-color: #00e676;
+      box-shadow: 0 0 25px rgba(0, 230, 118, 0.6);
+      transform: translateY(-3px);
+    }
+    .n8n-node-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .n8n-node-badge {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .n8n-node-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .n8n-node-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .n8n-arrow {
+      color: #ff6d00;
+      font-size: 20px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+    .n8n-terminal {
+      background: #03060a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #00e5ff;
+      height: 180px;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+
+    /* PART I: 6-SLIDE PRESENTATION DECK */
+    .deck-nav-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    .slide-tab-btn {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .slide-tab-btn.active {
+      border-color: var(--emerald);
+      color: var(--emerald);
+      background: rgba(0, 230, 118, 0.12);
+    }
+    .slide-card-presentation {
+      background: linear-gradient(135deg, #0a0f18, #0e1624);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      min-height: 480px;
+      position: relative;
+    }
+    .slide-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .slide-number-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+    }
+    .slide-body-content {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #e2e8f0;
+    }
+    .slide6-audit-box {
+      background: rgba(0, 230, 118, 0.08);
+      border: 1px solid var(--emerald);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .audit-stat {
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+    }
   </style>
 </head>
 <body>
@@ -772,6 +957,14 @@
       <!-- Language Toggle -->
       <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">
         🌐 <span id="langText">TANGLISH (தமிழ் + EN)</span>
+      </button>
+
+      <!-- n8n Automation & 6-Slide Quick Jump -->
+      <button class="voice-tester-btn" onclick="switchTab('tab-n8n')" style="background: rgba(255, 109, 0, 0.15); border-color: #ff6d00; color: #ff6d00; font-weight: 800;">
+        ⚡ N8N WORKFLOWS
+      </button>
+      <button class="voice-tester-btn" onclick="switchTab('tab-deck')" style="background: rgba(0, 230, 118, 0.15); border-color: var(--emerald); color: var(--emerald); font-weight: 800;">
+        📑 6-SLIDE DECK
       </button>
 
       <!-- Universal Search -->
@@ -827,7 +1020,9 @@
       <div class="tab-item tab-gem" onclick="switchTab('tab-gems')">PART D: 💎 UNDERRATED MULTI-BAGGER GEMS</div>
       <div class="tab-item" onclick="switchTab('tab-news')">PART E: 🔴 24/7 LIVE REAL-TIME WORLD NEWS</div>
       <div class="tab-item" onclick="switchTab('tab-advisor')">PART F: ADVISOR &amp; MARGIN STRESS</div>
-      <div class="tab-item" id="tabNavMlLab" onclick="switchTab('tab-ml-lab')" style="color: var(--cyan); border-color: rgba(0, 229, 255, 0.4);">PART G: ðŸ§  QUANT &amp; ML VALUATION LAB</div>
+      <div class="tab-item" id="tabNavMlLab" onclick="switchTab('tab-ml-lab')" style="color: var(--cyan); border-color: rgba(0, 229, 255, 0.4);">PART G: 🧠 QUANT &amp; ML VALUATION LAB</div>
+      <div class="tab-item" id="tabNavN8n" onclick="switchTab('tab-n8n')" style="color: #ff6d00; border-color: rgba(255, 109, 0, 0.5); font-weight: 800;">PART H: ⚡ N8N AUTOMATION STUDIO</div>
+      <div class="tab-item" id="tabNavDeck" onclick="switchTab('tab-deck')" style="color: var(--emerald); border-color: rgba(0, 230, 118, 0.5); font-weight: 800;">PART I: 📑 6-SLIDE INSTITUTIONAL DECK</div>
     </div>
 
     <!-- TAB A: BRIEFING & BUY VERDICT -->
@@ -1296,6 +1491,314 @@
       </div>
     </div>
   </div>
+
+      <!-- TAB H: âš¡ N8N AUTOMATION STUDIO & PIPELINES -->
+    <div id="tab-n8n" class="tab-content" style="display: none;">
+      <!-- Hero Banner -->
+      <div class="n8n-studio-banner">
+        <div>
+          <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px;">
+            <span class="live-badge" style="background: rgba(255, 109, 0, 0.15); color: #ff6d00; border-color: #ff6d00;">N8N V1.X AUTOMATION</span>
+            <span class="voice-badge" style="background: rgba(0, 230, 118, 0.15); color: var(--emerald); border-color: var(--emerald);">2 ACTIVE WORKFLOWS</span>
+            <span class="live-badge" style="background: rgba(0, 229, 255, 0.15); color: var(--cyan); border-color: var(--cyan);">SAFETY GATE: SAFE</span>
+          </div>
+          <h2 style="font-size: 24px; font-weight: 900; color: #fff;">
+            âš¡ Autonomous n8n Workflow Orchestration Studio
+          </h2>
+          <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+            Dual Pipelines: Workflow A (Research &amp; 6-Slide Deck Generation) + Workflow B (Telephony &amp; Human-Like Voice Webhooks)
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="hotline-btn" style="background: linear-gradient(135deg, #ff6d00, #ffab00);" onclick="simulateN8nWorkflowA()">
+            âš¡ SIMULATE WORKFLOW A
+          </button>
+          <button class="hotline-btn" style="background: linear-gradient(135deg, #00e5ff, #7c4dff);" onclick="simulateN8nWorkflowB()">
+            ðŸ“ž SIMULATE WORKFLOW B
+          </button>
+          <button class="voice-tester-btn" onclick="downloadWorkflowJson('A')" style="background: rgba(255, 109, 0, 0.15); border-color: #ff6d00; color: #ff6d00;">
+            ðŸ“¥ DOWNLOAD WORKFLOW A (.JSON)
+          </button>
+          <button class="voice-tester-btn" onclick="downloadWorkflowJson('B')" style="background: rgba(124, 77, 255, 0.15); border-color: #7c4dff; color: #7c4dff;">
+            ðŸ“¥ DOWNLOAD WORKFLOW B (.JSON)
+          </button>
+        </div>
+      </div>
+
+      <!-- Pipeline Selector Tabs -->
+      <div class="n8n-pipeline-tabs">
+        <button class="n8n-pipe-btn active" id="btnPipeA" onclick="switchN8nPipeline('A')">
+          <span>ðŸ“Š</span> WORKFLOW A: Stock Research &amp; 6-Slide Generation Pipeline
+        </button>
+        <button class="n8n-pipe-btn" id="btnPipeB" onclick="switchN8nPipeline('B')">
+          <span>ðŸ“ž</span> WORKFLOW B: Voice Calls &amp; Conversational Webhooks (+91 6382480091)
+        </button>
+      </div>
+
+      <!-- Visual Pipeline Flow Canvas -->
+      <div class="n8n-canvas">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div style="font-size: 13px; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--cyan);" id="pipelineCanvasTitle">
+            WORKFLOW A // ACTIVE NODES GRAPH (CLICK SIMULATE TO TRIGGER EXECUTION)
+          </div>
+          <div style="font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--emerald);" id="pipelineExecState">
+            STATUS: READY
+          </div>
+        </div>
+
+        <!-- Workflow A Flow Graph -->
+        <div id="flowGraphA" class="n8n-flow-row">
+          <div class="n8n-node" id="nodeA1">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(255, 109, 0, 0.2); color: #ff6d00;">TRIGGER</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeA1Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">1. Webhook Ingest</div>
+            <div class="n8n-node-desc">POST /webhook/stock-research (ticker, exchange, period)</div>
+          </div>
+          <div class="n8n-arrow">âž”</div>
+
+          <div class="n8n-node" id="nodeA2">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(0, 229, 255, 0.2); color: var(--cyan);">DATA FETCH</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeA2Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">2. Filings &amp; Citations</div>
+            <div class="n8n-node-desc">BSE Announcements &amp; concalls with timestamped URLs</div>
+          </div>
+          <div class="n8n-arrow">âž”</div>
+
+          <div class="n8n-node" id="nodeA3">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(179, 136, 255, 0.2); color: var(--purple);">DCF MODEL</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeA3Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">3. 11.8% WACC DCF</div>
+            <div class="n8n-node-desc">2-Stage DCF + 5.5% terminal growth + EPS compounding</div>
+          </div>
+          <div class="n8n-arrow">âž”</div>
+
+          <div class="n8n-node" id="nodeA4">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(0, 230, 118, 0.2); color: var(--emerald);">SLIDES</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeA4Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">4. 6-Slide Generator</div>
+            <div class="n8n-node-desc">Synthesizes Slides 1-5 preserving institutional depth</div>
+          </div>
+          <div class="n8n-arrow">âž”</div>
+
+          <div class="n8n-node" id="nodeA5">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(255, 64, 129, 0.2); color: var(--pink);">AUDIT</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeA5Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">5. Slide 6 Validator</div>
+            <div class="n8n-node-desc">120-160 words, 1 para, strict regex verdict &amp; auto-repair</div>
+          </div>
+          <div class="n8n-arrow">âž”</div>
+
+          <div class="n8n-node" id="nodeA6">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(255, 215, 0, 0.2); color: #ffd700;">MILESTONE</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeA6Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">6. Emit Milestone</div>
+            <div class="n8n-node-desc">Dispatches report_completed trigger to Workflow B</div>
+          </div>
+        </div>
+
+        <!-- Workflow B Flow Graph -->
+        <div id="flowGraphB" class="n8n-flow-row" style="display: none;">
+          <div class="n8n-node" id="nodeB1">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(255, 109, 0, 0.2); color: #ff6d00;">WEBHOOK</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeB1Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">1. Milestone Ingest</div>
+            <div class="n8n-node-desc">POST /webhook/voice-milestone-call</div>
+          </div>
+          <div class="n8n-arrow">âž”</div>
+
+          <div class="n8n-node" id="nodeB2">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(255, 23, 68, 0.2); color: var(--crimson);">POLICY</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeB2Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">2. Safety Gating</div>
+            <div class="n8n-node-desc">Check CALLS_ENABLED == true. Dry-run if false.</div>
+          </div>
+          <div class="n8n-arrow">âž”</div>
+
+          <div class="n8n-node" id="nodeB3">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(0, 229, 255, 0.2); color: var(--cyan);">PSTN ROUTER</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeB3Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">3. Exotel / Twilio</div>
+            <div class="n8n-node-desc">Outbound PSTN dial to +91 6382480091</div>
+          </div>
+          <div class="n8n-arrow">âž”</div>
+
+          <div class="n8n-node" id="nodeB4">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(255, 64, 129, 0.2); color: var(--pink);">VOICE AI</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeB4Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">4. ElevenLabs Voice</div>
+            <div class="n8n-node-desc">Ultra-realistic teenage female voice stream</div>
+          </div>
+          <div class="n8n-arrow">âž”</div>
+
+          <div class="n8n-node" id="nodeB5">
+            <div class="n8n-node-header">
+              <span class="n8n-node-badge" style="background: rgba(0, 230, 118, 0.2); color: var(--emerald);">2-WAY Q&amp;A</span>
+              <span style="font-size: 11px; color: var(--text-muted);" id="nodeB5Time">0ms</span>
+            </div>
+            <div class="n8n-node-title">5. Conversational Hub</div>
+            <div class="n8n-node-desc">Real-time answers on DCF, risks, WACC (&lt;45s turns)</div>
+          </div>
+        </div>
+
+        <!-- Real-time Live Log Terminal -->
+        <div style="margin-top: 18px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="font-size: 11px; font-weight: bold; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">LIVE N8N EXECUTION TERMINAL:</span>
+            <button class="ticker-chip" style="padding: 2px 8px; font-size: 10px;" onclick="document.getElementById('n8nLogTerminal').innerHTML = 'Ready for pipeline run...';">CLEAR LOGS</button>
+          </div>
+          <div class="n8n-terminal" id="n8nLogTerminal">
+[n8n-engine] Standby. Click "SIMULATE WORKFLOW A" or "SIMULATE WORKFLOW B" above to test the autonomous pipelines in real time.
+[n8n-engine] Configured target recipient: +91 6382480091 (whitelisted).
+[n8n-engine] Telephony safety lock: ACTIVE (Dry-run mode by default prevents unintended cellular cost).
+          </div>
+        </div>
+      </div>
+
+      <!-- External Setup Guide Box -->
+      <div class="card" style="margin-top: 20px;">
+        <div class="card-header">
+          <div>
+            <div class="badge badge-cyan">EXTERNAL N8N INTEGRATION INSTRUCTIONS</div>
+            <h3 style="font-size: 18px; font-weight: 800; margin-top: 6px;">How to Import &amp; Run in Local or Cloud n8n</h3>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top: 14px;">
+          <div style="background: var(--surface-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px;">
+            <div style="font-weight: 800; color: #ff6d00; margin-bottom: 8px;">Option 1: Import into Existing n8n Instance</div>
+            <ol style="font-size: 13px; line-height: 1.8; color: var(--text-secondary); margin-left: 18px;">
+              <li>Open your n8n dashboard (e.g. <code>http://localhost:5678</code> or <code>app.n8n.cloud</code>).</li>
+              <li>Click <strong>Workflows</strong> &rarr; <strong>Add workflow</strong> &rarr; <strong>Import from File</strong>.</li>
+              <li>Select <code>workflow_a_stock_research_report.json</code> or <code>workflow_b_voice_call_conversation.json</code> from the <code>n8n/</code> folder.</li>
+              <li>Click <strong>Activate</strong>.</li>
+            </ol>
+          </div>
+          <div style="background: var(--surface-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px;">
+            <div style="font-weight: 800; color: var(--cyan); margin-bottom: 8px;">Option 2: Run via Docker or npx</div>
+            <div style="font-size: 12px; font-family: 'JetBrains Mono', monospace; background: #000; padding: 12px; border-radius: 8px; color: var(--emerald); line-height: 1.6;">
+              # Run n8n locally via Docker:<br>
+              docker run -it --rm --name n8n -p 5678:5678 -v ~/.n8n:/home/node/.n8n n8nio/n8n<br><br>
+              # Or run via npx:<br>
+              npx n8n
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB I: ðŸ“‘ 6-SLIDE INSTITUTIONAL DECK & SLIDE 6 AUDITOR -->
+    <div id="tab-deck" class="tab-content" style="display: none;">
+      <!-- Hero Header -->
+      <div class="card" style="background: linear-gradient(135deg, rgba(12, 18, 28, 0.95), rgba(16, 23, 36, 0.95)); border-color: rgba(0, 230, 118, 0.35);">
+        <div class="card-header">
+          <div>
+            <div class="badge badge-emerald">INSTITUTIONAL PRESENTATION DECK</div>
+            <h2 style="font-size: 24px; font-weight: 900; margin-top: 6px; color: #fff;">
+              6-Slide Equity Research Presentation &amp; Slide 6 Compliance Auditor
+            </h2>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+              Active Stock: <strong style="color: var(--cyan);" id="deckActiveStock">DIXON TECHNOLOGIES (INDIA) LTD.</strong> | Exchange: NSE | 11.8% WACC
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="voice-tester-btn" onclick="exportPresentation('json')" style="background: rgba(0, 229, 255, 0.15); border-color: var(--cyan); color: var(--cyan);">
+              ðŸ“¥ EXPORT JSON
+            </button>
+            <button class="voice-tester-btn" onclick="exportPresentation('md')" style="background: rgba(179, 136, 255, 0.15); border-color: var(--purple); color: var(--purple);">
+              ðŸ“¥ EXPORT MARKDOWN
+            </button>
+            <button class="hotline-btn" onclick="openPhoneCallModal('+916382480091')">
+              ðŸ“ž DISCUSS PRESENTATION
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide Navigation Tabs -->
+      <div class="deck-nav-bar" style="margin-top: 18px;">
+        <button class="slide-tab-btn active" id="btnSlide1" onclick="switchSlide(1)">Slide 1: Executive Thesis</button>
+        <button class="slide-tab-btn" id="btnSlide2" onclick="switchSlide(2)">Slide 2: Core Financials</button>
+        <button class="slide-tab-btn" id="btnSlide3" onclick="switchSlide(3)">Slide 3: Forensic Screen</button>
+        <button class="slide-tab-btn" id="btnSlide4" onclick="switchSlide(4)">Slide 4: DCF Valuation</button>
+        <button class="slide-tab-btn" id="btnSlide5" onclick="switchSlide(5)">Slide 5: Peer Benchmarking</button>
+        <button class="slide-tab-btn" id="btnSlide6" onclick="switchSlide(6)" style="border-color: var(--emerald); color: var(--emerald); font-weight: 800;">
+          Slide 6: Conclusion Report (Audited) â˜…
+        </button>
+      </div>
+
+      <!-- Presentation Card Display -->
+      <div class="slide-card-presentation">
+        <div class="slide-header-row">
+          <div>
+            <div class="slide-number-tag" id="slideNumberBadge">SLIDE 1 OF 6</div>
+            <h3 style="font-size: 22px; font-weight: 900; color: #fff; margin-top: 8px;" id="slideTitleText">
+              Executive Summary &amp; Investment Thesis
+            </h3>
+          </div>
+          <div style="font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--text-muted);" id="slideCategoryBadge">
+            INSTITUTIONAL STRATEGY
+          </div>
+        </div>
+
+        <div class="slide-body-content" id="slideContentBody">
+          <!-- Slide content injected dynamically -->
+        </div>
+
+        <!-- Slide 6 Real-Time Live Compliance Auditor (Shown on Slide 6) -->
+        <div id="slide6AuditorBox" style="display: none; margin-top: 24px;">
+          <div class="slide6-audit-box">
+            <div class="audit-stat">
+              <span style="color: var(--text-muted);">PARAGRAPH COUNT:</span>
+              <strong style="color: var(--emerald);" id="auditParaCount">1 / 1 (PASS)</strong>
+            </div>
+            <div class="audit-stat">
+              <span style="color: var(--text-muted);">WORD COUNT:</span>
+              <strong style="color: var(--emerald);" id="auditWordCount">142 WORDS (120-160 PASS)</strong>
+            </div>
+            <div class="audit-stat">
+              <span style="color: var(--text-muted);">VERDICT REGEX:</span>
+              <strong style="color: var(--emerald);" id="auditRegexVerdict">MATCHED (PASS)</strong>
+            </div>
+            <button class="gem-action-btn" style="margin: 0; background: linear-gradient(135deg, #00e676, #00b0ff); color: #000; font-weight: 900;" onclick="autoRepairSlide6InBrowser()">
+              âš¡ RUN AUTO-REPAIR SYNTHESIZER
+            </button>
+          </div>
+
+          <div style="margin-top: 14px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 10px; padding: 14px;">
+            <div style="font-size: 11px; font-weight: bold; color: var(--cyan); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace;">
+              INTERACTIVE SLIDE 6 EDITOR &amp; LIVE WORD AUDITOR (TEST LIVE REPAIR):
+            </div>
+            <textarea id="slide6EditorText" style="width: 100%; height: 110px; background: #05080f; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-family: 'Outfit', sans-serif; font-size: 13px; padding: 10px; resize: vertical;" oninput="onSlide6EditChange(this.value)"></textarea>
+            <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; font-family: 'JetBrains Mono', monospace;">
+              <span id="slide6LiveWordCounter" style="color: var(--emerald);">Words: 142 / Target: 120-160</span>
+              <span style="color: var(--text-muted);">Regex Rule: ^Final Verdict: (BUY/SELL/HOLD) | Conviction: ...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END TABS H & I -->
 
   <!-- SMARTPHONE CALL OVERLAY FOR +91 6382480091 -->
   <div class="phone-overlay" id="phoneModal">
@@ -2254,6 +2757,12 @@
       }
       if (tabId === 'tab-ml-lab') {
         renderMlLab();
+      }
+      if (tabId === 'tab-n8n') {
+        renderN8nStudio();
+      }
+      if (tabId === 'tab-deck') {
+        renderSlideDeck();
       }
     }
 
