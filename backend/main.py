@@ -1,10 +1,11 @@
 """
 F.R.I.D.A.Y. 2.0 // Dalal Street AI Wealth Director & Multi-Agent Desk
-Built with FastAPI for real-time Indian stock market data, live RSS news scraping,
-Tanglish conversational intelligence, and private outbound telephony to +916382480091.
+Built with FastAPI for real-time Indian stock market data, multi-source external free APIs
+(Google News, Economic Times, Livemint, Alpha Vantage, Finnhub), Tanglish conversational intelligence,
+and private outbound telephony to +916382480091.
 """
 
-from fastapi import FastAPI, HTTPException, Response
+from fastapi import FastAPI, HTTPException, Response, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
@@ -12,13 +13,15 @@ from typing import List, Optional
 import datetime
 import os
 import urllib.request
+import urllib.parse
 import xml.etree.ElementTree as ET
+import json
 import re
 
 app = FastAPI(
     title="F.R.I.D.A.Y. 2.0 Dalal Street Wealth Director API",
-    description="Real-Time Indian Market News & Tanglish Conversational Telephony Backend",
-    version="2.1.0"
+    description="Multi-Source Financial News & Tanglish Conversational Telephony Backend",
+    version="2.2.0"
 )
 
 # Enable CORS for web frontend (Netlify, localhost, Render)
@@ -68,7 +71,7 @@ def serve_frontend():
       <head><title>F.R.I.D.A.Y. 2.0 Online</title></head>
       <body style="background:#070a0f; color:#00e5ff; font-family:sans-serif; text-align:center; padding:50px;">
         <h1>F.R.I.D.A.Y. 2.0 Dalal Street Wealth Desk is LIVE</h1>
-        <p>Live Market Feeds &amp; Tanglish Conversational Telephony Engine</p>
+        <p>Multi-Source External Free News APIs &amp; Tanglish Conversational Telephony Engine</p>
         <p><a style="color:#ff4081" href="/docs">View Interactive Swagger API (/docs)</a></p>
       </body>
     </html>
@@ -81,6 +84,7 @@ def health_check():
         "status": "online",
         "desk": "F.R.I.D.A.Y. 2.0 Tanglish AI Wealth Director",
         "private_client_line": "+916382480091 (PROTECTED)",
+        "external_apis": ["Google News Financial RSS", "Economic Times Markets", "Livemint Markets", "Alpha Vantage", "Finnhub.io"],
         "timestamp": datetime.datetime.utcnow().isoformat()
     }
 
@@ -92,60 +96,70 @@ def get_supported_tickers():
         "supports_universal_custom": True
     }
 
-# --- REAL-TIME LIVE NEWS ENGINE (Zero Hardcoding) ---
+# --- MULTI-SOURCE LIVE NEWS AGGREGATOR ---
 @app.get("/api/live-news")
-def get_live_market_news():
+def get_live_market_news(category: Optional[str] = "all"):
     """
-    Scrapes real-time breaking market news from live Indian equity RSS feeds (Google News NSE/BSE/Sensex).
-    Computes dynamic sentiment and margin impacts in real time.
+    Scrapes and de-duplicates breaking news from 3 premier live Indian financial feeds:
+    1. Economic Times Markets RSS
+    2. Livemint Markets RSS
+    3. Google News NSE/BSE/Sensex Wire
     """
-    rss_urls = [
-        "https://news.google.com/rss/search?q=NSE+Sensex+Nifty+Stock+Market+India&hl=en-IN&gl=IN&ceid=IN:en",
-        "https://news.google.com/rss/search?q=Indian+Equities+Dalal+Street+SEBI&hl=en-IN&gl=IN&ceid=IN:en"
+    feeds = [
+        {"name": "Economic Times", "url": "https://economictimes.indiatimes.com/markets/stocks/rssfeeds/2146842.cms"},
+        {"name": "Livemint Markets", "url": "https://www.livemint.com/rss/markets"},
+        {"name": "Google News NSE", "url": "https://news.google.com/rss/search?q=NSE+Sensex+Nifty+India+stock+market&hl=en-IN&gl=IN&ceid=IN:en"}
     ]
     
-    news_items = []
+    articles = []
+    seen_titles = set()
     
-    for url in rss_urls:
+    for feed in feeds:
         try:
             req = urllib.request.Request(
-                url,
+                feed["url"],
                 headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
             )
-            with urllib.request.urlopen(req, timeout=6) as response:
+            with urllib.request.urlopen(req, timeout=5) as response:
                 content = response.read()
                 root = ET.fromstring(content)
                 channel = root.find("channel")
                 if channel is not None:
-                    for item in channel.findall("item")[:8]:
-                        title = item.findtext("title", "")
-                        link = item.findtext("link", "")
-                        pub_date = item.findtext("pubDate", "")
-                        source = item.findtext("source", "Financial Wire")
+                    for item in channel.findall("item")[:10]:
+                        title = item.findtext("title", "").strip()
+                        link = item.findtext("link", "").strip()
+                        pub_date = item.findtext("pubDate", "").strip()
                         
-                        # Clean title and separate source
+                        # Clean title
                         cleaned_title = title
+                        source = feed["name"]
                         if " - " in title:
                             parts = title.rsplit(" - ", 1)
                             cleaned_title = parts[0]
                             source = parts[1]
-                        
-                        # Calculate dynamic sentiment
-                        lower_title = cleaned_title.lower()
-                        if any(w in lower_title for w in ["surge", "jumps", "rally", "gain", "high", "profit", "bull", "growth", "boost", "outperform"]):
-                            tag = "BULLISH"
-                            impact = "+40 to +90 bps margin tailwind"
-                            sentiment_score = 85
-                        elif any(w in lower_title for w in ["slump", "fall", "drop", "crash", "plunge", "loss", "bear", "down", "inflation", "exodus", "slowdown"]):
-                            tag = "CAUTION"
-                            impact = "Short-term valuation dip / Buying opportunity"
-                            sentiment_score = -45
-                        else:
-                            tag = "MARKET PULSE"
-                            impact = "Sector rotation in progress"
-                            sentiment_score = 10
                             
-                        news_items.append({
+                        # De-duplicate
+                        norm_title = re.sub(r'[^a-zA-Z0-9]', '', cleaned_title.lower())[:40]
+                        if norm_title in seen_titles or len(cleaned_title) < 15:
+                            continue
+                        seen_titles.add(norm_title)
+                        
+                        # Sentiment analysis
+                        lt = cleaned_title.lower()
+                        if any(w in lt for w in ["surge", "rally", "gain", "high", "jump", "bull", "growth", "boost", "outperform", "profit", "order"]):
+                            tag = "BULLISH"
+                            impact = "+40 to +90 bps margin upside"
+                            sentiment_score = 85
+                        elif any(w in lt for w in ["fall", "drop", "slump", "crash", "plunge", "loss", "bear", "down", "inflation", "exodus", "warning"]):
+                            tag = "CAUTION"
+                            impact = "Valuation support test / Accumulation zone"
+                            sentiment_score = -50
+                        else:
+                            tag = "MARKET WIRE"
+                            impact = "Sector allocation catalyst"
+                            sentiment_score = 15
+                            
+                        articles.append({
                             "title": cleaned_title,
                             "source": source,
                             "published": pub_date,
@@ -154,38 +168,94 @@ def get_live_market_news():
                             "impact": impact,
                             "sentiment_score": sentiment_score
                         })
-        except Exception as e:
+        except Exception:
             continue
-            
-    # Fallback to high-frequency recent items if network is constrained
-    if not news_items:
-        news_items = [
-            {
-                "title": "Nifty surges past consolidation zone as FII inflows accelerate in capital goods",
-                "source": "Economic Times",
-                "published": datetime.datetime.utcnow().strftime("%a, %d %b %Y %H:%M:%S GMT"),
-                "link": "https://economictimes.indiatimes.com",
-                "tag": "BULLISH",
-                "impact": "+65 bps domestic order surge",
-                "sentiment_score": 78
-            },
-            {
-                "title": "Brent crude stabilizes near $74/barrel easing inflation pressure on Indian manufacturing",
-                "source": "Reuters",
-                "published": datetime.datetime.utcnow().strftime("%a, %d %b %Y %H:%M:%S GMT"),
-                "link": "https://reuters.com",
-                "tag": "BULLISH",
-                "impact": "Favorable CAD & fuel logistics cost reduction",
-                "sentiment_score": 70
-            }
-        ]
-        
+
     return {
         "status": "LIVE_FEED_ONLINE",
-        "total_articles": len(news_items),
+        "total_articles": len(articles),
         "refreshed_at": datetime.datetime.utcnow().isoformat(),
-        "articles": news_items[:12]
+        "articles": articles[:18]
     }
+
+# --- TICKER-SPECIFIC LIVE NEWS ENDPOINT ---
+@app.get("/api/stock-news/{symbol}")
+def get_stock_specific_news(symbol: str):
+    """
+    Fetches breaking news specific to an individual NSE/BSE stock ticker (e.g. DIXON, TATAMOTORS, HAL, CRAFTSMAN).
+    """
+    sym = symbol.upper().strip()
+    query = urllib.parse.quote(f"{sym} stock NSE BSE results concall")
+    url = f"https://news.google.com/rss/search?q={query}&hl=en-IN&gl=IN&ceid=IN:en"
+    
+    articles = []
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        )
+        with urllib.request.urlopen(req, timeout=5) as response:
+            content = response.read()
+            root = ET.fromstring(content)
+            channel = root.find("channel")
+            if channel is not None:
+                for item in channel.findall("item")[:6]:
+                    title = item.findtext("title", "").strip()
+                    link = item.findtext("link", "").strip()
+                    pub_date = item.findtext("pubDate", "").strip()
+                    source = "Exchange Wire"
+                    if " - " in title:
+                        parts = title.rsplit(" - ", 1)
+                        title = parts[0]
+                        source = parts[1]
+                        
+                    articles.append({
+                        "title": title,
+                        "source": source,
+                        "published": pub_date,
+                        "link": link,
+                        "tag": "COMPANY SPECIFIC",
+                        "impact": f"Target multiple catalyst for {sym}"
+                    })
+    except Exception:
+        pass
+        
+    return {
+        "symbol": sym,
+        "articles_found": len(articles),
+        "articles": articles
+    }
+
+# --- EXTERNAL FREE APIS (ALPHA VANTAGE & FINNHUB) ---
+@app.get("/api/external-news/alphavantage")
+def fetch_alphavantage_sentiment(ticker: str, api_key: Optional[str] = None):
+    """
+    Connects to Alpha Vantage News & Sentiment API if key is provided (free key available at alphavantage.co).
+    """
+    key = api_key if api_key else os.getenv("ALPHAVANTAGE_API_KEY", "demo")
+    url = f"https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers={ticker}&apikey={key}"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            data = json.loads(resp.read().decode())
+            return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/external-news/finnhub")
+def fetch_finnhub_news(category: str = "general", api_key: Optional[str] = None):
+    """
+    Connects to Finnhub.io Free Financial News API if key is provided (free tier at finnhub.io).
+    """
+    key = api_key if api_key else os.getenv("FINNHUB_API_KEY", "sandbox_c0")
+    url = f"https://finnhub.io/api/v1/news?category={category}&token={key}"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            data = json.loads(resp.read().decode())
+            return {"articles": data[:10] if isinstance(data, list) else []}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # --- Underrated Multi-Bagger Gems ---
 @app.get("/api/gems")
@@ -203,7 +273,7 @@ def get_underrated_gems():
                 "roce": 24.5,
                 "debt_to_equity": 0.28,
                 "moat": "Precision powertrain machining & aluminum die casting for global commercial majors.",
-                "tanglish_brief": "Boss, Craftsman Automation namma top hidden-gem! Precision powertrain components-la unrivaled moat irukku. ROCE 24.5% irukku, debt-to-equity verum 0.28x. Sector P/E 46x irukkumpothu idhu verum 24x-la kedaikuthu! 32% margin of safety irukku. 40 shares ₹4,180-la pick panlaam. Should I buy it for you?"
+                "tanglish_brief": "Boss, Craftsman Automation namma top hidden-gem! Precision powertrain components-la unrivaled moat irukku. ROCE 24.5%, debt-to-equity verum 0.28x. Sector P/E 46x irukkumpothu idhu verum 24x-la kedaikuthu! 32% margin of safety irukku. 40 shares ₹4,180-la pick panlaam. Should I buy it for you?"
             },
             {
                 "symbol": "KRN",
@@ -244,14 +314,8 @@ def get_underrated_gems():
 # --- OUTBOUND TELEPHONY TO PRIVATE NUMBER 6382480091 ---
 @app.post("/api/voice/call-me")
 def initiate_phone_call(req: CallMeRequest):
-    """
-    Triggers an outbound cellular phone call to the user's private mobile number (+916382480091).
-    When Twilio credentials (TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER)
-    are present in the environment, it uses the official Twilio REST API to place a physical cellular call.
-    """
     target_num = req.phone_number if req.phone_number else "+916382480091"
     
-    # Twilio Cellular Outbound Dispatch
     twilio_sid = os.getenv("TWILIO_ACCOUNT_SID")
     twilio_auth = os.getenv("TWILIO_AUTH_TOKEN")
     twilio_from = os.getenv("TWILIO_PHONE_NUMBER")
@@ -261,8 +325,6 @@ def initiate_phone_call(req: CallMeRequest):
     
     if twilio_sid and twilio_auth and twilio_from:
         try:
-            import urllib.parse
-            # Twilio Calls REST API Call
             twilio_url = f"https://api.twilio.com/2010-04-01/Accounts/{twilio_sid}/Calls.json"
             callback_url = f"https://indian-equity-research.onrender.com/api/voice/twiml?ticker={req.ticker}"
             data = urllib.parse.urlencode({
@@ -271,13 +333,12 @@ def initiate_phone_call(req: CallMeRequest):
                 "Url": callback_url
             }).encode('utf-8')
             
-            # Basic Auth with Twilio SID & Token
             auth_header = "Basic " + __import__("base64").b64encode(f"{twilio_sid}:{twilio_auth}".encode()).decode()
             request = urllib.request.Request(twilio_url, data=data, headers={"Authorization": auth_header})
             with urllib.request.urlopen(request, timeout=8) as resp:
                 resp_data = resp.read()
                 cellular_dispatched = True
-        except Exception as e:
+        except Exception:
             cellular_dispatched = False
             
     return {
@@ -287,15 +348,11 @@ def initiate_phone_call(req: CallMeRequest):
         "cellular_dispatched": cellular_dispatched,
         "ticker_briefing": req.ticker,
         "tanglish_greeting": "Hey Boss! Naan F.R.I.D.A.Y. pesuren. Private line-la connect panniten. Dalal Street-la semma breakout update irukku!",
-        "message": f"F.R.I.D.A.Y. private hotline is ringing for {target_num}. Interactive voice audio is streaming."
+        "message": f"F.R.I.D.A.Y. private hotline is ringing for {target_num}."
     }
 
 @app.get("/api/voice/twiml", response_class=Response)
 def get_voice_twiml(language: str = "tanglish", ticker: str = "CRAFTSMAN"):
-    """
-    Returns TwiML XML instructions for Twilio to stream F.R.I.D.A.Y.'s female voice over the cellular phone call.
-    Uses Polly.Aditi (Indian Female Neural Voice).
-    """
     spoken_text = "Hey Boss! Naan F.R.I.D.A.Y. pesuren. Market open aagurathuku munnadi oru super underrated stock setup paathen! Craftsman Automation 32 percent margin of safety-la kedaikuthu. 40 shares buy panattuma Boss?"
 
     xml_content = f"""<?xml version="1.0" encoding="UTF-8"?>
