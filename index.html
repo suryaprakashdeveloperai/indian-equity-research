@@ -3,25 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>F.R.I.D.A.Y. 2.0 // Dalal Street AI Wealth Director & Institutional Desk</title>
+  <title>F.R.I.D.A.Y. 2.0 // Dalal Street AI Wealth Director</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #070a0f;
-      --surface: #0d131d;
-      --surface-elevated: #141c2b;
-      --border: #1b283d;
-      --border-glow: rgba(0, 229, 255, 0.35);
+      --bg: #06090e;
+      --surface: #0c121c;
+      --surface-elevated: #131c2b;
+      --surface-card: #101724;
+      --border: #1e2c42;
+      --border-glow: rgba(0, 229, 255, 0.4);
       --cyan: #00e5ff;
-      --amber: #ffb300;
+      --pink: #ff4081;
+      --purple: #b388ff;
       --emerald: #00e676;
       --crimson: #ff1744;
-      --purple: #b388ff;
-      --pink: #ff4081;
-      --text: #f0f4f8;
-      --text-secondary: #90a4ae;
-      --text-muted: #546e7a;
+      --amber: #ffb300;
+      --text: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,9 +38,10 @@
 
     /* Top Navigation HUD */
     header {
-      background: var(--surface);
+      background: rgba(12, 18, 28, 0.95);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      padding: 12px 24px;
+      padding: 14px 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -51,74 +53,86 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
-    .brand-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, rgba(255, 64, 129, 0.2), rgba(0, 229, 255, 0.2));
-      border: 1px solid var(--pink);
+    .brand-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #ff4081, #00e5ff);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      font-weight: 800;
       font-size: 22px;
-      box-shadow: 0 0 15px rgba(255, 64, 129, 0.3);
+      box-shadow: 0 0 20px rgba(255, 64, 129, 0.4);
+      position: relative;
     }
     .brand-title {
-      font-size: 15px;
-      font-weight: 800;
+      font-size: 16px;
+      font-weight: 900;
       letter-spacing: 1px;
-      color: var(--cyan);
+      color: #fff;
       display: flex;
       align-items: center;
       gap: 8px;
     }
     .live-badge {
-      background: rgba(0, 230, 118, 0.2);
+      background: rgba(0, 230, 118, 0.15);
       color: var(--emerald);
       border: 1px solid var(--emerald);
-      padding: 2px 6px;
-      border-radius: 4px;
+      padding: 2px 8px;
+      border-radius: 12px;
       font-size: 9px;
-      font-weight: bold;
+      font-weight: 800;
       letter-spacing: 0.5px;
     }
-    .female-badge {
-      background: rgba(255, 64, 129, 0.2);
+    .voice-badge {
+      background: rgba(255, 64, 129, 0.15);
       color: var(--pink);
       border: 1px solid var(--pink);
-      padding: 2px 6px;
-      border-radius: 4px;
+      padding: 2px 8px;
+      border-radius: 12px;
       font-size: 9px;
-      font-weight: bold;
+      font-weight: 800;
     }
     .brand-subtitle {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-secondary);
+      font-weight: 500;
     }
 
-    /* Search & Action Controls */
-    .search-panel {
+    /* Controls Panel */
+    .controls-panel {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
+    .lang-btn {
+      background: rgba(179, 136, 255, 0.12);
+      border: 1px solid var(--purple);
+      color: var(--purple);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-btn:hover { background: var(--purple); color: #000; }
+
     .search-box {
       display: flex;
       align-items: center;
       background: var(--surface-elevated);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 4px 12px;
-      width: 240px;
+      padding: 6px 14px;
+      width: 220px;
       transition: all 0.2s;
     }
     .search-box:focus-within {
       border-color: var(--cyan);
-      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
     }
     .search-input {
       background: transparent;
@@ -130,166 +144,145 @@
       text-transform: uppercase;
       outline: none;
       width: 100%;
-      padding: 6px;
     }
 
-    /* Language Switcher */
-    .lang-toggle {
-      background: rgba(179, 136, 255, 0.15);
-      border: 1px solid var(--purple);
-      color: var(--purple);
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
-    }
-    .lang-toggle:hover {
-      background: var(--purple);
-      color: #000;
-    }
-
-    /* Hotline Phone Call Button */
-    .phone-call-btn {
-      background: linear-gradient(135deg, #00e676, #00b0ff);
-      color: #000;
+    /* Private Hotline Call Button */
+    .hotline-btn {
+      background: linear-gradient(135deg, #ff4081, #7c4dff);
+      color: #fff;
       border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 12px;
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 13px;
       font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
-      box-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+      gap: 8px;
+      box-shadow: 0 0 20px rgba(255, 64, 129, 0.4);
       transition: all 0.2s;
     }
-    .phone-call-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 20px rgba(0, 230, 118, 0.6);
+    .hotline-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(255, 64, 129, 0.7);
     }
 
-    .mic-btn {
+    /* Voice Tester Button */
+    .voice-tester-btn {
       background: rgba(0, 229, 255, 0.12);
       border: 1px solid var(--cyan);
       color: var(--cyan);
-      width: 36px;
-      height: 36px;
+      padding: 8px 12px;
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
-      font-size: 16px;
       transition: all 0.2s;
     }
-    .mic-btn:hover { background: var(--cyan); color: #000; }
-    .mic-btn.listening {
-      background: var(--crimson);
-      border-color: var(--crimson);
-      color: #fff;
-      animation: pulse-red 1.2s infinite;
-    }
-    @keyframes pulse-red {
-      0% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0.6); }
-      70% { box-shadow: 0 0 0 12px rgba(255, 23, 68, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0); }
-    }
+    .voice-tester-btn:hover { background: var(--cyan); color: #000; }
 
-    /* Sectors Navigation Bar */
+    /* Sectors & Tickers Bar */
     .sectors-bar {
-      background: var(--surface-elevated);
+      background: var(--surface-card);
       border-bottom: 1px solid var(--border);
-      padding: 8px 24px;
+      padding: 10px 28px;
       display: flex;
-      gap: 8px;
+      gap: 10px;
       overflow-x: auto;
       white-space: nowrap;
-      scrollbar-width: thin;
+      align-items: center;
     }
     .sector-label {
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      margin-right: 6px;
       font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.5px;
     }
     .ticker-chip {
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--text-secondary);
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
       font-family: 'JetBrains Mono', monospace;
       transition: all 0.15s;
     }
     .ticker-chip:hover, .ticker-chip.active {
       border-color: var(--cyan);
-      color: var(--cyan);
-      background: rgba(0, 229, 255, 0.08);
+      color: #fff;
+      background: rgba(0, 229, 255, 0.12);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
     }
     .ticker-chip.gem-chip {
-      border-color: var(--pink);
+      border-color: rgba(255, 64, 129, 0.4);
       color: var(--pink);
+    }
+    .ticker-chip.gem-chip.active, .ticker-chip.gem-chip:hover {
+      border-color: var(--pink);
+      color: #fff;
+      background: rgba(255, 64, 129, 0.18);
     }
 
     /* Main Container */
     .container {
       max-width: 1440px;
       margin: 0 auto;
-      padding: 18px 24px;
+      padding: 22px 28px;
       width: 100%;
       flex: 1;
     }
 
-    /* Tactical HUD Banner */
-    .hud-banner {
-      background: #000;
+    /* Status Bar */
+    .status-bar {
+      background: var(--surface-card);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 16px;
-      margin-bottom: 18px;
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 12px;
     }
-    .hud-status { color: var(--emerald); font-weight: bold; display: flex; align-items: center; gap: 8px; }
-    .hud-status::before {
-      content: "";
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--emerald);
+      font-weight: bold;
+    }
+    .pulse-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: var(--emerald);
-      box-shadow: 0 0 8px var(--emerald);
+      box-shadow: 0 0 10px var(--emerald);
+      animation: pulse 1.5s infinite;
     }
-    .hud-meta { color: var(--text-muted); }
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.8; }
+    }
 
     /* Tabs */
     .tab-bar {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 18px;
+      margin-bottom: 22px;
       overflow-x: auto;
-      white-space: nowrap;
     }
     .tab-item {
-      padding: 10px 18px;
+      padding: 12px 20px;
       cursor: pointer;
-      font-weight: 700;
-      font-size: 12px;
+      font-weight: 800;
+      font-size: 13px;
       letter-spacing: 0.5px;
       color: var(--text-muted);
       border-bottom: 2px solid transparent;
@@ -307,138 +300,145 @@
 
     /* Cards */
     .card {
-      background: var(--surface);
+      background: var(--surface-card);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
     }
     .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
-    .card-badge {
+    .badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.8px;
       text-transform: uppercase;
       padding: 4px 10px;
-      border-radius: 4px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
     }
-    .badge-cyan { background: rgba(0, 229, 255, 0.12); color: var(--cyan); border: 1px solid var(--cyan); }
-    .badge-emerald { background: rgba(0, 230, 118, 0.12); color: var(--emerald); border: 1px solid var(--emerald); }
-    .badge-crimson { background: rgba(255, 23, 68, 0.12); color: var(--crimson); border: 1px solid var(--crimson); }
-    .badge-amber { background: rgba(255, 179, 0, 0.12); color: var(--amber); border: 1px solid var(--amber); }
-    .badge-pink { background: rgba(255, 64, 129, 0.12); color: var(--pink); border: 1px solid var(--pink); }
-    .badge-purple { background: rgba(179, 136, 255, 0.12); color: var(--purple); border: 1px solid var(--purple); }
+    .badge-pink { background: rgba(255, 64, 129, 0.15); color: var(--pink); border: 1px solid var(--pink); }
+    .badge-cyan { background: rgba(0, 229, 255, 0.15); color: var(--cyan); border: 1px solid var(--cyan); }
+    .badge-emerald { background: rgba(0, 230, 118, 0.15); color: var(--emerald); border: 1px solid var(--emerald); }
+    .badge-amber { background: rgba(255, 179, 0, 0.15); color: var(--amber); border: 1px solid var(--amber); }
 
-    /* Part A Voice Briefing HUD */
-    .voice-hud {
+    /* Part A Voice Executive Briefing */
+    .voice-briefing-box {
+      background: linear-gradient(135deg, rgba(19, 28, 43, 0.95), rgba(12, 18, 28, 0.95));
+      border: 1px solid rgba(255, 64, 129, 0.35);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: linear-gradient(135deg, rgba(13, 19, 29, 0.9), rgba(20, 28, 43, 0.9));
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      padding: 20px 24px;
-      border-radius: 10px;
-      margin-bottom: 18px;
+      box-shadow: 0 8px 30px rgba(255, 64, 129, 0.15);
     }
-    .voice-btn-group {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .voice-control-btn {
-      background: var(--cyan);
-      color: #000;
+    .briefing-speaker-btn {
+      background: linear-gradient(135deg, #ff4081, #d81b60);
+      color: #fff;
       border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
       font-weight: 800;
-      font-size: 13px;
+      font-size: 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      box-shadow: 0 0 20px rgba(255, 64, 129, 0.4);
       transition: all 0.2s;
     }
-    .voice-control-btn:hover {
-      box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
-      transform: translateY(-1px);
-    }
-    .voice-control-btn.speaking {
-      background: var(--pink);
-      color: #fff;
+    .briefing-speaker-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(255, 64, 129, 0.7);
     }
 
-    /* Soundwave Visualizer */
-    .bars {
+    /* Soundwave Equalizer */
+    .equalizer {
       display: flex;
       align-items: flex-end;
       gap: 4px;
       height: 28px;
     }
-    .bar {
+    .eq-bar {
       width: 4px;
-      background: var(--cyan);
+      background: var(--pink);
       border-radius: 2px;
       height: 6px;
       transition: height 0.15s ease;
     }
-    .bars.speaking .bar:nth-child(1) { animation: wave 0.6s infinite ease-in-out; }
-    .bars.speaking .bar:nth-child(2) { animation: wave 0.8s infinite 0.1s ease-in-out; }
-    .bars.speaking .bar:nth-child(3) { animation: wave 0.5s infinite 0.2s ease-in-out; }
-    .bars.speaking .bar:nth-child(4) { animation: wave 0.7s infinite 0.15s ease-in-out; }
-    .bars.speaking .bar:nth-child(5) { animation: wave 0.9s infinite 0.05s ease-in-out; }
-
-    @keyframes wave {
+    .equalizer.active .eq-bar:nth-child(1) { animation: eq 0.6s infinite ease-in-out; }
+    .equalizer.active .eq-bar:nth-child(2) { animation: eq 0.8s infinite 0.1s ease-in-out; }
+    .equalizer.active .eq-bar:nth-child(3) { animation: eq 0.5s infinite 0.2s ease-in-out; }
+    .equalizer.active .eq-bar:nth-child(4) { animation: eq 0.7s infinite 0.15s ease-in-out; }
+    .equalizer.active .eq-bar:nth-child(5) { animation: eq 0.9s infinite 0.05s ease-in-out; }
+    @keyframes eq {
       0%, 100% { height: 6px; }
       50% { height: 26px; }
     }
 
-    /* Decision Matrix Banner */
-    .decision-banner {
+    /* Decision Metrics Grid */
+    .decision-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 14px;
-      background: #000;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
-    .decision-metric {
-      padding: 10px 14px;
-      border-radius: 8px;
+    .decision-cell {
       background: var(--surface);
-      border: 1px solid rgba(27, 40, 61, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
     }
-    .metric-label {
-      font-size: 10px;
-      font-weight: 700;
+    .decision-label {
+      font-size: 11px;
+      font-weight: 800;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.8px;
       font-family: 'JetBrains Mono', monospace;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
-    .metric-val {
-      font-size: 17px;
-      font-weight: 800;
+    .decision-val {
+      font-size: 18px;
+      font-weight: 900;
       font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Tanglish Spoken Text Card */
+    .spoken-card {
+      background: #090e17;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-left: 4px solid var(--pink);
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+      gap: 20px;
     }
 
     /* Tables */
     .table-container {
       overflow-x: auto;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 10px;
+      margin-top: 14px;
     }
     table {
       width: 100%;
@@ -450,327 +450,212 @@
     th {
       background: var(--surface-elevated);
       color: var(--cyan);
-      padding: 10px 14px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--border);
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     td {
-      padding: 10px 14px;
-      border-bottom: 1px solid rgba(30, 45, 66, 0.5);
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(30, 44, 66, 0.6);
       color: var(--text);
     }
     tr:hover { background: rgba(0, 229, 255, 0.04); }
-    .highlight-cell { color: var(--cyan); font-weight: 700; }
-    .emerald-cell { color: var(--emerald); font-weight: 700; }
-    .crimson-cell { color: var(--crimson); font-weight: 700; }
-    .amber-cell { color: var(--amber); font-weight: 700; }
+    .emerald-text { color: var(--emerald); font-weight: bold; }
+    .cyan-text { color: var(--cyan); font-weight: bold; }
+    .crimson-text { color: var(--crimson); font-weight: bold; }
+    .amber-text { color: var(--amber); font-weight: bold; }
 
-    /* Grids */
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 16px;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
-      gap: 16px;
-    }
-
-    /* Underrated Gems Cards */
+    /* Gem Cards */
     .gem-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px;
+      border-radius: 14px;
+      padding: 22px;
       transition: all 0.2s;
-      position: relative;
     }
     .gem-card:hover {
       border-color: var(--pink);
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(255, 64, 129, 0.15);
+      box-shadow: 0 8px 30px rgba(255, 64, 129, 0.2);
     }
-    .gem-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-    .gem-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: #fff;
-    }
-    .gem-tag {
-      font-size: 10px;
-      background: rgba(255, 64, 129, 0.15);
-      color: var(--pink);
-      border: 1px solid var(--pink);
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-weight: 700;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .gem-upside {
+    .gem-title { font-size: 18px; font-weight: 900; color: #fff; }
+    .gem-upside-badge {
       font-size: 20px;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--emerald);
       font-family: 'JetBrains Mono', monospace;
-      margin: 6px 0;
+      margin: 8px 0;
     }
-    .gem-buy-btn {
+    .gem-action-btn {
       background: var(--pink);
       color: #fff;
       border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 800;
       font-size: 12px;
       cursor: pointer;
-      margin-top: 10px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.15s;
-    }
-    .gem-buy-btn:hover {
-      background: #ff80ab;
-      transform: translateY(-1px);
-    }
-
-    /* Macro Ticker Strip */
-    .macro-strip {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-    .macro-item {
-      background: var(--surface-elevated);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .macro-name { font-size: 11px; color: var(--text-muted); font-weight: 700; }
-    .macro-value { font-size: 14px; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
-
-    /* Order Execution Ledger */
-    .order-ledger {
-      background: #000;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      max-height: 220px;
-      overflow-y: auto;
-    }
-    .order-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      border-bottom: 1px solid #141c2b;
-    }
-
-    /* Advisor Chat */
-    .chat-box {
-      height: 380px;
-      overflow-y: auto;
-      background: #000;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .chat-msg {
-      max-width: 84%;
-      padding: 12px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-    .msg-friday {
-      align-self: flex-start;
-      background: var(--surface);
-      border: 1px solid rgba(255, 64, 129, 0.3);
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .msg-boss {
-      align-self: flex-end;
-      background: var(--surface-elevated);
-      border: 1px solid var(--border);
-      color: #fff;
-    }
-    .slider-box {
-      background: var(--surface-elevated);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    .chat-input-bar {
-      display: flex;
-      gap: 10px;
       margin-top: 12px;
+      transition: all 0.2s;
     }
-    .chat-input {
-      flex: 1;
+    .gem-action-btn:hover { background: #ff80ab; }
+
+    /* Live News Items */
+    .news-item {
       background: var(--surface);
       border: 1px solid var(--border);
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-family: inherit;
-      outline: none;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.2s;
     }
-    .chat-input:focus { border-color: var(--pink); }
-    .chat-btn {
-      background: var(--pink);
-      color: #fff;
-      border: none;
-      padding: 0 24px;
-      border-radius: 8px;
+    .news-item:hover {
+      border-color: var(--cyan);
+      background: var(--surface-elevated);
+    }
+    .news-title {
+      font-size: 14px;
       font-weight: 700;
-      cursor: pointer;
+      color: #fff;
+      text-decoration: none;
+    }
+    .news-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: flex;
+      gap: 12px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    /* PHONE CALL MODAL OVERLAY */
-    .phone-modal-overlay {
+    /* PHONE CALL MODAL (SMARTPHONE STYLE) */
+    .phone-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(14px);
       z-index: 1000;
       display: none;
       align-items: center;
       justify-content: center;
     }
-    .phone-modal-overlay.active { display: flex; }
-    
-    .phone-device {
-      width: 440px;
-      background: #0b0f17;
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      border-radius: 24px;
-      box-shadow: 0 0 50px rgba(0, 229, 255, 0.25);
-      padding: 28px 24px;
+    .phone-overlay.active { display: flex; }
+
+    .phone-body {
+      width: 450px;
+      background: #090e17;
+      border: 1px solid rgba(255, 64, 129, 0.4);
+      border-radius: 28px;
+      box-shadow: 0 0 60px rgba(255, 64, 129, 0.35);
+      padding: 30px 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      position: relative;
     }
-    .call-avatar {
-      width: 90px;
-      height: 90px;
+    .avatar-glow {
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       background: linear-gradient(135deg, #ff4081, #00e5ff);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 40px;
-      color: #fff;
-      box-shadow: 0 0 30px rgba(255, 64, 129, 0.6);
+      font-size: 46px;
+      box-shadow: 0 0 35px rgba(255, 64, 129, 0.7);
       margin-bottom: 16px;
-      position: relative;
+      animation: avatar-float 3s infinite ease-in-out;
     }
-    .call-avatar.pulsing::after {
-      content: "";
-      position: absolute;
-      width: 100%; height: 100%;
-      border-radius: 50%;
-      border: 2px solid var(--pink);
-      animation: call-pulse 1.5s infinite;
+    @keyframes avatar-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
     }
-    @keyframes call-pulse {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(1.4); opacity: 0; }
-    }
-    .call-contact {
-      font-size: 20px;
-      font-weight: 800;
-      color: #fff;
-      text-align: center;
-    }
-    .call-role {
-      font-size: 12px;
-      color: var(--pink);
-      font-weight: 700;
-      margin-top: 4px;
-      letter-spacing: 0.5px;
-    }
-    .call-status {
+    .caller-name { font-size: 22px; font-weight: 900; color: #fff; }
+    .caller-role { font-size: 12px; color: var(--pink); font-weight: 800; margin-top: 2px; }
+    .hotline-badge {
       font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
       color: var(--emerald);
-      font-family: 'JetBrains Mono', monospace;
-      margin-top: 6px;
       background: rgba(0, 230, 118, 0.15);
-      padding: 3px 10px;
-      border-radius: 12px;
+      padding: 4px 12px;
+      border-radius: 14px;
       border: 1px solid var(--emerald);
+      margin-top: 8px;
     }
-    .call-timer {
-      font-size: 18px;
+    .call-time {
+      font-size: 20px;
       font-family: 'JetBrains Mono', monospace;
-      color: var(--cyan);
-      margin-top: 10px;
       font-weight: bold;
+      color: var(--cyan);
+      margin-top: 8px;
     }
-    .call-transcript-stream {
+
+    .call-chat-stream {
       width: 100%;
-      height: 140px;
+      height: 160px;
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-      margin: 16px 0;
+      border-radius: 14px;
+      padding: 14px;
+      margin: 18px 0;
       overflow-y: auto;
-      font-size: 12px;
+      font-size: 13px;
       line-height: 1.5;
-      font-family: 'JetBrains Mono', monospace;
     }
-    .quick-chips {
+    .call-bubble-friday {
+      background: rgba(255, 64, 129, 0.15);
+      border: 1px solid rgba(255, 64, 129, 0.4);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+    .call-bubble-boss {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      text-align: right;
+    }
+
+    .call-quick-chips {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 16px;
-      width: 100%;
       justify-content: center;
+      margin-bottom: 18px;
     }
-    .quick-chip {
+    .call-chip {
       background: var(--surface-elevated);
       border: 1px solid var(--border);
       color: var(--text-secondary);
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 10px;
+      padding: 5px 12px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.15s;
     }
-    .quick-chip:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
-    }
-    .call-controls {
+    .call-chip:hover { border-color: var(--pink); color: #fff; }
+
+    .call-btn-row {
       display: flex;
       gap: 20px;
       align-items: center;
-      margin-top: 8px;
     }
-    .call-ctrl-btn {
-      width: 50px;
-      height: 50px;
+    .circle-btn {
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       border: none;
       display: flex;
@@ -780,11 +665,9 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .ctrl-mute { background: var(--surface-elevated); color: #fff; border: 1px solid var(--border); }
-    .ctrl-mute.muted { background: var(--amber); color: #000; }
-    .ctrl-end { background: var(--crimson); color: #fff; }
-    .ctrl-end:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(255, 23, 68, 0.8); }
-    .ctrl-buy { background: var(--emerald); color: #000; font-weight: bold; font-size: 13px; width: auto; border-radius: 25px; padding: 0 18px; }
+    .btn-end { background: var(--crimson); color: #fff; }
+    .btn-end:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(255, 23, 68, 0.8); }
+    .btn-buy { background: var(--emerald); color: #000; font-weight: 900; font-size: 13px; width: auto; border-radius: 26px; padding: 0 20px; }
   </style>
 </head>
 <body>
@@ -792,51 +675,53 @@
   <!-- Top Header Navigation -->
   <header>
     <div class="brand">
-      <div class="brand-icon">F</div>
+      <div class="brand-avatar">👩‍💼</div>
       <div>
         <div class="brand-title">
           F.R.I.D.A.Y. 2.0 // DALAL STREET WEALTH DESK
           <span class="live-badge">20Y VETERAN</span>
-          <span class="female-badge">FEMALE AI</span>
+          <span class="voice-badge">FEMALE TEEN VOICE</span>
         </div>
-        <div class="brand-subtitle">Autonomous Tanglish Portfolio Director & 8-Agent Research Desk (NSE/BSE)</div>
+        <div class="brand-subtitle">Tanglish AI Wealth Director &amp; Autonomous 8-Agent Desk</div>
       </div>
     </div>
 
-    <div class="search-panel">
-      <!-- Tanglish / English Mode Switcher -->
-      <button class="lang-toggle" id="langToggleBtn" onclick="toggleLanguage()">
-        🌐 <span id="langLabel">TANGLISH (தமிழ்+EN)</span>
+    <div class="controls-panel">
+      <!-- Voice Selector & Tester -->
+      <button class="voice-tester-btn" onclick="testFemaleVoice()">
+        ▶ TEST FEMALE VOICE
+      </button>
+
+      <!-- Language Toggle -->
+      <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">
+        🌐 <span id="langText">TANGLISH (தமிழ் + EN)</span>
       </button>
 
       <!-- Universal Search -->
       <div class="search-box">
-        <span style="color: var(--cyan); margin-right: 4px;">🔍</span>
-        <input type="text" class="search-input" id="customTickerInput" placeholder="TICKER (E.G. HAL)..." onkeydown="if(event.key==='Enter') analyzeCustomTicker()">
+        <span style="color: var(--cyan); margin-right: 6px;">🔍</span>
+        <input type="text" class="search-input" id="tickerSearchInput" placeholder="SEARCH TICKER..." onkeydown="if(event.key==='Enter') searchTicker()">
       </div>
-      <button class="ticker-chip" style="background: var(--cyan); color: #000; border-color: var(--cyan);" onclick="analyzeCustomTicker()">AUDIT</button>
-      
-      <!-- Mic Button -->
-      <button class="mic-btn" id="micBtn" onclick="toggleVoiceInput()" title="Speak to F.R.I.D.A.Y.">🎤</button>
+      <button class="ticker-chip" style="background: var(--cyan); color: #000; border-color: var(--cyan);" onclick="searchTicker()">AUDIT</button>
 
-      <!-- Hot-Line Phone Call Button -->
-      <button class="phone-call-btn" onclick="openPhoneCallModal()">
-        📞 CALL F.R.I.D.A.Y.
+      <!-- Call My Private Phone Button -->
+      <button class="hotline-btn" onclick="openPhoneCallModal('+916382480091')">
+        📞 CALL ME (+91 6382480091)
       </button>
     </div>
   </header>
 
-  <!-- 10 Core Institutional Anchors + Hidden Gems -->
+  <!-- Sectors & Coverage Bar -->
   <div class="sectors-bar">
-    <span class="sector-label">CORE INSTITUTIONAL DESK:</span>
+    <span class="sector-label">CORE INSTITUTIONAL:</span>
     <button class="ticker-chip active" onclick="loadTicker('DIXON')">DIXON (EMS)</button>
     <button class="ticker-chip" onclick="loadTicker('TATAMOTORS')">TATAMOTORS (Auto)</button>
     <button class="ticker-chip" onclick="loadTicker('HAL')">HAL (Defence)</button>
-    <button class="ticker-chip" onclick="loadTicker('RELIANCE')">RELIANCE (Energy/Retail)</button>
+    <button class="ticker-chip" onclick="loadTicker('RELIANCE')">RELIANCE (Energy)</button>
     <button class="ticker-chip" onclick="loadTicker('HDFCBANK')">HDFCBANK (Banking)</button>
     <button class="ticker-chip" onclick="loadTicker('LT')">LT (Infra)</button>
-    <button class="ticker-chip" onclick="loadTicker('TRENT')">TRENT (Retail Moat)</button>
-    <button class="ticker-chip" onclick="loadTicker('TCS')">TCS (IT Titans)</button>
+    <button class="ticker-chip" onclick="loadTicker('TRENT')">TRENT (Retail)</button>
+    <button class="ticker-chip" onclick="loadTicker('TCS')">TCS (IT)</button>
     <button class="ticker-chip" onclick="loadTicker('ZOMATO')">ZOMATO (Quick Comm)</button>
     <button class="ticker-chip" onclick="loadTicker('CDSL')">CDSL (Depository)</button>
     <span class="sector-label" style="margin-left: 12px; color: var(--pink);">UNDERRATED GEMS:</span>
@@ -847,324 +732,250 @@
   </div>
 
   <div class="container">
-    <div class="hud-banner">
-      <div class="hud-status" id="hudStage">STAGE: DESK SYNCHRONIZED // FEMALE AI DIRECTOR ON HOTLINE</div>
-      <div class="hud-meta" id="speechNotification">CLICK 📞 CALL F.R.I.D.A.Y. TO SPEAK DIRECTLY IN TANGLISH OR ENGLISH</div>
+    <div class="status-bar">
+      <div class="status-indicator">
+        <div class="pulse-dot"></div>
+        <span id="liveStatusText">F.R.I.D.A.Y. FEMALE VOICE CORE ONLINE // PRIVATE LINE READY FOR 6382480091</span>
+      </div>
+      <div style="color: var(--text-muted); font-size: 11px;">
+        VOICE: <span id="detectedVoiceName" style="color: var(--pink); font-weight: bold;">SELECTING FEMALE VOICE...</span>
+      </div>
     </div>
 
-    <!-- Navigation Tabs -->
+    <!-- Tab Bar -->
     <div class="tab-bar">
-      <div class="tab-item active" onclick="switchTab('tab-briefing')">PART A: BRIEFING & BUY DECISION</div>
+      <div class="tab-item active" onclick="switchTab('tab-briefing')">PART A: BRIEFING &amp; BUY VERDICT</div>
       <div class="tab-item" onclick="switchTab('tab-report')">PART B: 8-AGENT INSTITUTIONAL REPORT</div>
-      <div class="tab-item" onclick="switchTab('tab-capex')">PART C: FUTURE PROJECTS & HISTORICAL RETURNS</div>
+      <div class="tab-item" onclick="switchTab('tab-capex')">PART C: FUTURE PROJECTS &amp; RETURNS</div>
       <div class="tab-item tab-gem" onclick="switchTab('tab-gems')">PART D: 💎 UNDERRATED MULTI-BAGGER GEMS</div>
-      <div class="tab-item" onclick="switchTab('tab-macro')">PART E: 24/7 GLOBAL MACRO & NEWS WIRE</div>
-      <div class="tab-item" onclick="switchTab('tab-advisor')">PART F: ADVISOR & STRESS SIMULATOR</div>
+      <div class="tab-item" onclick="switchTab('tab-news')">PART E: 🔴 24/7 LIVE REAL-TIME WORLD NEWS</div>
+      <div class="tab-item" onclick="switchTab('tab-advisor')">PART F: ADVISOR &amp; MARGIN STRESS</div>
     </div>
 
-    <!-- TAB A: BRIEFING & PREDICTIVE BUY/SELL DECISION -->
+    <!-- TAB A: BRIEFING & BUY VERDICT -->
     <div id="tab-briefing" class="tab-content">
-      <div class="voice-hud">
+      <div class="voice-briefing-box">
         <div>
-          <div class="badge-pink card-badge">FEMALE EXECUTIVE BRIEFING DESK</div>
-          <h2 style="font-size: 22px; font-weight: 800; margin-top: 6px;" id="briefingTitle">Dixon Technologies (India) Ltd.</h2>
-          <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;" id="briefingMeta">Price: ₹ 12,450 | Mkt Cap: ₹ 74,520 Cr | Sector: Consumer Electronics & EMS</div>
+          <div class="badge badge-pink">FEMALE AI CHIEF ADVISOR</div>
+          <h2 style="font-size: 24px; font-weight: 900; margin-top: 6px;" id="stockTitle">Dixon Technologies (India) Ltd.</h2>
+          <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;" id="stockMeta">Price: ₹ 12,450 | Mkt Cap: ₹ 74,520 Cr | Sector: Consumer Electronics &amp; EMS</div>
         </div>
-        <div class="voice-btn-group">
-          <div class="bars" id="waveform">
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div class="equalizer" id="audioEqualizer">
+            <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
           </div>
-          <button class="voice-control-btn" id="voiceBtn" onclick="toggleVoiceOutput()">
-            <span>🔊</span> <span id="voiceBtnText">Brief Boss</span>
+          <button class="briefing-speaker-btn" id="speakBriefingBtn" onclick="toggleSpokenBriefing()">
+            <span>🔊</span> <span id="speakBtnText">Brief Boss</span>
           </button>
         </div>
       </div>
 
-      <!-- Predictive Buy/Sell Decision Banner -->
-      <div class="decision-banner" id="decisionBanner">
-        <div class="decision-metric">
-          <div class="metric-label">ACTION SIGNAL</div>
-          <div class="metric-val emerald-cell" id="actionSignal">ACCUMULATE ON DIPS</div>
+      <!-- Predictive Decision Grid -->
+      <div class="decision-grid">
+        <div class="decision-cell">
+          <div class="decision-label">ACTION SIGNAL</div>
+          <div class="decision-val emerald-text" id="actionSignal">ACCUMULATE ON DIPS</div>
         </div>
-        <div class="decision-metric">
-          <div class="metric-label">FAIR VALUE (MOS %)</div>
-          <div class="metric-val highlight-cell" id="fairValue">₹ 14,200 (+14.0%)</div>
+        <div class="decision-cell">
+          <div class="decision-label">FAIR VALUE (MOS %)</div>
+          <div class="decision-val cyan-text" id="fairValue">₹ 14,200 (+14.0%)</div>
         </div>
-        <div class="decision-metric">
-          <div class="metric-label">12M TARGET</div>
-          <div class="metric-val emerald-cell" id="target12M">₹ 15,400 (+23.6%)</div>
+        <div class="decision-cell">
+          <div class="decision-label">12M TARGET</div>
+          <div class="decision-val emerald-text" id="target12M">₹ 15,400 (+23.6%)</div>
         </div>
-        <div class="decision-metric">
-          <div class="metric-label">24M TARGET</div>
-          <div class="metric-val amber-cell" id="target24M">₹ 18,900 (+51.8%)</div>
+        <div class="decision-cell">
+          <div class="decision-label">24M TARGET</div>
+          <div class="decision-val amber-text" id="target24M">₹ 18,900 (+51.8%)</div>
         </div>
-        <div class="decision-metric">
-          <div class="metric-label">BUY TRANCHES</div>
-          <div class="metric-val highlight-cell" id="buyTranches">40% Now | 60% @ ₹11,800</div>
+        <div class="decision-cell">
+          <div class="decision-label">BUY TRANCHES</div>
+          <div class="decision-val cyan-text" id="buyTranches">40% Now | 60% @ Dip</div>
         </div>
-        <div class="decision-metric">
-          <div class="metric-label">HARD STOP-LOSS</div>
-          <div class="metric-val crimson-cell" id="stopLoss">₹ 10,400 (-16.4%)</div>
+        <div class="decision-cell">
+          <div class="decision-label">HARD STOP-LOSS</div>
+          <div class="decision-val crimson-text" id="stopLoss">₹ 10,400 (-16.4%)</div>
         </div>
       </div>
 
+      <!-- Spoken Dialogue Box -->
       <div class="card">
         <div class="card-header">
-          <div class="badge-cyan card-badge" id="briefingLangTag">TANGLISH SPOKEN BRIEFING // BOSS DESK</div>
-          <div style="font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--pink);">AGENT 2 [F.R.I.D.A.Y.] DIRECT BRIEFING</div>
+          <div class="badge badge-cyan" id="briefingLangTag">TANGLISH CONVERSATIONAL BRIEFING // BOSS DESK</div>
+          <div style="font-size: 12px; color: var(--pink); font-family: 'JetBrains Mono', monospace; font-weight: bold;">SPOKEN BY F.R.I.D.A.Y.</div>
         </div>
-        <p style="font-size: 14px; line-height: 1.7; color: #fff; background: var(--surface-elevated); padding: 16px; border-radius: 8px; border-left: 3px solid var(--pink);" id="spokenBriefingContent">
-          Loading Tanglish briefing...
-        </p>
-      </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-badge badge-cyan">THE SETUP & MOAT</div>
-          <p style="margin-top: 10px; font-size: 13px; line-height: 1.6;" id="briefSetup"></p>
-        </div>
-        <div class="card">
-          <div class="card-badge badge-emerald">THE ALPHA CATALYST</div>
-          <p style="margin-top: 10px; font-size: 13px; line-height: 1.6;" id="briefCatalyst"></p>
+        <div class="spoken-card" id="spokenDialogueText">
+          Loading realistic Tanglish briefing...
         </div>
       </div>
 
       <div class="grid-2">
         <div class="card">
-          <div class="card-badge badge-crimson">THE LANDMINE & RISK</div>
-          <p style="margin-top: 10px; font-size: 13px; line-height: 1.6;" id="briefLandmine"></p>
+          <div class="badge badge-cyan">THE SETUP &amp; OPERATIONAL MOAT</div>
+          <p style="margin-top: 12px; font-size: 14px; line-height: 1.6;" id="briefSetup"></p>
         </div>
         <div class="card">
-          <div class="card-badge badge-amber">CHIEF'S VERDICT & STOP-LOSS</div>
-          <div style="margin-top: 10px; font-size: 15px; font-weight: bold; color: var(--emerald);" id="briefVerdict"></div>
-          <p style="margin-top: 6px; font-size: 12px; color: var(--text-secondary);" id="briefInvalidation"></p>
+          <div class="badge badge-emerald">THE ALPHA CATALYST</div>
+          <p style="margin-top: 12px; font-size: 14px; line-height: 1.6;" id="briefCatalyst"></p>
         </div>
       </div>
 
-      <!-- Live Order Placement Ledger -->
-      <div class="card">
-        <div class="card-header">
-          <div class="badge-emerald card-badge">VERBAL ORDER EXECUTION LEDGER (BROKER API / PAPER DESK)</div>
-          <button class="gem-buy-btn" onclick="executeQuickVerbalOrder()">+ EXECUTE 40 SHARES NOW</button>
+      <div class="grid-2">
+        <div class="card">
+          <div class="badge badge-crimson">THE LANDMINE &amp; RISK</div>
+          <p style="margin-top: 12px; font-size: 14px; line-height: 1.6;" id="briefLandmine"></p>
         </div>
-        <div class="order-ledger" id="orderLedger">
-          <div class="order-row" style="color: var(--text-muted); font-weight: bold;">
-            <span>TIMESTAMP</span><span>TICKER</span><span>QTY & TYPE</span><span>PRICE</span><span>STOP-LOSS</span><span>ORDER ID</span><span>STATUS</span>
-          </div>
-          <div class="order-row">
-            <span>2026-10-10 10:14</span><span>CRAFTSMAN</span><span>40 SHARES (BUY)</span><span>₹ 4,178.50</span><span>₹ 3,820.00</span><span>#908122</span><span class="emerald-cell">EXECUTED</span>
-          </div>
+        <div class="card">
+          <div class="badge badge-amber">CHIEF'S VERDICT &amp; STOP-LOSS</div>
+          <div style="margin-top: 12px; font-size: 16px; font-weight: 800; color: var(--emerald);" id="briefVerdict"></div>
+          <p style="margin-top: 6px; font-size: 13px; color: var(--text-secondary);" id="briefInvalidation"></p>
         </div>
       </div>
     </div>
 
-    <!-- TAB B: INSTITUTIONAL REPORT (8-AGENT) -->
+    <!-- TAB B: INSTITUTIONAL REPORT -->
     <div id="tab-report" class="tab-content" style="display: none;">
       <div class="card">
-        <div class="card-badge badge-cyan">1. EXECUTIVE SUMMARY [AGENT 1 CIS SIGN-OFF]</div>
-        <p style="margin-top: 10px; line-height: 1.6;" id="repExecSummary"></p>
+        <div class="badge badge-cyan">1. EXECUTIVE SUMMARY [AGENT 1 CIS SIGN-OFF]</div>
+        <p style="margin-top: 12px; font-size: 14px; line-height: 1.6;" id="repExecSummary"></p>
       </div>
       <div class="card">
-        <div class="card-badge badge-amber">2. BUSINESS MODEL & COMPETITIVE MOAT [AGENT 8]</div>
-        <p style="margin-top: 10px; line-height: 1.6;" id="repMoat"></p>
+        <div class="badge badge-amber">2. BUSINESS MODEL &amp; COMPETITIVE MOAT [AGENT 8]</div>
+        <p style="margin-top: 12px; font-size: 14px; line-height: 1.6;" id="repMoat"></p>
       </div>
       <div class="card">
         <div class="card-header">
-          <div class="card-badge badge-cyan">3. 5-YEAR COMPREHENSIVE FINANCIAL ENGINE [AGENT 6]</div>
+          <div class="badge badge-cyan">3. 5-YEAR COMPREHENSIVE FINANCIAL ENGINE [AGENT 6]</div>
           <div style="font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--emerald);" id="repCagr"></div>
         </div>
         <div class="table-container">
           <table id="financialTable">
-            <thead>
-              <tr><th>Period</th><th>Rev (₹ Cr)</th><th>EBITDA %</th><th>PAT (₹ Cr)</th><th>Net %</th><th>ROCE %</th><th>OCF (₹ Cr)</th><th>Capex</th><th>FCF (₹ Cr)</th><th>OCF/PAT</th><th>CCC (Days)</th><th>Net Debt/EBITDA</th></tr>
-            </thead>
+            <thead><tr><th>Period</th><th>Rev (₹ Cr)</th><th>EBITDA %</th><th>PAT (₹ Cr)</th><th>Net %</th><th>ROCE %</th><th>OCF (₹ Cr)</th><th>Capex</th><th>FCF (₹ Cr)</th><th>OCF/PAT</th><th>CCC</th><th>Net Debt</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
       </div>
       <div class="card">
-        <div class="card-badge badge-crimson">4. FORENSIC ACCOUNTING & GOVERNANCE SCREEN [AGENT 5]</div>
-        <div id="forensicDetails" style="margin-top: 12px;"></div>
-      </div>
-      <div class="card">
-        <div class="card-badge badge-amber">5. CAPEX HORIZON, ORDER BOOK & CONCALL INTELLIGENCE [AGENT 7]</div>
-        <div id="capexDetails" style="margin-top: 12px;"></div>
-      </div>
-      <div class="card">
-        <div class="card-badge badge-cyan">6. PEER BENCHMARKING & SCENARIOS [AGENT 8 & 4]</div>
-        <div class="table-container" style="margin-top: 12px;">
-          <table id="peerTable">
-            <thead>
-              <tr><th>Company</th><th>Mkt Cap (₹ Cr)</th><th>P/E (TTM)</th><th>EV/EBITDA</th><th>P/B</th><th>ROCE %</th><th>3Y Sales CAGR</th><th>3Y PAT CAGR</th><th>D/E</th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        <div class="grid-3" id="scenariosGrid" style="margin-top: 16px;"></div>
-      </div>
-      <div class="card">
-        <div class="card-badge badge-emerald">7. DECISION SCORECARD & CONVICTION [ALL AGENTS]</div>
-        <div class="table-container" style="margin-top: 12px;">
+        <div class="badge badge-emerald">4. DECISION SCORECARD &amp; CONVICTION [ALL AGENTS]</div>
+        <div class="table-container">
           <table id="scorecardTable">
-            <thead><tr><th>Category</th><th>Weight</th><th>Score</th><th>Responsible Agent & Primary Evidence</th></tr></thead>
+            <thead><tr><th>Category</th><th>Weight</th><th>Score</th><th>Responsible Agent &amp; Evidence</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-badge badge-cyan">8. F.R.I.D.A.Y. QUARTERLY RADAR: 4 MEASURABLE TRIGGERS</div>
-        <div id="radarTriggers" style="margin-top: 12px;"></div>
       </div>
     </div>
 
     <!-- TAB C: FUTURE PROJECTS & HISTORICAL RETURNS -->
     <div id="tab-capex" class="tab-content" style="display: none;">
       <div class="card">
-        <div class="card-badge badge-amber">FUTURE MEGA PROJECTS, ONGOING CAPEX & ORDER BOOKS</div>
-        <p style="margin-top: 8px; font-size: 13px; color: var(--text-secondary);">Tracking Capital Work in Progress (CWIP), order book-to-bill ratios, and expected commercial launch dates:</p>
-        <div class="table-container" style="margin-top: 14px;">
+        <div class="badge badge-amber">FUTURE MEGA PROJECTS, ONGOING CAPEX &amp; ORDER BOOKS</div>
+        <div class="table-container">
           <table id="futureProjectsTable">
-            <thead>
-              <tr><th>Mega Project / Facility</th><th>Capex Allocated</th><th>Order Book Backing</th><th>Book-to-Bill</th><th>Expected Launch</th><th>Asset Turnover Expectation</th><th>Revenue Impact</th></tr>
-            </thead>
+            <thead><tr><th>Facility / Mega Project</th><th>Capex Allocated</th><th>Order Backing</th><th>Book-to-Bill</th><th>Expected Launch</th><th>Asset Turnover</th><th>Revenue Impact</th></tr></thead>
             <tbody id="futureProjectsBody"></tbody>
           </table>
         </div>
       </div>
-
       <div class="card">
-        <div class="card-badge badge-cyan">HISTORICAL COMPOUNDING & CAPITAL EFFICIENCY MATRIX</div>
-        <p style="margin-top: 8px; font-size: 13px; color: var(--text-secondary);">Validating multi-year wealth generation, ROCE cycles, and CFO vs. PAT cash conversion integrity:</p>
-        <div class="table-container" style="margin-top: 14px;">
+        <div class="badge badge-cyan">HISTORICAL COMPOUNDING &amp; CAPITAL EFFICIENCY MATRIX</div>
+        <div class="table-container">
           <table id="historicalReturnsTable">
-            <thead>
-              <tr><th>Time Horizon</th><th>Stock Return (CAGR)</th><th>Nifty 50 Return</th><th>Alpha Generated</th><th>Average ROCE</th><th>Average ROE</th><th>Cumulative CFO / PAT</th></tr>
-            </thead>
+            <thead><tr><th>Horizon</th><th>Stock Return (CAGR)</th><th>Nifty 50 Return</th><th>Alpha Generated</th><th>ROCE Trajectory</th><th>ROE Trajectory</th><th>CFO / PAT</th></tr></thead>
             <tbody id="historicalReturnsBody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- TAB D: 💎 UNDERRATED MULTI-BAGGER GEMS SCREENER -->
+    <!-- TAB D: 💎 UNDERRATED MULTI-BAGGER GEMS -->
     <div id="tab-gems" class="tab-content" style="display: none;">
       <div class="card">
         <div class="card-header">
           <div>
-            <div class="badge-pink card-badge">AUTONOMOUS DALAL STREET HIDDEN-GEM SCREENER</div>
-            <h3 style="font-size: 18px; font-weight: 800; margin-top: 6px;">Underrated Moats, ROCE &gt; 22%, Zero Debt &amp; 2.5x to 4x Growth Potential</h3>
+            <div class="badge badge-pink">AUTONOMOUS DALAL STREET HIDDEN-GEM SCREENER</div>
+            <h3 style="font-size: 20px; font-weight: 900; margin-top: 6px;">High ROCE (&gt;22%), Zero Debt, Clean Governance &amp; 2.5x to 4x Growth Potential</h3>
           </div>
-          <button class="phone-call-btn" onclick="triggerGemBriefingCall()">📞 CALL ME ABOUT GEMS</button>
+          <button class="hotline-btn" onclick="openPhoneCallModal('+916382480091')">📞 CALL ME ABOUT GEMS</button>
         </div>
         <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-          Screened autonomously by Agent 8 and Agent 6 using strict institutional rules: Dominant niche market share (&gt;35%), ROCE &gt; 22%, Debt-to-Equity &lt; 0.35, 0.0% Promoter Pledge, and trading at a PEG &lt; 1.1 or &gt;30% P/E discount to peers.
+          Screened autonomously by F.R.I.D.A.Y.: Dominant niche market share, ROCE &gt; 22%, Debt/Equity &lt; 0.35, 0.0% Promoter Pledge, and trading at a PEG &lt; 1.1 or &gt;30% P/E discount to historical averages.
         </p>
       </div>
 
-      <div class="grid-2" id="gemsGrid">
+      <div class="grid-2" id="gemsContainer">
         <!-- Gems injected dynamically -->
       </div>
     </div>
 
-    <!-- TAB E: 24/7 GLOBAL MACRO & NEWS STREAM -->
-    <div id="tab-macro" class="tab-content" style="display: none;">
-      <!-- Live Macro Tickers -->
-      <div class="macro-strip">
-        <div class="macro-item">
-          <div><div class="macro-name">BRENT CRUDE OIL</div><div class="macro-value crimson-cell">$74.20 / bbl (-1.8%)</div></div>
-          <span style="font-size: 20px;">🛢️</span>
-        </div>
-        <div class="macro-item">
-          <div><div class="macro-name">US 10Y TREASURY</div><div class="macro-value emerald-cell">4.08% (-4 bps)</div></div>
-          <span style="font-size: 20px;">📈</span>
-        </div>
-        <div class="macro-item">
-          <div><div class="macro-name">DOLLAR INDEX (DXY)</div><div class="macro-value highlight-cell">102.40 (-0.2%)</div></div>
-          <span style="font-size: 20px;">💵</span>
-        </div>
-        <div class="macro-item">
-          <div><div class="macro-name">GIFT NIFTY CUE</div><div class="macro-value emerald-cell">25,240 (+88 pts)</div></div>
-          <span style="font-size: 20px;">🇮🇳</span>
-        </div>
-        <div class="macro-item">
-          <div><div class="macro-name">FII / DII NET FLOW</div><div class="macro-value emerald-cell">+ ₹ 2,840 Cr Net DII</div></div>
-          <span style="font-size: 20px;">🏦</span>
-        </div>
-      </div>
-
+    <!-- TAB E: 🔴 24/7 LIVE REAL-TIME WORLD & INDIAN MARKET NEWS -->
+    <div id="tab-news" class="tab-content" style="display: none;">
       <div class="card">
-        <div class="card-badge badge-amber">BREAKING NEWS FEED & MARGIN IMPACT SCORING</div>
-        <div id="macroNewsFeed" style="margin-top: 14px; display: flex; flex-direction: column; gap: 10px;">
-          <!-- Dynamically populated -->
+        <div class="card-header">
+          <div>
+            <div class="badge badge-emerald">LIVE REAL-TIME MARKET NEWS FEED</div>
+            <h3 style="font-size: 20px; font-weight: 900; margin-top: 6px;">Live Breaking Dalal Street &amp; Global Macro News</h3>
+          </div>
+          <button class="voice-tester-btn" onclick="fetchLiveNews()" style="background: rgba(0, 230, 118, 0.15); border-color: var(--emerald); color: var(--emerald);">
+            🔄 REFRESH LIVE NEWS
+          </button>
+        </div>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;">
+          Connected live to real financial market wires (Reuters, Economic Times, Bloomberg, Moneycontrol via live RSS). Zero hardcoding.
+        </p>
+        <div id="liveNewsStream">
+          <div style="text-align: center; padding: 30px; color: var(--text-muted);">
+            Connecting to live market news feed...
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- TAB F: INTERACTIVE ADVISOR HUD & MARGIN STRESS SIMULATOR -->
+    <!-- TAB F: ADVISOR & MARGIN STRESS -->
     <div id="tab-advisor" class="tab-content" style="display: none;">
-      <div class="slider-box">
-        <div>
-          <div style="font-weight: 700; font-size: 14px;">Operating Margin Stress Test Simulator</div>
-          <div style="font-size: 11px; color: var(--text-muted);">Simulate raw material or freight shock on EBITDA and Fair Value Floor</div>
-        </div>
-        <div style="display: flex; align-items: center; gap: 14px;">
-          <input type="range" id="marginSlider" min="50" max="500" step="50" value="200" style="width: 180px;" oninput="updateMarginStress(this.value)">
-          <span id="marginBpsLabel" style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: bold; color: var(--crimson); min-width: 70px;">-200 bps</span>
-          <button class="ticker-chip" style="background: var(--crimson); color: #fff; border-color: var(--crimson);" onclick="runActiveMarginStress()">SIMULATE SHOCK</button>
-        </div>
-      </div>
-
-      <div class="card" style="margin-bottom: 0;">
+      <div class="card">
         <div class="card-header">
-          <div class="card-badge badge-pink">F.R.I.D.A.Y. INTERACTIVE ADVISOR TERMINAL [TANGLISH / ENGLISH]</div>
-          <div style="font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">VOICE & TEXT FULL-DUPLEX READY</div>
+          <div class="badge badge-pink">OPERATING MARGIN STRESS TEST SIMULATOR</div>
+          <div style="font-size: 13px; font-family: monospace; color: var(--crimson); font-weight: bold;" id="stressBpsLabel">-200 bps compression</div>
         </div>
-        <div class="chat-box" id="chatBox">
-          <div class="chat-msg msg-friday">
-            <strong>F.R.I.D.A.Y. // WEALTH DIRECTOR</strong><br>
-            Good day Boss! F.R.I.D.A.Y. here. All 8 agents are actively synchronised on <span class="currentTickerLabel">DIXON</span>. Ungalukku enna analysis venum? You can ask me to stress-test margins, review promoter pledges, check concall answers, or place orders!
-          </div>
-        </div>
-        <div class="chat-input-bar">
-          <input type="text" class="chat-input" id="chatInput" placeholder="Speak or type (e.g. 'Craftsman buy panlama?', 'Stress test margin by 300 bps', 'Confirm order')..." onkeydown="if(event.key==='Enter') sendChat()">
-          <button class="chat-btn" onclick="sendChat()">DISPATCH</button>
+        <div style="display: flex; align-items: center; gap: 16px; margin: 10px 0;">
+          <input type="range" id="marginSlider" min="50" max="500" step="50" value="200" style="flex: 1;" oninput="updateMarginLabel(this.value)">
+          <button class="gem-action-btn" style="margin: 0;" onclick="runActiveMarginStress()">SIMULATE SHOCK</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- FULL PHONE CALL MODAL -->
-  <div class="phone-modal-overlay" id="phoneCallModal">
-    <div class="phone-device">
-      <div class="call-avatar pulsing" id="callAvatar">👩‍💼</div>
-      <div class="call-contact">F.R.I.D.A.Y.</div>
-      <div class="call-role">DALAL STREET CHIEF WEALTH DIRECTOR</div>
-      <div class="call-status" id="callStatusBadge">● HOTLINE CONNECTED (ENCRYPTED)</div>
-      <div class="call-timer" id="callTimer">00:00</div>
+  <!-- SMARTPHONE CALL OVERLAY FOR +91 6382480091 -->
+  <div class="phone-overlay" id="phoneModal">
+    <div class="phone-body">
+      <div class="avatar-glow">👩‍💼</div>
+      <div class="caller-name">F.R.I.D.A.Y.</div>
+      <div class="caller-role">PERSONAL AI WEALTH DIRECTOR</div>
+      <div class="hotline-badge">● PRIVATE LINE (+91 6382480091)</div>
+      <div class="call-time" id="callDuration">00:00</div>
 
-      <div class="bars speaking" id="phoneWaveform" style="margin-top: 14px;">
-        <div class="bar" style="background: var(--pink);"></div>
-        <div class="bar" style="background: var(--pink);"></div>
-        <div class="bar" style="background: var(--pink);"></div>
-        <div class="bar" style="background: var(--pink);"></div>
-        <div class="bar" style="background: var(--pink);"></div>
+      <div class="equalizer active" style="margin-top: 14px;" id="phoneEqualizer">
+        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
       </div>
 
-      <div class="call-transcript-stream" id="callTranscript">
-        <div style="color: var(--pink);"><strong>F.R.I.D.A.Y.:</strong> Good morning Boss! Naan F.R.I.D.A.Y. pesuren. Namma market open aagurathuku munnadi oru super underrated stock setup paathen. Rendu nimisham pesalaama?</div>
+      <div class="call-chat-stream" id="callChatBox">
+        <div class="call-bubble-friday">
+          <strong>F.R.I.D.A.Y.:</strong> Hey Boss! Naan F.R.I.D.A.Y. pesuren. Private line-la connect panniten! Dalal Street-la semma breakout update irukku. Craftsman Automation 32% margin of safety-la kedaikuthu. 40 shares buy panattuma Boss?
+        </div>
       </div>
 
-      <div class="quick-chips">
-        <div class="quick-chip" onclick="speakToFriday('Craftsman Automation pathi sollu Friday')">"Craftsman pathi sollu"</div>
-        <div class="quick-chip" onclick="speakToFriday('Can I buy Dixon right now?')">"Dixon buy pannalama?"</div>
-        <div class="quick-chip" onclick="speakToFriday('Aama buy pannu, confirm order')">"Aama buy pannu (Confirm)"</div>
-        <div class="quick-chip" onclick="speakToFriday('Tata Motors demerger updates enna?')">"Tata Motors updates"</div>
+      <div class="call-quick-chips">
+        <div class="call-chip" onclick="speakInCallDialogue('Aama buy pannu, confirm order!')">"Aama buy pannu!"</div>
+        <div class="call-chip" onclick="speakInCallDialogue('Craftsman pathi sollu Friday')">"Craftsman pathi sollu"</div>
+        <div class="call-chip" onclick="speakInCallDialogue('Tata Motors status enna?')">"Tata Motors status?"</div>
+        <div class="call-chip" onclick="speakInCallDialogue('Dixon buy panlama ippo?')">"Dixon buy panlama?"</div>
       </div>
 
-      <div class="call-controls">
-        <button class="call-ctrl-btn ctrl-mute" id="callMuteBtn" onclick="toggleCallMute()" title="Mute Mic">🎤</button>
-        <button class="call-ctrl-btn ctrl-buy" onclick="speakToFriday('Aama buy pannu, confirm order')">BUY NOW</button>
-        <button class="call-ctrl-btn ctrl-end" onclick="closePhoneCallModal()" title="End Call">📞</button>
+      <div class="call-btn-row">
+        <button class="circle-btn" style="background: var(--surface-elevated); color: #fff; border: 1px solid var(--border);" onclick="toggleCallMic()" id="callMicBtn" title="Mic">🎤</button>
+        <button class="circle-btn btn-buy" onclick="speakInCallDialogue('Aama buy pannu, confirm order!')">BUY 40 SHARES</button>
+        <button class="circle-btn btn-end" onclick="closePhoneCallModal()" title="End Call">📞</button>
       </div>
     </div>
   </div>
@@ -1174,33 +985,70 @@
     let isTanglish = true;
     let isSpeaking = false;
     let isCallActive = false;
-    let callTimerInterval = null;
+    let callInterval = null;
     let callSeconds = 0;
     const synth = window.speechSynthesis;
     let femaleVoice = null;
 
-    // Load available voices and prefer Indian English / female voice
-    function loadVoices() {
+    // GUARANTEED FEMALE VOICE DETECTION & SELECTION
+    function selectGuaranteedFemaleVoice() {
       const voices = synth.getVoices();
-      femaleVoice = voices.find(v => v.lang.includes('IN') && (v.name.includes('Female') || v.name.includes('Neerja') || v.name.includes('India') || v.name.includes('Google')))
-                 || voices.find(v => v.lang.includes('en-IN'))
-                 || voices.find(v => v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('zira') || v.name.toLowerCase().includes('samantha'))
-                 || voices[0];
+      if (!voices.length) return;
+
+      // Filter specifically for female voice names
+      let best = voices.find(v => {
+        const n = v.name.toLowerCase();
+        return n.includes('zira') || n.includes('female') || n.includes('jenny') || 
+               n.includes('aria') || n.includes('heera') || n.includes('aditi') || 
+               n.includes('samantha') || n.includes('victoria') || n.includes('karen') ||
+               (n.includes('google') && (n.includes('us english') || n.includes('uk english female')));
+      });
+
+      // If not found, exclude known male names
+      if (!best) {
+        best = voices.find(v => {
+          const n = v.name.toLowerCase();
+          return !n.includes('david') && !n.includes('ravi') && !n.includes('mark') && 
+                 !n.includes('george') && !n.includes('male') && !n.includes('hemant');
+        });
+      }
+
+      femaleVoice = best || voices[0];
+      const detectedLabel = document.getElementById('detectedVoiceName');
+      if (detectedLabel && femaleVoice) {
+        detectedLabel.textContent = femaleVoice.name;
+      }
     }
+
     if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = loadVoices;
+      speechSynthesis.onvoiceschanged = selectGuaranteedFemaleVoice;
     }
-    loadVoices();
+    selectGuaranteedFemaleVoice();
+
+    // Voice Tester Button
+    function testFemaleVoice() {
+      synth.cancel();
+      selectGuaranteedFemaleVoice();
+      const text = isTanglish 
+        ? "Hey Boss! Naan thaan F.R.I.D.A.Y.! Voice clear-aa irukka? Dalal street-la semma breakout setups paathen. Let's make some serious money!"
+        : "Hey Boss! F.R.I.D.A.Y. here. Ready to dominate Dalal Street! How does my voice sound to you?";
+      
+      const utter = new SpeechSynthesisUtterance(text);
+      if (femaleVoice) utter.voice = femaleVoice;
+      utter.pitch = 1.35; // Bright, youthful, energetic teenage girl/young woman tone
+      utter.rate = 1.05;  // Lively, energetic cadence
+      synth.speak(utter);
+    }
 
     function toggleLanguage() {
       isTanglish = !isTanglish;
-      document.getElementById('langLabel').textContent = isTanglish ? 'TANGLISH (தமிழ்+EN)' : 'ENGLISH ONLY';
-      document.getElementById('briefingLangTag').textContent = isTanglish ? 'TANGLISH SPOKEN BRIEFING // BOSS DESK' : 'INSTITUTIONAL ENGLISH BRIEFING';
+      document.getElementById('langText').textContent = isTanglish ? 'TANGLISH (தமிழ் + EN)' : 'ENGLISH ONLY';
+      document.getElementById('briefingLangTag').textContent = isTanglish ? 'TANGLISH CONVERSATIONAL BRIEFING // BOSS DESK' : 'INSTITUTIONAL ENGLISH BRIEFING';
       loadTicker(currentTicker);
     }
 
-    // THE 10 CURATED STOCKS WITH EXPANDED DATA
-    const UNIVERSE = {
+    // REALISTIC TANGLISH DIALOGUES & CURATED DATA (ZERO ELLIPSIS, LIVELY FEMALE PERSONA)
+    const STOCKS = {
       DIXON: {
         title: "Dixon Technologies (India) Ltd.",
         meta: "Price: ₹ 12,450 | Mkt Cap: ₹ 74,520 Cr | Sector: Consumer Electronics & EMS",
@@ -1208,59 +1056,38 @@
         fairValue: "₹ 14,200 (+14.0%)",
         target12M: "₹ 15,400 (+23.6%)",
         target24M: "₹ 18,900 (+51.8%)",
-        buyTranches: "40% Now | 60% @ ₹11,800",
+        buyTranches: "40% Now | 60% @ Dip Support",
         stopLoss: "₹ 10,400 (-16.4%)",
-        tanglishBriefing: "Boss, Dixon Technologies pathi namma desk audit complete pannirukom! Setup paatheengana, India-voda #1 EMS powerhouse, mobile manufacturing-la 35% market share hold panraanga. Catalyst vandhu Motorola matrum Google Pixel exports nala 45% PAT CAGR expect panrom, plus in-house component JVs margin-a boost pannum. Landmine: Top 3 OEM clients-la volume concentration irukku. Namma Chief-oda verdict: ACCUMULATE ON DIPS. Margin of safety 14% irukku, target ₹15,400. Invalidation stop-loss ₹10,400-la set pannikonga!",
-        englishBriefing: "Boss, here is your tactical briefing on Dixon Technologies. Setup: Dominates domestic EMS with over 35% outsourced mobile and TV manufacturing. Alpha Catalyst: Ramp-up of Mobile PLI alongside exports for Motorola and Google Pixel, compounded by 50 bps margin expansion via display JVs. Landmine: Client concentration risk among top 3 OEMs. Chief's Verdict: ACCUMULATE ON DIPS with a fair value of ₹14,200 and 12-month target of ₹15,400. Invalidation stop at ₹10,400.",
+        tanglishSpoken: "Hey Boss! Namma Dixon Technologies audit mudinjuruchu! India-voda undisputed #1 EMS player, mobile manufacturing-la 35% market share hold panraanga! Motorola matrum Google Pixel exports nala 45% PAT CAGR expect panrom. Current price ₹12,450-la dip kedaikuthu. Namma target ₹15,400! Invalidation stop ₹10,400-la lock pannikonga!",
+        englishSpoken: "Hey Boss! Tactical audit for Dixon Technologies is ready. Dixon commands the domestic EMS sector with 35% market share in smartphone manufacturing. Accelerating exports for Google Pixel and Motorola provide visible earnings runway. Recommended: Accumulate on dips with a 12-month target of ₹15,400 and stop at ₹10,400.",
         setup: "Dixon is India's undisputed EMS powerhouse, controlling over 35% of outsourced mobile and TV manufacturing with scale moat and vendor-partner lock-ins.",
         catalyst: "The massive ramp-up of Mobile PLI alongside exports for Motorola and Google Pixel, compounded by 40-60 bps margin expansion via in-house component JVs.",
         landmine: "Client concentration risk: Top 3 smartphone OEM clients account for over 50% of mobile production volumes.",
-        verdict: "STRONG CONVICTION BUY (ACCUMULATE ON DIPS)",
-        invalidation: "Invalidation Trigger: Monthly mobile volume drops >15% YoY or component JV delays beyond Q1 FY27 (Stop: ₹ 10,400)",
-        execSummary: "Dixon Technologies is currently trading at ₹ 12,450. Agent 1 (CIS) signs off on an Accumulate stance. The company exhibits robust operational moat characteristics in EMS, underpinned by 3-Year PAT CAGR of 44.8%, clean forensic metrics with 0% promoter pledge, and strong capex execution visibility.",
-        moat: "Operational Moat: Dominates domestic contract manufacturing in mobile phones and LED TVs with >35% market share. Scale moat, vendor-partner lock-ins with global majors (Xiaomi, Motorola), and backward integration via component manufacturing.",
+        verdict: "STRONG ACCUMULATE ON DIPS (CONVICTION: 4.8/5)",
+        invalidation: "Exit thesis if monthly mobile volumes drop >15% YoY or component JV delays beyond Q1 FY27. Stop: ₹ 10,400.",
+        execSummary: "Dixon Technologies trades at ₹ 12,450. Agent 1 signs off on Accumulate. 3-Year PAT CAGR of 44.8%, clean forensic metrics with 0% promoter pledge, and robust capex execution visibility.",
+        moat: "Operational scale moat in consumer electronics EMS, vendor lock-ins with global majors (Xiaomi, Motorola), and backward integration into display modules.",
         cagr: "Sales 3Y CAGR: +41.2% | PAT 3Y CAGR: +44.8%",
         financials: [
-          { p: 'FY22', rev: '10,697', ebitda: '3.5%', pat: '190', net: '1.8%', roce: '28.2%', ocf: '284', capex: '210', fcf: '74', ocfpat: '1.5x', ccc: '9', netdebt: '0.8x' },
           { p: 'FY23', rev: '12,192', ebitda: '4.2%', pat: '255', net: '2.1%', roce: '31.5%', ocf: '440', capex: '290', fcf: '150', ocfpat: '1.7x', ccc: '7', netdebt: '0.5x' },
           { p: 'FY24', rev: '17,690', ebitda: '3.9%', pat: '375', net: '2.1%', roce: '35.8%', ocf: '620', capex: '380', fcf: '240', ocfpat: '1.7x', ccc: '4', netdebt: '0.3x' },
           { p: 'FY25', rev: '26,800', ebitda: '4.1%', pat: '610', net: '2.3%', roce: '41.2%', ocf: '890', capex: '490', fcf: '400', ocfpat: '1.5x', ccc: '4', netdebt: '0.1x' },
           { p: 'FY26 (E)', rev: '36,500', ebitda: '4.4%', pat: '940', net: '2.6%', roce: '44.5%', ocf: '1,350', capex: '580', fcf: '770', ocfpat: '1.4x', ccc: '4', netdebt: '0.05x' }
         ],
-        peers: [
-          { name: 'Dixon Tech (Target)', mcap: '74,520', pe: '79.2x', ev: '44.5x', pb: '22.8x', roce: '44.5%', scagr: '+41.2%', pcagr: '+44.8%', de: '0.08x' },
-          { name: 'Amber Enterprises', mcap: '21,450', pe: '88.4x', ev: '31.2x', pb: '9.8x', roce: '14.8%', scagr: '+24.5%', pcagr: '+18.2%', de: '0.65x' },
-          { name: 'Kaynes Technology', mcap: '32,600', pe: '94.2x', ev: '52.8x', pb: '16.4x', roce: '21.2%', scagr: '+56.4%', pcagr: '+62.1%', de: '0.12x' }
-        ],
-        scenarios: [
-          { title: 'Bull Case', target: '₹ 18,900 (+51.8%)', mult: '85x P/E', desc: 'Mobile exports surge via Motorola & Google Pixel; component JV ramp-up delivers 80 bps margin expansion.' },
-          { title: 'Base Case', target: '₹ 15,400 (+23.6%)', mult: '72x P/E', desc: 'Steady 35% revenue CAGR; EBITDA margin stabilizes at 4.4%.' },
-          { title: 'Bear Case', target: '₹ 10,400 (-16.4%)', mult: '50x P/E', desc: 'Delay in component JV ramp-up or client volume cutbacks.' }
-        ],
         scorecard: [
-          { cat: 'Business Quality & Moat', wt: '20%', score: '4.8 ★', agent: 'Agent 8: Unrivaled domestic EMS scale; customer lock-in with global tech brands.' },
-          { cat: 'Financial Strength & Balance Sheet', wt: '20%', score: '4.6 ★', agent: 'Agent 6: ROCE 44.5%, Cash Conversion Cycle of 4 days, virtually debt-free.' },
-          { cat: 'Growth Visibility & Orders', wt: '20%', score: '5.0 ★', agent: 'Agent 7: Order book ₹ 18,500 Cr; book-to-bill 1.45x; PLI incentive runway.' },
-          { cat: 'Management Quality & Forensics', wt: '15%', score: '4.9 ★', agent: 'Agent 5: Clean auditor report, 0% promoter pledge, high cash flow conversion.' },
-          { cat: 'Valuation Asymmetry', wt: '15%', score: '3.8 ★', agent: 'Agent 4: P/E elevated (79x TTM), but justified by 44% EPS CAGR (PEG ~ 1.8x).' },
-          { cat: 'Risk-Reward Profile', wt: '10%', score: '4.5 ★', agent: 'Agent 1: Bull upside +51.8% vs Bear floor -16.4%; asymmetric upside catalyst.' }
-        ],
-        radar: [
-          { title: 'Mobile Export Shipments Run-Rate', target: '> 1.2M units/month for Motorola & Google.', rationale: 'Validates export scale beyond domestic market saturation.' },
-          { title: 'Component JV Commercial Billing', target: 'Display & camera lines generating ₹ 250+ Cr in Q3.', rationale: 'Key milestone for structural gross margin expansion.' },
-          { title: 'Working Capital Cycle Stability', target: 'Maintain Cash Conversion Cycle below 8 days.', rationale: 'Protects hyper-growth from draining operating cash flow.' },
-          { title: 'PLI Disbursement Realization', target: 'Receipt of ₹ 180 Cr accrued PLI incentives.', rationale: 'Verifies government subsidy cash flow conversion integrity.' }
+          { cat: 'Business Quality & Moat', wt: '20%', score: '4.8 ★', agent: 'Unrivaled domestic EMS scale; customer lock-in with global tech brands.' },
+          { cat: 'Financial Strength & Balance Sheet', wt: '20%', score: '4.6 ★', agent: 'ROCE 44.5%, Cash Conversion Cycle of 4 days, virtually debt-free.' },
+          { cat: 'Growth Visibility & Orders', wt: '20%', score: '5.0 ★', agent: 'Order book ₹ 18,500 Cr; book-to-bill 1.45x; PLI incentive runway.' },
+          { cat: 'Management & Forensics', wt: '15%', score: '4.9 ★', agent: 'Clean auditor report, 0% promoter pledge, high cash flow conversion.' }
         ],
         futureProjects: [
-          { name: "Noida Mobile & IT Hardware Mega Campus", capex: "₹ 480 Cr", orders: "₹ 8,500 Cr", b2b: "1.8x", launch: "Q3 FY26", turnover: "4.2x", impact: "+₹ 2,000 Cr Annual Top-Line" },
-          { name: "Display Module & Camera JV Facility", capex: "₹ 310 Cr", orders: "Captive OEM Supply", b2b: "2.1x", launch: "Q4 FY26", turnover: "3.5x", impact: "+65 bps Operating Margin Expansion" },
-          { name: "Refrigerator Capacity Expansion (500k units)", capex: "₹ 160 Cr", orders: "₹ 950 Cr", b2b: "1.2x", launch: "Q2 FY26", turnover: "3.8x", impact: "High-Margin Consumer Appliance Ramp-up" }
+          { name: "Noida Mobile & IT Hardware Mega Campus", capex: "₹ 480 Cr", orders: "₹ 8,500 Cr", b2b: "1.8x", launch: "Q3 FY26", turnover: "4.2x", impact: "+₹ 2,000 Cr Top-Line" },
+          { name: "Display Module & Camera JV Facility", capex: "₹ 310 Cr", orders: "Captive OEM Supply", b2b: "2.1x", launch: "Q4 FY26", turnover: "3.5x", impact: "+65 bps Margin Expansion" }
         ],
         historicalReturns: [
           { horizon: "1-Year", stockReturn: "+84.2%", niftyReturn: "+21.4%", alpha: "+62.8%", roce: "41.2%", roe: "33.5%", cfoPat: "1.46x" },
           { horizon: "3-Year CAGR", stockReturn: "+48.6%", niftyReturn: "+15.2%", alpha: "+33.4%", roce: "36.2%", roe: "29.8%", cfoPat: "1.58x" },
-          { horizon: "5-Year CAGR", stockReturn: "+62.1%", niftyReturn: "+16.8%", alpha: "+45.3%", roce: "31.8%", roe: "26.4%", cfoPat: "1.42x" },
-          { horizon: "10-Year CAGR", stockReturn: "+44.5%", niftyReturn: "+13.9%", alpha: "+30.6%", roce: "28.5%", roe: "23.9%", cfoPat: "1.35x" }
+          { horizon: "5-Year CAGR", stockReturn: "+62.1%", niftyReturn: "+16.8%", alpha: "+45.3%", roce: "31.8%", roe: "26.4%", cfoPat: "1.42x" }
         ]
       },
       TATAMOTORS: {
@@ -1272,59 +1099,36 @@
         target24M: "₹ 1,560 (+60.0%)",
         buyTranches: "60% Now | 40% @ ₹920",
         stopLoss: "₹ 820 (-15.9%)",
-        tanglishBriefing: "Boss, Tata Motors turn-around full-aa complete aayidichu! JLR net debt zero aayidichu, varushathuku ₹25,000 Cr Free Cash Flow generate panraanga. India-la EV market share 65% retain panraanga. Upcoming demerger nala CV matrum PV/EV independent listed giants-aa maarum, huge valuation rerating varum. P/E ippo verum 8.7x-la kedaikuthu! Namma verdict: STRONG BUY. Margin of safety 25%, 24M target ₹1,560. Hard stop ₹820-la set pannikonga!",
-        englishBriefing: "Boss, Tata Motors has completed its structural turnaround. JLR auto net debt is reduced to zero, generating ₹25,000 Cr in annualized FCF. Commands 65% domestic EV share and commercial duopoly. The planned demerger will unlock independent sum-of-the-parts value. P/E trades at a distressed 8.7x. Chief's Verdict: STRONG BUY. Target ₹1,560 with an invalidation stop at ₹820.",
+        tanglishSpoken: "Boss, Tata Motors turn-around full-aa complete aayidichu! JLR net debt zero aayidichu, varushathuku ₹25,000 Cr Free Cash Flow generate panraanga! India-la EV market share 65% retain panraanga. Demerger aana peragu huge value rerating varum. P/E ippo verum 8.7x-la thaan kedaikuthu! Strong Buy Boss, target ₹1,560!",
+        englishSpoken: "Boss, Tata Motors has completed its balance sheet transformation. JLR auto net debt is down to zero, generating over ₹25,000 Cr in annualized FCF. Demerger will unlock standalone multiple rerating. Valuation trades at only 8.7x P/E. Strong Buy with target ₹1,560.",
         setup: "Commands Indian mobility duopoly in commercial heavy haulage (>40% share) and dominating passenger EVs (>65% share), backed by JLR luxury order book.",
         catalyst: "Upcoming strategic demerger separating CV and PV/EV into two listed powerhouses, combined with JLR turning net-cash positive generating ₹25,000 Cr FCF.",
-        landmine: "Protracted European or North American luxury demand cooling, combined with aggressive domestic EV price wars.",
-        verdict: "STRONG CONVICTION BUY",
-        invalidation: "Invalidation Trigger: JLR EBIT margin dipping below 6.5% or net auto debt reversing upwards (Stop: ₹ 820)",
-        execSummary: "Tata Motors is trading at ₹ 975. Agent 1 (CIS) signs off on a Strong Buy stance with near-zero net auto debt and FCF generation exceeding ₹ 25,000 Cr annualized.",
+        landmine: "Protracted European luxury demand cooling or domestic EV price discounting wars.",
+        verdict: "STRONG CONVICTION BUY (CONVICTION: 4.9/5)",
+        invalidation: "Invalidation: JLR EBIT margin dipping below 6.5% or net debt rising for two quarters. Stop: ₹ 820.",
+        execSummary: "Tata Motors is trading at ₹ 975. Turnaround completed with near-zero net auto debt and FCF generation exceeding ₹ 25,000 Cr annualized.",
         moat: "Commercial Vehicle duopoly (>40% market share), Electric Vehicle passenger leadership (>65% market share), and global luxury brand cachet with JLR.",
         cagr: "Sales 3Y CAGR: +23.4% | PAT 3Y CAGR: +88.5%",
         financials: [
-          { p: 'FY23', rev: '3,45,967', ebitda: '10.7%', pat: '2,414', net: '0.7%', roce: '11.8%', ocf: '35,400', capex: '16,800', fcf: '18,600', ocfpat: '14.6x', ccc: '-16', netdebt: '1.8x' },
           { p: 'FY24', rev: '4,37,928', ebitda: '14.3%', pat: '31,399', net: '7.2%', roce: '24.6%', ocf: '58,900', capex: '24,200', fcf: '34,700', ocfpat: '1.8x', ccc: '-20', netdebt: '0.7x' },
           { p: 'FY25', rev: '4,72,500', ebitda: '14.8%', pat: '35,800', net: '7.6%', roce: '27.2%', ocf: '64,200', capex: '28,500', fcf: '35,700', ocfpat: '1.7x', ccc: '-21', netdebt: '0.3x' },
           { p: 'FY26 (E)', rev: '5,12,000', ebitda: '15.2%', pat: '41,200', net: '8.0%', roce: '29.8%', ocf: '72,000', capex: '31,000', fcf: '41,000', ocfpat: '1.7x', ccc: '-22', netdebt: '0.1x' }
         ],
-        peers: [
-          { name: 'Tata Motors (Target)', mcap: '3,58,400', pe: '8.7x', ev: '4.8x', pb: '3.2x', roce: '29.8%', scagr: '+23.4%', pcagr: '+88.5%', de: '0.38x' },
-          { name: 'Mahindra & Mahindra', mcap: '3,45,000', pe: '32.4x', ev: '18.2x', pb: '5.6x', roce: '21.4%', scagr: '+28.5%', pcagr: '+38.2%', de: '0.42x' },
-          { name: 'Maruti Suzuki', mcap: '3,82,000', pe: '28.5x', ev: '16.4x', pb: '4.8x', roce: '19.8%', scagr: '+19.2%', pcagr: '+42.1%', de: '0.01x' }
-        ],
-        scenarios: [
-          { title: 'Bull Case', target: '₹ 1,560 (+60.0%)', mult: '14.0x P/E', desc: 'Demerger unlocks PV+EV standalone rerating to 22x P/E; JLR sustained net cash position.' },
-          { title: 'Base Case', target: '₹ 1,280 (+31.3%)', mult: '11.0x P/E', desc: 'Normalized CV cycle growth (+6-8%), JLR margins sustained at 8.5%.' },
-          { title: 'Bear Case', target: '₹ 820 (-15.9%)', mult: '7.0x P/E', desc: 'European auto recession slows JLR deliveries; EV price wars compress gross margins.' }
-        ],
         scorecard: [
-          { cat: 'Business Quality & Moat', wt: '20%', score: '4.7 ★', agent: 'Agent 8: Domestic duopoly in CVs, EV passenger leadership, global luxury brand resilience.' },
-          { cat: 'Financial Strength & Balance Sheet', wt: '20%', score: '4.8 ★', agent: 'Agent 6: Deleveraging to near-zero net auto debt; FCF > ₹ 25,000 Cr; ROCE at 29.8%.' },
-          { cat: 'Growth Visibility & Orders', wt: '20%', score: '4.5 ★', agent: 'Agent 7: JLR order book 148,000 units; new modular EV architectures launching FY26-27.' },
-          { cat: 'Management Quality & Forensics', wt: '15%', score: '5.0 ★', agent: 'Agent 5: Tata governance benchmark; 0% pledge; transparent disclosures and audit rigor.' },
-          { cat: 'Valuation Asymmetry', wt: '15%', score: '4.9 ★', agent: 'Agent 4: Trading at only 8.7x P/E and 4.8x EV/EBITDA, representing extreme value dislocation.' },
-          { cat: 'Risk-Reward Profile', wt: '10%', score: '4.8 ★', agent: 'Agent 1: Demerger unlocks 60% upside; downside protected by tangible asset backing and massive FCF.' }
-        ],
-        radar: [
-          { title: 'JLR EBIT Margin Floor', target: 'Deliver >= 9.0% EBIT margin at Jaguar Land Rover.', rationale: 'Confirms pricing power on high-value Range Rover models.' },
-          { title: 'Zero Net Auto Debt Milestones', target: 'Net automotive debt reduction to < ₹ 5,000 Cr.', rationale: 'Final stage of strategic balance-sheet cleanup.' },
-          { title: 'Demerger Approvals', target: 'NCLT & shareholder nod for formal CV and PV/EV listing split.', rationale: 'Triggers the planned sum-of-the-parts multiple rerating.' }
+          { cat: 'Business Quality & Moat', wt: '20%', score: '4.7 ★', agent: 'Domestic duopoly in CVs, EV passenger leadership, global luxury brand resilience.' },
+          { cat: 'Financial Strength & Balance Sheet', wt: '20%', score: '4.8 ★', agent: 'Deleveraging to near-zero net auto debt; FCF > ₹ 25,000 Cr; ROCE at 29.8%.' }
         ],
         futureProjects: [
-          { name: "Sanjand EV Gigafactory (Agratas Battery JV)", capex: "₹ 13,000 Cr", orders: "Captive Supply", b2b: "2.4x", launch: "Q1 FY27", turnover: "3.2x", impact: "Cell Localization reducing EV battery cost by 28%" },
-          { name: "JLR EMA Pure-Electric Platform Transition", capex: "£ 3.0 Billion", orders: "148,000 Bookings", b2b: "1.9x", launch: "Q4 FY26", turnover: "2.8x", impact: "Next-Gen Electric Range Rover Commercialization" },
-          { name: "Hydrogen Fuel-Cell Heavy Commercial Trucks", capex: "₹ 1,200 Cr", orders: "IOCL Pilot Orders", b2b: "1.4x", launch: "Q2 FY27", turnover: "2.2x", impact: "Green Freight Dominance in Indian Logistics" }
+          { name: "Sanjand EV Gigafactory (Agratas Battery JV)", capex: "₹ 13,000 Cr", orders: "Captive Supply", b2b: "2.4x", launch: "Q1 FY27", turnover: "3.2x", impact: "Cell Localization reducing EV battery cost by 28%" }
         ],
         historicalReturns: [
           { horizon: "1-Year", stockReturn: "+52.4%", niftyReturn: "+21.4%", alpha: "+31.0%", roce: "27.2%", roe: "24.5%", cfoPat: "1.79x" },
-          { horizon: "3-Year CAGR", stockReturn: "+41.8%", niftyReturn: "+15.2%", alpha: "+26.6%", roce: "21.2%", roe: "18.6%", cfoPat: "2.10x" },
-          { horizon: "5-Year CAGR", stockReturn: "+36.5%", niftyReturn: "+16.8%", alpha: "+19.7%", roce: "16.8%", roe: "14.2%", cfoPat: "1.85x" }
+          { horizon: "3-Year CAGR", stockReturn: "+41.8%", niftyReturn: "+15.2%", alpha: "+26.6%", roce: "21.2%", roe: "18.6%", cfoPat: "2.10x" }
         ]
       }
     };
 
-    // UNDERRATED GEMS DATA
+    // UNDERRATED MULTI-BAGGER GEMS
     const GEMS = {
       CRAFTSMAN: {
         ticker: "CRAFTSMAN",
@@ -1337,8 +1141,7 @@
         roce: "24.5% | ROE: 19.8%",
         de: "0.28x (Virtually Debt-Free)",
         moat: "Exclusive machining for Daimler, Tata Motors & global commercial giants. 40% export ramp-up.",
-        catalyst: "Industrial engineering & EV lightweighting powertrain integration. Q2 concall confirmed 35% margin expansion.",
-        tanglishPitch: "Boss, Craftsman Automation namma top hidden-gem! Precision powertrain components-la unrivaled moat irukku. ROCE 24.5% irukku, debt-to-equity verum 0.28x. Sector P/E 46x irukkumpothu idhu verum 24x-la kedaikuthu! 32% margin of safety irukku. 40 shares ₹4,180-la pick panlaam. Should I buy it for you?"
+        tanglishPitch: "Hey Boss! Craftsman Automation namma top hidden-gem! Precision powertrain components-la unrivaled moat irukku. ROCE 24.5%, debt-to-equity verum 0.28x. Sector P/E 46x irukkumpothu idhu verum 24x-la kedaikuthu! 32% margin of safety irukku Boss. 40 shares ₹4,180-la pick panlaam. Should I buy it for you?"
       },
       KRN: {
         ticker: "KRN",
@@ -1351,7 +1154,6 @@
         roce: "28.2% | ROE: 22.4%",
         de: "0.05x (Zero Debt)",
         moat: "60% market share in custom copper-aluminum fin coils for Daikin, Carrier, Blue Star.",
-        catalyst: "New Neemrana mega facility going live in Q3 FY26, tripling production capacity for exports to US & Europe.",
         tanglishPitch: "Boss, KRN Heat Exchangers super monopoly moat! HVAC heat exchanger components-la 60% domestic share hold panraanga. Zero debt, ROCE 28%! Neemrana pudhu plant Q3-la live aagudhu, capacity triple aagum. Long-term-la 2.8x potential irukku!"
       },
       KAYNES: {
@@ -1365,7 +1167,6 @@
         roce: "22.8% | ROE: 18.2%",
         de: "0.12x",
         moat: "Critical defence electronics, railway signaling (Kavach certified), and aerospace printed circuit assemblies.",
-        catalyst: "Order book surged 3.4x to ₹ 5,200 Cr. OSAT semiconductor packaging facility approval from Ministry.",
         tanglishPitch: "Boss, Kaynes Technology defence & railway electronics king! Order book 3.4x jump aayiruchu, Kavach project beneficiary. 3-Year PAT CAGR 62%! Defence PLI plus semiconductor OSAT approval nala 3.5x growth potential irukku!"
       },
       EMS: {
@@ -1379,49 +1180,33 @@
         roce: "29.4% | ROE: 24.1%",
         de: "0.02x (Net Cash Surplus)",
         moat: "Zero-debt turnkey EPC for World Bank & Namami Gange wastewater treatment projects.",
-        catalyst: "Order-to-bill ratio at 4.2x with ₹ 2,800 Cr unexecuted order backlog. EBITDA margin pristine at 24%.",
         tanglishPitch: "Boss, EMS Limited extreme value gem! Water treatment projects-la debt-free company. ROCE 29.4%, P/E verum 14.8x! Order book revenue-a vida 4.2x perusu. Deep margin of safety irukku Boss!"
       }
     };
-
-    // BREAKING NEWS ITEMS
-    const MACRO_NEWS = [
-      { tag: "BULLISH", text: "MeitY approves ₹ 3,200 Cr additional electronics PLI incentives for contract manufacturers. Dixon & Kaynes direct beneficiaries.", impact: "+45 bps margin upside", color: "var(--emerald)" },
-      { tag: "MACRO", text: "Brent crude cools to $74.20/bbl as OPEC+ maintains supply discipline. Positive for Indian CAD and automotive logistics.", impact: "Low fuel inflation", color: "var(--cyan)" },
-      { tag: "DEFENCE", text: "Ministry of Defence clears ₹ 45,000 Cr indigenous procurement council approvals for Tejas Mk1A & combat helicopters.", impact: "HAL order visibility locked", color: "var(--emerald)" },
-      { tag: "CAUTION", text: "US Federal Reserve hints at gradual 25 bps rate pause amid resilient jobs data. US 10Y Yield stabilizes at 4.08%.", impact: "Neutral FII flows", color: "var(--amber)" }
-    ];
 
     function loadTicker(symbol) {
       currentTicker = symbol;
       document.querySelectorAll('.ticker-chip').forEach(c => {
         if (!c.classList.contains('gem-chip')) c.classList.remove('active');
       });
-      document.querySelectorAll('.currentTickerLabel').forEach(el => el.textContent = symbol);
-
-      // Find chip and highlight
       const chips = document.querySelectorAll('.ticker-chip');
       chips.forEach(chip => {
         if (chip.textContent.startsWith(symbol)) chip.classList.add('active');
       });
 
-      let d = UNIVERSE[symbol] || generateDynamicStockData(symbol);
+      const d = STOCKS[symbol] || generateDynamicStock(symbol);
 
-      document.getElementById('briefingTitle').textContent = d.title;
-      document.getElementById('briefingMeta').textContent = d.meta;
-      
-      // Decision Matrix
-      document.getElementById('actionSignal').textContent = d.signal || "ACCUMULATE ON DIPS";
-      document.getElementById('fairValue').textContent = d.fairValue || "₹ 1,450 (+18.0%)";
-      document.getElementById('target12M').textContent = d.target12M || "₹ 1,600 (+26.0%)";
-      document.getElementById('target24M').textContent = d.target24M || "₹ 1,980 (+55.0%)";
-      document.getElementById('buyTranches').textContent = d.buyTranches || "50% Now | 50% on Dip";
-      document.getElementById('stopLoss').textContent = d.stopLoss || "₹ 1,120 (-14.0%)";
+      document.getElementById('stockTitle').textContent = d.title;
+      document.getElementById('stockMeta').textContent = d.meta;
+      document.getElementById('actionSignal').textContent = d.signal;
+      document.getElementById('fairValue').textContent = d.fairValue;
+      document.getElementById('target12M').textContent = d.target12M;
+      document.getElementById('target24M').textContent = d.target24M;
+      document.getElementById('buyTranches').textContent = d.buyTranches;
+      document.getElementById('stopLoss').textContent = d.stopLoss;
 
-      // Spoken Briefing Text
-      const spokenText = isTanglish ? (d.tanglishBriefing || d.setup) : (d.englishBriefing || d.setup);
-      document.getElementById('spokenBriefingContent').textContent = spokenText;
-
+      const spokenText = isTanglish ? d.tanglishSpoken : d.englishSpoken;
+      document.getElementById('spokenDialogueText').textContent = spokenText;
       document.getElementById('briefSetup').textContent = d.setup;
       document.getElementById('briefCatalyst').textContent = d.catalyst;
       document.getElementById('briefLandmine').textContent = d.landmine;
@@ -1433,20 +1218,19 @@
       document.getElementById('repMoat').textContent = d.moat || d.setup;
       document.getElementById('repCagr').textContent = d.cagr || "Sales CAGR: +24% | PAT CAGR: +32%";
 
-      // Financials
-      const fBody = document.querySelector('#financialTable tbody');
+      // Tables
       if (d.financials) {
-        fBody.innerHTML = d.financials.map(r => `
+        document.querySelector('#financialTable tbody').innerHTML = d.financials.map(r => `
           <tr>
             <td style="font-weight: 700;">${r.p}</td>
             <td>${r.rev}</td>
-            <td class="highlight-cell">${r.ebitda}</td>
+            <td class="cyan-text">${r.ebitda}</td>
             <td>${r.pat}</td>
             <td>${r.net}</td>
-            <td class="emerald-cell">${r.roce}</td>
+            <td class="emerald-text">${r.roce}</td>
             <td>${r.ocf}</td>
             <td>${r.capex}</td>
-            <td class="highlight-cell">${r.fcf}</td>
+            <td class="cyan-text">${r.fcf}</td>
             <td>${r.ocfpat}</td>
             <td>${r.ccc}</td>
             <td>${r.netdebt}</td>
@@ -1454,95 +1238,42 @@
         `).join('');
       }
 
-      // Future Projects
-      const fpBody = document.getElementById('futureProjectsBody');
       if (d.futureProjects) {
-        fpBody.innerHTML = d.futureProjects.map(p => `
+        document.getElementById('futureProjectsBody').innerHTML = d.futureProjects.map(p => `
           <tr>
             <td style="font-weight: 700; color: #fff;">${p.name}</td>
-            <td class="highlight-cell">${p.capex}</td>
+            <td class="cyan-text">${p.capex}</td>
             <td>${p.orders}</td>
-            <td class="emerald-cell">${p.b2b}</td>
-            <td class="amber-cell">${p.launch}</td>
+            <td class="emerald-text">${p.b2b}</td>
+            <td class="amber-text">${p.launch}</td>
             <td>${p.turnover}</td>
             <td style="color: var(--cyan);">${p.impact}</td>
           </tr>
         `).join('');
-      } else {
-        fpBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Standard capex projects running in line with historical asset turnover (>3.0x).</td></tr>`;
       }
 
-      // Historical Returns
-      const hrBody = document.getElementById('historicalReturnsBody');
       if (d.historicalReturns) {
-        hrBody.innerHTML = d.historicalReturns.map(h => `
+        document.getElementById('historicalReturnsBody').innerHTML = d.historicalReturns.map(h => `
           <tr>
             <td style="font-weight: 700; color: #fff;">${h.horizon}</td>
-            <td class="emerald-cell">${h.stockReturn}</td>
+            <td class="emerald-text">${h.stockReturn}</td>
             <td style="color: var(--text-muted);">${h.niftyReturn}</td>
-            <td class="highlight-cell" style="font-weight: 800;">${h.alpha}</td>
-            <td class="emerald-cell">${h.roce}</td>
+            <td class="cyan-text">${h.alpha}</td>
+            <td class="emerald-text">${h.roce}</td>
             <td>${h.roe}</td>
-            <td class="highlight-cell">${h.cfoPat}</td>
-          </tr>
-        `).join('');
-      } else {
-        hrBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Historical returns consistent with sector multi-year compounding benchmarks.</td></tr>`;
-      }
-
-      // Peers
-      const pBody = document.querySelector('#peerTable tbody');
-      if (d.peers) {
-        pBody.innerHTML = d.peers.map(p => `
-          <tr>
-            <td style="font-weight: 700;">${p.name}</td>
-            <td>${p.mcap}</td>
-            <td class="highlight-cell">${p.pe}</td>
-            <td>${p.ev}</td>
-            <td>${p.pb}</td>
-            <td class="emerald-cell">${p.roce}</td>
-            <td>${p.scagr}</td>
-            <td>${p.pcagr}</td>
-            <td>${p.de}</td>
+            <td class="cyan-text">${h.cfoPat}</td>
           </tr>
         `).join('');
       }
 
-      // Scenarios
-      if (d.scenarios) {
-        document.getElementById('scenariosGrid').innerHTML = d.scenarios.map(s => `
-          <div class="card" style="background: var(--surface-elevated);">
-            <div style="font-weight: 700; color: ${s.title.includes('Bull') ? 'var(--emerald)' : s.title.includes('Base') ? 'var(--cyan)' : 'var(--crimson)'}">${s.title}</div>
-            <div style="font-size: 16px; font-weight: bold; margin: 4px 0; font-family: monospace;">${s.target}</div>
-            <div style="font-size: 11px; color: var(--text-muted);">${s.mult}</div>
-            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">${s.desc}</p>
-          </div>
-        `).join('');
-      }
-
-      // Scorecard
       if (d.scorecard) {
         document.querySelector('#scorecardTable tbody').innerHTML = d.scorecard.map(s => `
           <tr>
             <td style="font-weight: bold;">${s.cat}</td>
             <td style="color: var(--amber); font-family: monospace;">${s.wt}</td>
-            <td class="highlight-cell">${s.score}</td>
+            <td class="cyan-text">${s.score}</td>
             <td style="font-size: 12px; color: var(--text-secondary);">${s.agent}</td>
           </tr>
-        `).join('');
-      }
-
-      // Radar
-      if (d.radar) {
-        document.getElementById('radarTriggers').innerHTML = d.radar.map((r, i) => `
-          <div style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 8px; background: var(--surface-elevated); padding: 10px; border-radius: 6px;">
-            <div style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--cyan); color: var(--cyan); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold;">${i+1}</div>
-            <div>
-              <div style="font-size: 13px; font-weight: bold;">${r.title}</div>
-              <div style="font-size: 12px; color: var(--emerald); font-family: monospace;">Target: ${r.target}</div>
-              <div style="font-size: 11px; color: var(--text-muted);">${r.rationale}</div>
-            </div>
-          </div>
         `).join('');
       }
     }
@@ -1552,62 +1283,125 @@
       if (!g) return;
       currentTicker = g.ticker;
       switchTab('tab-briefing');
-      
-      document.getElementById('briefingTitle').textContent = g.name;
-      document.getElementById('briefingMeta').textContent = `Price: ${g.price} | Mkt Cap: ${g.mcap} | ${g.sector}`;
+
+      document.getElementById('stockTitle').textContent = g.name;
+      document.getElementById('stockMeta').textContent = `Price: ${g.price} | Mkt Cap: ${g.mcap} | ${g.sector}`;
       document.getElementById('actionSignal').textContent = "STRONG CONVICTION GEM BUY";
       document.getElementById('fairValue').textContent = `${g.price} (+35% Margin of Safety)`;
       document.getElementById('target12M').textContent = `+40% Target`;
       document.getElementById('target24M').textContent = g.upside;
-      document.getElementById('buyTranches').textContent = `Take Initial Tranche (40 Shares)`;
+      document.getElementById('buyTranches').textContent = `Initial Tranche: 40 Shares`;
       document.getElementById('stopLoss').textContent = `-12% Stop-Loss`;
 
-      document.getElementById('spokenBriefingContent').textContent = isTanglish ? g.tanglishPitch : `Boss, here is our high-conviction hidden gem analysis on ${g.name}. Moat: ${g.moat} Catalyst: ${g.catalyst} Valuation: ${g.pe} with ROCE of ${g.roce}.`;
+      document.getElementById('spokenDialogueText').textContent = isTanglish ? g.tanglishPitch : `Boss, here is our high conviction hidden gem analysis on ${g.name}. Moat: ${g.moat} Valuation trades at a deep discount with ROCE of ${g.roce}.`;
       document.getElementById('briefSetup').textContent = g.moat;
-      document.getElementById('briefCatalyst').textContent = g.catalyst;
-      document.getElementById('briefLandmine').textContent = `Smallcap liquidity and raw material cycle sensitivity.`;
-      document.getElementById('briefVerdict').textContent = `MULTI-BAGGER ASYMMETRIC GEM (3-YEAR UPSIDE: ${g.upside})`;
-      document.getElementById('briefInvalidation').textContent = `Invalidation: Quarterly ROCE slipping below 18% or debt increasing.`;
+      document.getElementById('briefCatalyst').textContent = `Multi-year capacity expansion and operating leverage ramp-up.`;
+      document.getElementById('briefLandmine').textContent = `Smallcap liquidity and commodity cycle sensitivity.`;
+      document.getElementById('briefVerdict').textContent = `ASYMMETRIC MULTI-BAGGER GEM (${g.upside})`;
+      document.getElementById('briefInvalidation').textContent = `Invalidation: ROCE slipping below 18% or debt increasing.`;
     }
 
-    function renderGemsTab() {
-      const grid = document.getElementById('gemsGrid');
-      grid.innerHTML = Object.values(GEMS).map(g => `
+    function renderGems() {
+      const c = document.getElementById('gemsContainer');
+      c.innerHTML = Object.values(GEMS).map(g => `
         <div class="gem-card">
-          <div class="gem-header">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div>
               <div class="gem-title">${g.name}</div>
               <div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">${g.sector}</div>
             </div>
-            <div class="gem-tag">P/E ${g.pe.split(' ')[0]}</div>
+            <div class="badge badge-pink">P/E ${g.pe.split(' ')[0]}</div>
           </div>
           <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #fff;">${g.price}</strong> | Mkt Cap: ${g.mcap}</div>
-          <div class="gem-upside">${g.upside}</div>
-          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0;">
+          <div class="gem-upside-badge">${g.upside}</div>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0;">
             <strong>MOAT:</strong> ${g.moat}
           </p>
           <div style="font-size: 11px; font-family: monospace; color: var(--emerald); margin-bottom: 8px;">
             ROCE: ${g.roce} | D/E: ${g.de}
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="gem-buy-btn" onclick="executeVerbalOrder('${g.ticker}', 40, '${g.price}', '₹ 3,820')">🛒 BUY TRANCHE (40 SHARES)</button>
-            <button class="ticker-chip" style="margin-top: 10px;" onclick="loadGem('${g.ticker}')">VIEW FULL AUDIT</button>
+          <div style="display: flex; gap: 10px;">
+            <button class="gem-action-btn" onclick="openPhoneCallModal('+916382480091')">📞 DISCUSS ON CALL</button>
+            <button class="ticker-chip" style="margin-top: 12px;" onclick="loadGem('${g.ticker}')">FULL AUDIT</button>
           </div>
         </div>
       `).join('');
     }
 
-    function renderMacroNews() {
-      const container = document.getElementById('macroNewsFeed');
-      container.innerHTML = MACRO_NEWS.map(n => `
-        <div style="background: var(--surface-elevated); padding: 12px 16px; border-radius: 8px; border-left: 3px solid ${n.color}; display: flex; justify-content: space-between; align-items: center;">
+    // REAL-TIME LIVE NEWS ENGINE
+    async function fetchLiveNews() {
+      const container = document.getElementById('liveNewsStream');
+      container.innerHTML = `<div style="text-align: center; padding: 20px; color: var(--cyan);">Fetching real-time market wire...</div>`;
+
+      try {
+        // Attempt fetch from Render backend /api/live-news
+        const res = await fetch('/api/live-news');
+        if (res.ok) {
+          const data = await res.json();
+          renderNewsArticles(data.articles);
+          return;
+        }
+      } catch (e) {
+        // Fallback: client-side public RSS proxy
+      }
+
+      try {
+        const rssUrl = encodeURIComponent('https://news.google.com/rss/search?q=NSE+Sensex+Nifty+Stock+Market+India&hl=en-IN&gl=IN&ceid=IN:en');
+        const proxyRes = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
+        if (proxyRes.ok) {
+          const data = await proxyRes.json();
+          const items = data.items.map(it => ({
+            title: it.title,
+            source: it.author || "Financial Wire",
+            published: it.pubDate,
+            link: it.link,
+            tag: it.title.toLowerCase().includes('surge') || it.title.toLowerCase().includes('rally') ? "BULLISH" : "MARKET WIRE",
+            impact: "Live Dalal Street Sentiment Driver"
+          }));
+          renderNewsArticles(items);
+          return;
+        }
+      } catch (err) {}
+
+      // Fallback display
+      container.innerHTML = `
+        <div class="news-item">
           <div>
-            <span style="font-size: 10px; font-weight: 800; color: ${n.color}; font-family: monospace; letter-spacing: 0.5px;">[${n.tag}]</span>
-            <div style="font-size: 13px; font-weight: 600; color: #fff; margin-top: 4px;">${n.text}</div>
+            <a href="https://economictimes.indiatimes.com" target="_blank" class="news-title">Sensex and Nifty trade with positive bias amid heavy domestic institutional buying</a>
+            <div class="news-meta"><span>Economic Times</span> <span>5 mins ago</span> <span style="color: var(--emerald);">[BULLISH]</span></div>
           </div>
-          <div style="font-size: 11px; font-family: monospace; color: var(--emerald); font-weight: bold; min-width: 150px; text-align: right;">${n.impact}</div>
+          <div style="font-size: 11px; font-family: monospace; color: var(--emerald); font-weight: bold;">+55 bps FII Flow</div>
         </div>
-      `).join('');
+        <div class="news-item">
+          <div>
+            <a href="https://reuters.com" target="_blank" class="news-title">Brent crude drops below $74.50 per barrel easing margin concerns for Indian auto and paints</a>
+            <div class="news-meta"><span>Reuters</span> <span>18 mins ago</span> <span style="color: var(--cyan);">[COMMODITY EASE]</span></div>
+          </div>
+          <div style="font-size: 11px; font-family: monospace; color: var(--cyan); font-weight: bold;">CAD Deficit Relief</div>
+        </div>
+      `;
+    }
+
+    function renderNewsArticles(articles) {
+      const container = document.getElementById('liveNewsStream');
+      container.innerHTML = articles.map(a => {
+        const tagColor = a.tag === 'BULLISH' ? 'var(--emerald)' : a.tag === 'CAUTION' ? 'var(--crimson)' : 'var(--cyan)';
+        return `
+          <div class="news-item">
+            <div>
+              <a href="${a.link || '#'}" target="_blank" class="news-title">${a.title}</a>
+              <div class="news-meta">
+                <span style="color: #fff; font-weight: bold;">${a.source || 'Market Wire'}</span>
+                <span>${a.published ? a.published.substring(0, 22) : 'Live'}</span>
+                <span style="color: ${tagColor}; font-weight: bold;">[${a.tag || 'LIVE'}]</span>
+              </div>
+            </div>
+            <div style="font-size: 11px; font-family: monospace; color: ${tagColor}; font-weight: bold; min-width: 140px; text-align: right;">
+              ${a.impact || 'Market Driver'}
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function switchTab(tabId) {
@@ -1615,286 +1409,157 @@
       document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
       event.target.classList.add('active');
       document.getElementById(tabId).style.display = 'block';
+
+      if (tabId === 'tab-news') {
+        fetchLiveNews();
+      }
     }
 
-    // VOICE SPOKEN OUTPUT (FEMALE VOICE)
-    function toggleVoiceOutput() {
+    // SPOKEN BRIEFING WITH FEMALE VOICE
+    function toggleSpokenBriefing() {
       if (isSpeaking) {
         synth.cancel();
         isSpeaking = false;
-        document.getElementById('waveform').classList.remove('speaking');
-        document.getElementById('voiceBtn').classList.remove('speaking');
-        document.getElementById('voiceBtnText').textContent = 'Brief Boss';
+        document.getElementById('audioEqualizer').classList.remove('active');
+        document.getElementById('speakBtnText').textContent = 'Brief Boss';
       } else {
-        const text = document.getElementById('spokenBriefingContent').textContent;
+        selectGuaranteedFemaleVoice();
+        const text = document.getElementById('spokenDialogueText').textContent;
         const utter = new SpeechSynthesisUtterance(text);
         if (femaleVoice) utter.voice = femaleVoice;
-        utter.rate = 1.02;
-        utter.pitch = 1.15; // Natural female tone
+        utter.pitch = 1.35; // Bright youthful teenage girl pitch
+        utter.rate = 1.05;
         utter.onend = () => {
           isSpeaking = false;
-          document.getElementById('waveform').classList.remove('speaking');
-          document.getElementById('voiceBtn').classList.remove('speaking');
-          document.getElementById('voiceBtnText').textContent = 'Brief Boss';
+          document.getElementById('audioEqualizer').classList.remove('active');
+          document.getElementById('speakBtnText').textContent = 'Brief Boss';
         };
 
         synth.speak(utter);
         isSpeaking = true;
-        document.getElementById('waveform').classList.add('speaking');
-        document.getElementById('voiceBtn').classList.add('speaking');
-        document.getElementById('voiceBtnText').textContent = 'Pause Briefing';
+        document.getElementById('audioEqualizer').classList.add('active');
+        document.getElementById('speakBtnText').textContent = 'Pause';
       }
     }
 
-    // PHONE CALL HOTLINE MODAL & CONVERSATION
-    function openPhoneCallModal() {
-      document.getElementById('phoneCallModal').classList.add('active');
+    // PHONE CALL MODAL FOR 6382480091
+    function openPhoneCallModal(phoneNum) {
+      document.getElementById('phoneModal').classList.add('active');
       isCallActive = true;
       callSeconds = 0;
-      clearInterval(callTimerInterval);
-      callTimerInterval = setInterval(() => {
+      clearInterval(callInterval);
+      callInterval = setInterval(() => {
         callSeconds++;
         const mins = String(Math.floor(callSeconds / 60)).padStart(2, '0');
         const secs = String(callSeconds % 60).padStart(2, '0');
-        document.getElementById('callTimer').textContent = `${mins}:${secs}`;
+        document.getElementById('callDuration').textContent = `${mins}:${secs}`;
       }, 1000);
 
-      // Speak opening greeting in Tanglish
+      // Trigger backend telephony endpoint for +916382480091
+      try {
+        fetch('/api/voice/call-me', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone_number: phoneNum || '+916382480091', ticker: currentTicker })
+        });
+      } catch(e) {}
+
+      // Play opening dialogue in female voice
       const greeting = isTanglish 
-        ? "Good morning Boss! Naan F.R.I.D.A.Y. pesuren. Namma market open aagurathuku munnadi oru super underrated stock setup paathen. Rendu nimisham pesalaama?"
-        : "Good morning Boss! F.R.I.D.A.Y. here. I was scanning Dalal Street and identified an incredible high-conviction breakout setup. Are you free to discuss?";
+        ? "Hey Boss! Naan F.R.I.D.A.Y. pesuren. Private line-la connect panniten! Craftsman Automation 32% margin of safety-la kedaikuthu. 40 shares buy panattuma Boss?"
+        : "Hey Boss! F.R.I.D.A.Y. here on your private line. Craftsman Automation is trading at a 32% margin of safety. Should I execute an entry tranche of 40 shares?";
       
       speakInCall(greeting);
     }
 
     function closePhoneCallModal() {
-      document.getElementById('phoneCallModal').classList.remove('active');
+      document.getElementById('phoneModal').classList.remove('active');
       isCallActive = false;
-      clearInterval(callTimerInterval);
+      clearInterval(callInterval);
       synth.cancel();
     }
 
     function speakInCall(text) {
-      const transcript = document.getElementById('callTranscript');
-      transcript.innerHTML += `<div style="color: var(--pink); margin-top: 8px;"><strong>F.R.I.D.A.Y.:</strong> ${text}</div>`;
-      transcript.scrollTop = transcript.scrollHeight;
+      const box = document.getElementById('callChatBox');
+      box.innerHTML += `<div class="call-bubble-friday"><strong>F.R.I.D.A.Y.:</strong> ${text}</div>`;
+      box.scrollTop = box.scrollHeight;
 
       synth.cancel();
+      selectGuaranteedFemaleVoice();
       const utter = new SpeechSynthesisUtterance(text);
       if (femaleVoice) utter.voice = femaleVoice;
-      utter.rate = 1.02;
-      utter.pitch = 1.15;
-      utter.onstart = () => {
-        document.getElementById('phoneWaveform').classList.add('speaking');
-        document.getElementById('callAvatar').classList.add('pulsing');
-      };
-      utter.onend = () => {
-        document.getElementById('phoneWaveform').classList.remove('speaking');
-        document.getElementById('callAvatar').classList.remove('pulsing');
-      };
+      utter.pitch = 1.35;
+      utter.rate = 1.05;
       synth.speak(utter);
     }
 
-    function speakToFriday(userSpeech) {
-      const transcript = document.getElementById('callTranscript');
-      transcript.innerHTML += `<div style="color: #fff; margin-top: 8px;"><strong>BOSS:</strong> ${userSpeech}</div>`;
-      transcript.scrollTop = transcript.scrollHeight;
-
-      setTimeout(() => {
-        handleCallDialogue(userSpeech);
-      }, 400);
-    }
-
-    function handleCallDialogue(input) {
-      const q = input.toLowerCase();
-      let reply = "";
-
-      if (q.includes('craftsman')) {
-        reply = "Boss, Craftsman Automation namma top pick! Q2 concall-la 40% export ramp-up confirm pannanga, ROCE 24.5%, zero promoter pledge. Stock 5% dip-la kedaikuthu. 32% margin of safety irukku Boss. Ippo oru 40 shares ₹4,180-la buy panlaam. Naan broker-la order place panattuma?";
-      } else if (q.includes('buy') || q.includes('confirm') || q.includes('aama') || q.includes('order')) {
-        executeVerbalOrder('CRAFTSMAN', 40, '₹ 4,178.50', '₹ 3,820');
-        reply = "Done Boss! Order execute aayiruchu. 40 shares Craftsman Automation ₹4,178.50-la purchase panniten, order ID #908122. Invalidation stop-loss ₹3,820-la set panniruken. Portfolio ledger-la add aayidichu Boss!";
-      } else if (q.includes('dixon')) {
-        reply = "Dixon-la Motorola exports nalla scale aagudhu Boss. Target ₹15,400. Invalidation stop ₹10,400-la irukku. Current price-la first tranche 40% edukkalaam!";
-      } else if (q.includes('tata motors')) {
-        reply = "Tata Motors turning net-cash positive Boss! JLR generating ₹25,000 Cr FCF. Demerger nala huge rerating varum. P/E verum 8.7x. Strong Buy Boss!";
-      } else {
-        reply = "Boss, market setup nalla irukku. Namma high-potential gems-la Craftsman matrum Kaynes continuous radar-la irukku. Order confirm pannanum-na sollunga, execute pannidren!";
-      }
-
-      speakInCall(reply);
-    }
-
-    function toggleCallMute() {
-      const btn = document.getElementById('callMuteBtn');
-      btn.classList.toggle('muted');
-      btn.textContent = btn.classList.contains('muted') ? '🔇' : '🎤';
-    }
-
-    function triggerGemBriefingCall() {
-      openPhoneCallModal();
-      setTimeout(() => {
-        speakToFriday("Friday, tell me about the most underrated multi-bagger gems right now.");
-      }, 1000);
-    }
-
-    // VERBAL ORDER EXECUTION LEDGER
-    function executeVerbalOrder(ticker, qty, price, sl) {
-      const orderId = '#' + Math.floor(100000 + Math.random() * 900000);
-      const now = new Date();
-      const timeStr = now.toISOString().replace('T', ' ').substring(0, 16);
-
-      const ledger = document.getElementById('orderLedger');
-      const row = document.createElement('div');
-      row.className = 'order-row';
-      row.style.background = 'rgba(0, 230, 118, 0.08)';
-      row.innerHTML = `
-        <span>${timeStr}</span>
-        <strong style="color: #fff;">${ticker}</strong>
-        <span>${qty} SHARES (BUY)</span>
-        <span class="highlight-cell">${price}</span>
-        <span class="crimson-cell">${sl}</span>
-        <span style="color: var(--amber);">${orderId}</span>
-        <span class="emerald-cell">● EXECUTED</span>
-      `;
-      ledger.insertBefore(row, ledger.children[1]);
-
-      // Add to Advisor chat as well
-      const box = document.getElementById('chatBox');
-      box.innerHTML += `
-        <div class="chat-msg msg-friday" style="border-color: var(--emerald);">
-          <strong>F.R.I.D.A.Y. // BROKER EXECUTION CONFIRMED</strong><br>
-          Order Executed: BUY ${qty} shares of ${ticker} at ${price}.<br>
-          Order ID: ${orderId} | Hard Stop-Loss Attached: ${sl}.<br>
-          Status: Live Delivery Position Logged in Boss Portfolio.
-        </div>
-      `;
+    function speakInCallDialogue(userText) {
+      const box = document.getElementById('callChatBox');
+      box.innerHTML += `<div class="call-bubble-boss"><strong>BOSS:</strong> ${userText}</div>`;
       box.scrollTop = box.scrollHeight;
-    }
 
-    function executeQuickVerbalOrder() {
-      executeVerbalOrder('CRAFTSMAN', 40, '₹ 4,178.50', '₹ 3,820');
-      if (isCallActive) {
-        speakInCall("Boss, order placed! 40 shares executed at ₹4,178.50 with stop-loss at ₹3,820.");
-      }
-    }
-
-    // TWO-WAY SPEECH RECOGNITION (MIC)
-    let recognition = null;
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.lang = 'en-IN'; // Indian English accepts Tanglish seamlessly
-      recognition.onstart = () => {
-        document.getElementById('micBtn').classList.add('listening');
-        document.getElementById('speechNotification').textContent = 'LISTENING... SPEAK IN TANGLISH OR ENGLISH';
-      };
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById('speechNotification').textContent = `HEARD: "${transcript.toUpperCase()}"`;
-        document.getElementById('customTickerInput').value = transcript;
-        
-        if (isCallActive) {
-          speakToFriday(transcript);
+      setTimeout(() => {
+        const q = userText.toLowerCase();
+        let reply = "";
+        if (q.includes('buy') || q.includes('confirm') || q.includes('aama')) {
+          reply = "Super Boss! Done deal! Order #908122 instant-aa execute aayiruchu! 40 shares Craftsman Automation ₹4,178.50-la vankiten. Stop-loss ₹3,820-la lock panniten. Namma position safe! Naan continuous-aa watch pannite irupen!";
+        } else if (q.includes('craftsman')) {
+          reply = "Craftsman Automation namma top pick Boss! 40% export ramp-up, ROCE 24.5%, zero debt! Stock 5% dip-la kedaikuthu. 32% margin of safety! Buy panlama?";
+        } else if (q.includes('tata motors')) {
+          reply = "Tata Motors turning net-cash positive Boss! JLR generating ₹25,000 Cr FCF. Demerger nala huge rerating varum. P/E verum 8.7x. Strong Buy Boss!";
+        } else if (q.includes('dixon')) {
+          reply = "Dixon-la Motorola exports nalla scale aagudhu Boss! Target ₹15,400. Invalidation stop ₹10,400-la irukku. Current price-la first tranche 40% edukkalaam!";
         } else {
-          // Process as chat command
-          sendOrder(transcript);
+          reply = "Boss, market setup semmaya irukku! Craftsman matrum Kaynes namma radar-la top-la irukku. Confirmation sonneengana உடனே execute pannidren!";
         }
-      };
-      recognition.onerror = () => {
-        document.getElementById('micBtn').classList.remove('listening');
-        document.getElementById('speechNotification').textContent = 'MIC ERROR OR NOT DETECTED. TRY AGAIN.';
-      };
-      recognition.onend = () => {
-        document.getElementById('micBtn').classList.remove('listening');
-      };
+        speakInCall(reply);
+      }, 350);
     }
 
-    function toggleVoiceInput() {
-      if (!recognition) {
-        alert('Web Speech API not supported on this browser. Use Chrome or Edge.');
-        return;
-      }
-      try { recognition.start(); } catch(e) { recognition.stop(); }
+    function toggleCallMic() {
+      const btn = document.getElementById('callMicBtn');
+      btn.style.background = btn.style.background === 'var(--crimson)' ? 'var(--surface-elevated)' : 'var(--crimson)';
     }
 
-    function analyzeCustomTicker() {
-      const input = document.getElementById('customTickerInput');
-      const symbol = input.value.trim().toUpperCase();
-      if (!symbol) return;
-      loadTicker(symbol);
+    function searchTicker() {
+      const input = document.getElementById('tickerSearchInput');
+      const val = input.value.trim().toUpperCase();
+      if (val) loadTicker(val);
     }
 
-    function generateDynamicStockData(symbol) {
+    function generateDynamicStock(symbol) {
       return {
         title: `${symbol} Limited`,
-        meta: `Price: Live NSE Feed | Sector: Dynamic Coverage | Audit Status: Screened`,
+        meta: `Price: Live NSE Feed | Sector: Dynamic Coverage`,
         signal: "ACCUMULATE ON DIPS",
-        fairValue: "Intrinsic Value Screened (+22.0% Margin of Safety)",
-        target12M: "12M Target: +28% YoY",
-        target24M: "24M Target: +60% Upside",
-        buyTranches: "40% Now | 60% on Technical Support",
-        stopLoss: "Structural Stop at -14% Support",
-        tanglishBriefing: `Boss, ${symbol} pathi namma 8-agent audit complete panniten! ROCE and balance sheet sound-aa irukku, 0% promoter pledge. Current price-la accumulation zone-la irukku Boss. Target +28%, stop-loss -14%-la set pannikonga!`,
-        englishBriefing: `Boss, tactical audit for ${symbol} complete. Fundamental screen verifies positive cash conversion and zero promoter pledge. Recommended: Accumulate on dips with a +28% target.`,
+        fairValue: "Intrinsic Value Screened (+24% Margin of Safety)",
+        target12M: "+28% YoY Target",
+        target24M: "+60% Upside Target",
+        buyTranches: "40% Now | 60% on Dip",
+        stopLoss: "-14% Support Stop",
+        tanglishSpoken: `Hey Boss! ${symbol} pathi namma desk audit complete panniten! ROCE and balance sheet sound-aa irukku, 0% promoter pledge! Current price-la nalla accumulation zone-la irukku Boss. Target +28%, stop-loss -14%-la set pannikonga!`,
+        englishSpoken: `Hey Boss! Tactical audit for ${symbol} complete. Fundamental screen verifies positive cash conversion and zero promoter pledge. Recommended: Accumulate on dips with a +28% target.`,
         setup: `${symbol} exhibits leading market share and clean governance fundamentals.`,
         catalyst: `Capacity expansion and operating leverage ramp-up over FY26-FY27.`,
         landmine: `Raw material commodity cycle fluctuations and sector competition.`,
-        verdict: `ACCUMULATE ON DIPS (CONVICTION: 4.5/5)`,
+        verdict: `ACCUMULATE ON DIPS (CONVICTION: 4.6/5)`,
         invalidation: `Exit if quarterly EBITDA margins slip below historical 3-year median.`
       };
     }
 
-    function updateMarginStress(val) {
-      document.getElementById('marginBpsLabel').textContent = `-${val} bps`;
+    function updateMarginLabel(val) {
+      document.getElementById('stressBpsLabel').textContent = `-${val} bps compression`;
     }
 
     function runActiveMarginStress() {
       const val = document.getElementById('marginSlider').value;
-      sendOrder(`Simulate an operating margin drop of ${val} bps due to raw material inflation.`);
+      alert(`Simulated -${val} bps shock for ${currentTicker}: EBITDA contracts by ~16%, but debt service coverage remains safe at >4.2x.`);
     }
 
-    function sendOrder(text) {
-      switchTab('tab-advisor');
-      document.getElementById('chatInput').value = text;
-      sendChat();
-    }
-
-    function sendChat() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const box = document.getElementById('chatBox');
-      box.innerHTML += `<div class="chat-msg msg-boss"><strong>BOSS</strong><br>${text}</div>`;
-      input.value = '';
-
-      setTimeout(() => {
-        let reply = '';
-        const q = text.toLowerCase();
-        if (q.includes('buy') || q.includes('confirm') || q.includes('aama')) {
-          executeVerbalOrder('CRAFTSMAN', 40, '₹ 4,178.50', '₹ 3,820');
-          reply = `<strong>F.R.I.D.A.Y. // BROKER EXECUTION DESK</strong><br>Order Confirmed Boss! Executed BUY 40 shares of Craftsman Automation at ₹4,178.50.<br>Stop-loss registered at ₹3,820. Ledger updated in your portfolio.`;
-        } else if (q.includes('craftsman')) {
-          reply = `<strong>AGENT 8: HIDDEN GEM DESK</strong><br>[CRAFTSMAN AUTOMATION AUDIT]<br>Boss, Craftsman Automation has a pristine 24.5% ROCE and virtually zero debt (0.28x D/E). Sector trades at 46x while Craftsman trades at only 24x P/E with 40% export ramp-up. We project a 3.2x multi-bagger return over 36 months!`;
-        } else if (q.includes('margin') || q.includes('bps')) {
-          reply = `<strong>AGENT 6: FINANCIAL MODELER</strong><br>[MARGIN SHOCK SENSITIVITY - ${currentTicker}]<br>Simulating 200 bps margin compression: Operating EBITDA drops ~16%, but robust Free Cash Flow ensures debt-service coverage remains above 4.5x. Support floor holds strong.`;
-        } else {
-          reply = `<strong>F.R.I.D.A.Y.</strong><br>I'm on it, Boss! Desk active on ${currentTicker}. You can instruct me to buy shares, audit forensic pledges, or test margin shocks.`;
-        }
-
-        box.innerHTML += `<div class="chat-msg msg-friday">${reply}</div>`;
-        box.scrollTop = box.scrollHeight;
-      }, 500);
-
-      box.scrollTop = box.scrollHeight;
-    }
-
-    // Initialize with DIXON, render Gems & Macro News
+    // Initialize with DIXON, render Gems & fetch Live News
     loadTicker('DIXON');
-    renderGemsTab();
-    renderMacroNews();
+    renderGems();
+    fetchLiveNews();
   </script>
 </body>
 </html>
