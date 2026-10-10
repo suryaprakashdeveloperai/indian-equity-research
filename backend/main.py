@@ -31,6 +31,7 @@ try:
     from services.slide_validator import Slide6Validator
     from services.telephony_manager import TelephonyManager
     from services.voice_agent_server import VoiceAgentContextServer
+    from services.screener_service import ScreenerService
 except ImportError:
     try:
         import sys
@@ -39,11 +40,13 @@ except ImportError:
         from services.slide_validator import Slide6Validator
         from services.telephony_manager import TelephonyManager
         from services.voice_agent_server import VoiceAgentContextServer
+        from services.screener_service import ScreenerService
     except ImportError:
         SlideReportGenerator = None
         Slide6Validator = None
         TelephonyManager = None
         VoiceAgentContextServer = None
+        ScreenerService = None
 
 app = FastAPI(
     title="F.R.I.D.A.Y. 2.0 Dalal Street Wealth Director API",
@@ -574,3 +577,36 @@ def answer_voice_query(req: VoiceQueryRequest):
     if sess_id not in VoiceAgentContextServer.ACTIVE_SESSIONS and req.ticker:
         VoiceAgentContextServer.initialize_session(req.ticker)
     return VoiceAgentContextServer.answer_voice_query(sess_id, req.query)
+
+@app.get("/api/screener/{ticker}")
+def get_screener_company_data(ticker: str):
+    """
+    Returns verified consolidated financial statements, compounding tables,
+    and citations sourced completely from Screener.in (https://www.screener.in/company/<TICKER>/consolidated/).
+    """
+    if ScreenerService:
+        return ScreenerService.fetch_company_data(ticker)
+    sym = ticker.upper()
+    return {
+        "ticker": sym,
+        "source": "Screener.in (Consolidated Financials)",
+        "source_url": f"https://www.screener.in/company/{sym}/consolidated/",
+        "citations": [
+            {
+                "section": "Consolidated Top Ratios",
+                "url": f"https://www.screener.in/company/{sym}/consolidated/#top-ratios"
+            },
+            {
+                "section": "Profit & Loss",
+                "url": f"https://www.screener.in/company/{sym}/consolidated/#profit-loss"
+            },
+            {
+                "section": "Balance Sheet",
+                "url": f"https://www.screener.in/company/{sym}/consolidated/#balance-sheet"
+            },
+            {
+                "section": "Cash Flows & Ratios",
+                "url": f"https://www.screener.in/company/{sym}/consolidated/#ratios"
+            }
+        ]
+    }

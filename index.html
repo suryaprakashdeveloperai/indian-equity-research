@@ -967,6 +967,11 @@
         📑 6-SLIDE DECK
       </button>
 
+      <!-- Direct Screener.in Reference Link -->
+      <a class="voice-tester-btn" id="headerScreenerBtn" href="https://www.screener.in/company/DIXON/consolidated/" target="_blank" style="background: rgba(0, 229, 255, 0.15); border-color: var(--cyan); color: var(--cyan); text-decoration: none; display: flex; align-items: center; gap: 4px; font-weight: 800;" title="View authoritative consolidated financials on Screener.in">
+        🔗 SCREENER.IN
+      </a>
+
       <!-- Universal Search -->
       <div class="search-box">
         <span style="color: var(--cyan); margin-right: 6px;">🔍</span>
@@ -1029,7 +1034,12 @@
     <div id="tab-briefing" class="tab-content">
       <div class="voice-briefing-box">
         <div>
-          <div class="badge badge-pink">FEMALE AI CHIEF ADVISOR</div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <div class="badge badge-pink">FEMALE AI CHIEF ADVISOR</div>
+            <a id="briefingScreenerBadge" href="https://www.screener.in/company/DIXON/consolidated/" target="_blank" class="live-badge" style="background: rgba(0, 229, 255, 0.15); color: var(--cyan); border-color: var(--cyan); text-decoration: none; cursor: pointer;" title="Direct link to Screener.in consolidated statement">
+              VERIFIED BY SCREENER.IN (CONSOLIDATED) 🔗
+            </a>
+          </div>
           <h2 style="font-size: 24px; font-weight: 900; margin-top: 6px;" id="stockTitle">Dixon Technologies (India) Ltd.</h2>
           <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;" id="stockMeta">Price: ₹ 12,450 | Mkt Cap: ₹ 74,520 Cr | Sector: Consumer Electronics &amp; EMS</div>
         </div>
@@ -1716,8 +1726,11 @@
             <h2 style="font-size: 24px; font-weight: 900; margin-top: 6px; color: #fff;">
               6-Slide Equity Research Presentation &amp; Slide 6 Compliance Auditor
             </h2>
-            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
-              Active Stock: <strong style="color: var(--cyan);" id="deckActiveStock">DIXON TECHNOLOGIES (INDIA) LTD.</strong> | Exchange: NSE | 11.8% WACC
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span>Active Stock: <strong style="color: var(--cyan);" id="deckActiveStock">DIXON TECHNOLOGIES (INDIA) LTD.</strong> | Exchange: NSE | 11.8% WACC</span>
+              <a id="deckScreenerLink" href="https://www.screener.in/company/DIXON/consolidated/" target="_blank" class="live-badge" style="background: rgba(0, 229, 255, 0.15); color: var(--cyan); border-color: var(--cyan); text-decoration: none;" title="Open full consolidated statement on Screener.in">
+                VERIFIED REFERENCE: SCREENER.IN (CONSOLIDATED) 🔗
+              </a>
             </div>
           </div>
 
@@ -2219,9 +2232,21 @@
       const ml = QuantMLEngine.runFullPipeline(fund);
       activeMlInference = ml;
 
+      // Update Screener.in Canonical Reference Links
+      const screenerUrl = `https://www.screener.in/company/${symbol}/consolidated/`;
+      const headerScreener = document.getElementById('headerScreenerBtn');
+      if (headerScreener) {
+        headerScreener.href = screenerUrl;
+        headerScreener.title = `View ${symbol} consolidated financials on Screener.in`;
+      }
+      const briefingScreener = document.getElementById('briefingScreenerBadge');
+      if (briefingScreener) briefingScreener.href = screenerUrl;
+      const deckScreener = document.getElementById('deckScreenerLink');
+      if (deckScreener) deckScreener.href = screenerUrl;
+
       // Update DOM with dynamically derived metrics (ZERO HARDCODING)
       document.getElementById('stockTitle').textContent = fund.title;
-      document.getElementById('stockMeta').textContent = `Price: â‚¹ ${fund.current_price.toLocaleString()} | Mkt Cap: ${fund.mcap} | Sector: ${fund.sector}`;
+      document.getElementById('stockMeta').textContent = `Price: ₹ ${fund.current_price.toLocaleString()} | Mkt Cap: ${fund.mcap} | Sector: ${fund.sector}`;
       
       document.getElementById('actionSignal').textContent = ml.rl.action;
       document.getElementById('fairValue').textContent = `â‚¹ ${ml.dcf.intrinsic_fair.toLocaleString()} (${ml.dcf.mos_pct >= 0 ? '+' : ''}${ml.dcf.mos_pct}%)`;

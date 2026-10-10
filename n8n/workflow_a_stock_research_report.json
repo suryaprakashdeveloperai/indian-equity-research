@@ -52,13 +52,13 @@
     {
       "parameters": {
         "method": "GET",
-        "url": "=http://localhost:8000/api/ml/predict/{{ $json.ticker }}",
+        "url": "=http://localhost:8000/api/screener/{{ $json.ticker }}",
         "options": {
           "timeout": 8000
         }
       },
       "id": "node-collect-data",
-      "name": "3. Fetch Traceable Data & ML Valuation",
+      "name": "3. Fetch Screener.in Consolidated Data & Ratios",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [540, 380],

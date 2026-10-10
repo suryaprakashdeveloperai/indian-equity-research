@@ -20,6 +20,7 @@ $requiredFiles = @(
     "$baseDir\schemas\voice_session_schema.json",
     "$baseDir\services\slide_validator.py",
     "$baseDir\services\financial_data_engine.py",
+    "$baseDir\services\screener_service.py",
     "$baseDir\services\slide_generator.py",
     "$baseDir\services\telephony_manager.py",
     "$baseDir\services\voice_agent_server.py",
@@ -164,11 +165,32 @@ if ($envContent -match "CALLS_ENABLED=false") {
 }
 
 # ------------------------------------------------------------------------------
+# 6. Screener.in Integration & Citation Verification
+# ------------------------------------------------------------------------------
+Write-Host "`n[STEP 6] Auditing Screener.in Primary Reference & Citations..." -ForegroundColor Yellow
+
+$screenerServiceContent = Get-Content "$baseDir\services\screener_service.py" -Raw
+if ($screenerServiceContent -match "https://www.screener.in/company") {
+    Write-Host "  [PASS] ScreenerService Canonical URL configured to https://www.screener.in/company" -ForegroundColor Green
+} else {
+    Write-Host "  [FAIL] ScreenerService missing base URL" -ForegroundColor Red
+    $allPassed = $false
+}
+
+$finEngineContent = Get-Content "$baseDir\services\financial_data_engine.py" -Raw
+if ($finEngineContent -match "Screener.in") {
+    Write-Host "  [PASS] FinancialDataEngine primary source set to Screener.in (Consolidated)" -ForegroundColor Green
+} else {
+    Write-Host "  [FAIL] FinancialDataEngine does not cite Screener.in!" -ForegroundColor Red
+    $allPassed = $false
+}
+
+# ------------------------------------------------------------------------------
 # Summary
 # ------------------------------------------------------------------------------
 Write-Host "`n======================================================================" -ForegroundColor Cyan
 if ($allPassed) {
-    Write-Host " 🎉 ALL 5 VERIFICATION MODULES PASSED WITH 100% SUCCESS!" -ForegroundColor Green
+    Write-Host " 🎉 ALL 6 VERIFICATION MODULES PASSED WITH 100% SUCCESS!" -ForegroundColor Green
 } else {
     Write-Host " ⚠️ ONE OR MORE VERIFICATION STEPS FAILED." -ForegroundColor Red
 }

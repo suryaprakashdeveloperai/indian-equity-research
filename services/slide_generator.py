@@ -217,7 +217,6 @@ class SlideReportGenerator:
             )
         }
 
-        full_report = {
             "report_metadata": {
                 "report_id": report_id,
                 "ticker": ticker.upper(),
@@ -225,6 +224,8 @@ class SlideReportGenerator:
                 "exchange": exchange.upper(),
                 "currency": "INR",
                 "analysis_date": now_str,
+                "primary_reference": "Screener.in (Consolidated Financials)",
+                "primary_reference_url": f"https://www.screener.in/company/{ticker.upper()}/consolidated/",
                 "primary_model": "Google Gemini 1.5 Pro / GPT-4o Multi-Agent Desk",
                 "verification_model": "Claude 3.5 Sonnet Independent Audit Pass"
             },
@@ -237,7 +238,16 @@ class SlideReportGenerator:
                 "slide_6": slide_6
             },
             "voice_briefing_script": voice_briefing,
-            "sources_and_traceability": citations
+            "sources_and_traceability": citations,
+            "screener_reference": {
+                "source": "Screener.in (Consolidated Financial Statements)",
+                "overview_url": f"https://www.screener.in/company/{ticker.upper()}/consolidated/",
+                "profit_loss_url": f"https://www.screener.in/company/{ticker.upper()}/consolidated/#profit-loss",
+                "balance_sheet_url": f"https://www.screener.in/company/{ticker.upper()}/consolidated/#balance-sheet",
+                "cash_flow_url": f"https://www.screener.in/company/{ticker.upper()}/consolidated/#cash-flow",
+                "ratios_url": f"https://www.screener.in/company/{ticker.upper()}/consolidated/#ratios",
+                "shareholding_url": f"https://www.screener.in/company/{ticker.upper()}/consolidated/#shareholding"
+            }
         }
 
         return full_report

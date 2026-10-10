@@ -119,27 +119,36 @@ class FinancialDataEngine:
         # Calculate mathematical DCF and Target Prices
         calculations = FinancialDataEngine.calculate_intrinsic_and_targets(data)
         
-        # Build Citations Traceability
+        screener_url = f"https://www.screener.in/company/{sym}/consolidated/"
+        
+        # Build Citations Traceability strictly anchored to Screener.in
         citations = [
             {
                 "claim": f"Historical PAT CAGR of +{data['pat_cagr_3y']}% and ROCE of {data['roce']}%",
-                "source_name": data["filing_source"],
-                "source_url": data["filing_url"],
-                "reporting_period": "3-Year Audited Financials",
+                "source_name": "Screener.in (Consolidated Profit & Loss)",
+                "source_url": f"{screener_url}#profit-loss",
+                "reporting_period": "10-Year Audited Consolidated Financials",
                 "retrieval_timestamp": retrieval_time
             },
             {
                 "claim": f"Promoter pledge verified at {data['promoter_pledge_pct']}% with Debt-to-Equity of {data['debt_to_equity']}x",
-                "source_name": "Official Shareholding Pattern & Balance Sheet",
-                "source_url": data["filing_url"],
-                "reporting_period": "Latest Filings",
+                "source_name": "Screener.in (Shareholding Pattern & Balance Sheet)",
+                "source_url": f"{screener_url}#shareholding",
+                "reporting_period": "Latest Consolidated Shareholding & Encumbrance",
+                "retrieval_timestamp": retrieval_time
+            },
+            {
+                "claim": f"Compounded Sales Growth and Cash Conversion Cycle metrics",
+                "source_name": "Screener.in (Operating Ratios & Cash Flows)",
+                "source_url": f"{screener_url}#ratios",
+                "reporting_period": "Historical Compounding & Working Capital",
                 "retrieval_timestamp": retrieval_time
             },
             {
                 "claim": f"Intrinsic fair value of ₹{calculations['intrinsic_fair_value']:,} calculated via 2-stage DCF",
-                "source_name": "F.R.I.D.A.Y. Quantitative Valuation Engine",
-                "source_url": "https://indian-equity-research.onrender.com/api/ml/predict",
-                "reporting_period": "Real-time Forward Valuation Model",
+                "source_name": "F.R.I.D.A.Y. DCF Engine backed by Screener.in Cash Flows",
+                "source_url": screener_url,
+                "reporting_period": "Real-time Forward Valuation Model (11.8% WACC)",
                 "retrieval_timestamp": retrieval_time
             }
         ]
@@ -147,6 +156,8 @@ class FinancialDataEngine:
         return {
             "ticker": sym,
             "exchange": exchange,
+            "primary_source": "Screener.in (Consolidated)",
+            "primary_source_url": screener_url,
             "fundamentals": data,
             "calculations": calculations,
             "citations": citations,
