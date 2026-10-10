@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VoiceSessionContext",
+  "description": "Schema for live phone call conversation state, Q&A memory, and verified citation store.",
+  "type": "object",
+  "properties": {
+    "session_id": { "type": "string" },
+    "call_sid": { "type": "string" },
+    "phone_number": { "type": "string" },
+    "ticker": { "type": "string" },
+    "company_name": { "type": "string" },
+    "milestone_triggered": { "type": "string" },
+    "call_status": { "type": "string", "enum": ["requested", "initiated", "ringing", "answered", "completed", "failed", "busy", "no-answer"] },
+    "report_summary": {
+      "type": "object",
+      "properties": {
+        "verdict": { "type": "string" },
+        "conviction": { "type": "string" },
+        "time_horizon": { "type": "string" },
+        "target_price": { "type": "number" },
+        "intrinsic_dcf": { "type": "number" },
+        "margin_of_safety": { "type": "number" },
+        "strongest_reason": { "type": "string" },
+        "biggest_risk": { "type": "string" }
+      }
+    },
+    "verified_qa_database": {
+      "type": "array",
+      "description": "Pre-compiled verified answers to expected user questions during phone calls",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question_intent": { "type": "string" },
+          "short_spoken_answer": { "type": "string" },
+          "detailed_financial_context": { "type": "string" },
+          "source_citation": { "type": "string" }
+        },
+        "required": ["question_intent", "short_spoken_answer", "source_citation"]
+      }
+    },
+    "conversation_turns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "speaker": { "type": "string", "enum": ["agent", "user", "system"] },
+          "transcript": { "type": "string" },
+          "timestamp": { "type": "string" }
+        }
+      }
+    }
+  },
+  "required": ["session_id", "ticker", "company_name"]
+}

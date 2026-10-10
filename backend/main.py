@@ -26,10 +26,29 @@ except ImportError:
     except ImportError:
         QuantitativeMLEngine = None
 
+try:
+    from services.slide_generator import SlideReportGenerator
+    from services.slide_validator import Slide6Validator
+    from services.telephony_manager import TelephonyManager
+    from services.voice_agent_server import VoiceAgentContextServer
+except ImportError:
+    try:
+        import sys
+        sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+        from services.slide_generator import SlideReportGenerator
+        from services.slide_validator import Slide6Validator
+        from services.telephony_manager import TelephonyManager
+        from services.voice_agent_server import VoiceAgentContextServer
+    except ImportError:
+        SlideReportGenerator = None
+        Slide6Validator = None
+        TelephonyManager = None
+        VoiceAgentContextServer = None
+
 app = FastAPI(
     title="F.R.I.D.A.Y. 2.0 Dalal Street Wealth Director API",
-    description="Multi-Source Financial News & Tanglish Conversational Telephony Backend",
-    version="2.3.0"
+    description="Multi-Source Financial News, Six-Slide Research & Conversational Telephony Backend",
+    version="2.4.0"
 )
 
 # Enable CORS for web frontend (Netlify, localhost, Render)
@@ -55,6 +74,25 @@ class MLPredictRequest(BaseModel):
     debt_to_equity: Optional[float] = 0.1
     ocf_pat_ratio: Optional[float] = 1.5
     promoter_pledge_pct: Optional[float] = 0.0
+
+class ResearchReportRequest(BaseModel):
+    ticker: str = "TATAMOTORS"
+    company_name: Optional[str] = "Tata Motors Limited"
+    exchange: Optional[str] = "NSE"
+    analysis_period: Optional[str] = "5Y"
+    investor_profile: Optional[str] = "BALANCED"
+
+class VoiceMilestoneRequest(BaseModel):
+    milestone: str = "report_completed"
+    ticker: str = "TATAMOTORS"
+    company_name: Optional[str] = "Tata Motors Limited"
+    phone_number: Optional[str] = "+916382480091"
+    enabled_milestones: Optional[List[str]] = None
+
+class VoiceQueryRequest(BaseModel):
+    session_id: Optional[str] = "SESS_TATAMOTORS"
+    ticker: Optional[str] = "TATAMOTORS"
+    query: str
 
 class ChatRequest(BaseModel):
     query: str
@@ -481,3 +519,58 @@ def advisor_chat(chat: ChatRequest):
             "intent": "GENERAL_DISPATCH",
             "agent": "F.R.I.D.A.Y. [DIRECTOR]"
         }
+
+# --- SIX-SLIDE RESEARCH REPORT & CONVERSATIONAL VOICE ENDPOINTS ---
+@app.post("/api/reports/generate")
+def generate_stock_report(req: ResearchReportRequest):
+    """
+    Generates a full 6-slide institutional research presentation with Slide 6 automated validation.
+    """
+    if SlideReportGenerator is None:
+        raise HTTPException(status_code=500, detail="SlideReportGenerator module not initialized.")
+    return SlideReportGenerator.generate_six_slide_report(
+        ticker=req.ticker,
+        exchange=req.exchange or "NSE",
+        investor_profile=req.investor_profile or "BALANCED"
+    )
+
+@app.get("/api/reports/sample/{ticker}")
+def get_sample_stock_report(ticker: str):
+    """
+    Direct GET endpoint for n8n or frontend to view a 6-slide report for any stock.
+    """
+    if SlideReportGenerator is None:
+        raise HTTPException(status_code=500, detail="SlideReportGenerator module not initialized.")
+    return SlideReportGenerator.generate_six_slide_report(ticker=ticker)
+
+@app.post("/webhook/voice-milestone-call")
+def voice_milestone_webhook(req: VoiceMilestoneRequest):
+    """
+    n8n webhook receiver for milestone phone calls (report_started, milestone_reached, report_completed, critical_failure).
+    Enforces CALLS_ENABLED safety flag and recipient whitelist.
+    """
+    if TelephonyManager is None:
+        return {
+            "status": "TELEPHONY_NOT_LOADED",
+            "message": "TelephonyManager module not initialized."
+        }
+    return TelephonyManager.dispatch_milestone_call(
+        milestone=req.milestone,
+        ticker=req.ticker,
+        company_name=req.company_name or req.ticker,
+        phone_number=req.phone_number,
+        user_enabled_milestones=req.enabled_milestones
+    )
+
+@app.post("/api/voice/session/query")
+def answer_voice_query(req: VoiceQueryRequest):
+    """
+    Real-time interactive voice Q&A endpoint for live phone calls.
+    Answers 'Why BUY?', 'Biggest risk?', 'Valuation support?', 'Sources & citations?'.
+    """
+    if VoiceAgentContextServer is None:
+        raise HTTPException(status_code=500, detail="VoiceAgentContextServer module not initialized.")
+    sess_id = req.session_id or f"SESS_{req.ticker.upper()}"
+    if sess_id not in VoiceAgentContextServer.ACTIVE_SESSIONS and req.ticker:
+        VoiceAgentContextServer.initialize_session(req.ticker)
+    return VoiceAgentContextServer.answer_voice_query(sess_id, req.query)

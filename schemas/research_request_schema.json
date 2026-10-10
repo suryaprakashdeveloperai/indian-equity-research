@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StockResearchRequest",
+  "description": "Input payload for triggering an automated stock research and 6-slide report generation.",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string",
+      "description": "Full legal or commercial name of the company",
+      "example": "Tata Motors Limited"
+    },
+    "ticker": {
+      "type": "string",
+      "description": "Trading stock ticker symbol",
+      "example": "TATAMOTORS"
+    },
+    "exchange": {
+      "type": "string",
+      "description": "Stock exchange where equity is traded",
+      "enum": ["NSE", "BSE", "NASDAQ", "NYSE", "LSE"],
+      "default": "NSE"
+    },
+    "analysis_period": {
+      "type": "string",
+      "description": "Requested historical and projection horizon",
+      "enum": ["1Y", "3Y", "5Y", "10Y"],
+      "default": "5Y"
+    },
+    "investor_profile": {
+      "type": "string",
+      "description": "Target investor horizon and risk appetite",
+      "enum": ["LONG_TERM_COMPOUNDER", "TACTICAL_SWING_TRADER", "BALANCED"],
+      "default": "BALANCED"
+    },
+    "notification_phone": {
+      "type": "string",
+      "description": "E.164 formatted phone number for voice milestone calls",
+      "example": "+916382480091"
+    },
+    "enabled_milestones": {
+      "type": "array",
+      "description": "List of milestones that should trigger an outbound phone call",
+      "items": {
+        "type": "string",
+        "enum": ["report_started", "milestone_reached", "report_completed", "critical_failure"]
+      },
+      "default": ["report_started", "report_completed", "critical_failure"]
+    }
+  },
+  "required": ["ticker", "company_name"]
+}

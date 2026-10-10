@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StockAnalysisReportOutput",
+  "description": "Structured output schema for the six-slide stock analysis presentation.",
+  "type": "object",
+  "properties": {
+    "report_metadata": {
+      "type": "object",
+      "properties": {
+        "report_id": { "type": "string" },
+        "ticker": { "type": "string" },
+        "company_name": { "type": "string" },
+        "exchange": { "type": "string" },
+        "currency": { "type": "string", "default": "INR" },
+        "analysis_date": { "type": "string" },
+        "primary_model": { "type": "string" },
+        "verification_model": { "type": "string" }
+      },
+      "required": ["report_id", "ticker", "company_name", "analysis_date"]
+    },
+    "slides": {
+      "type": "object",
+      "properties": {
+        "slide_1": {
+          "type": "object",
+          "title": "Executive Summary & Investment Overview",
+          "properties": {
+            "title": { "type": "string" },
+            "current_market_price": { "type": "number" },
+            "market_cap": { "type": "string" },
+            "sector": { "type": "string" },
+            "target_price_12m": { "type": "number" },
+            "implied_upside_pct": { "type": "number" },
+            "recommendation": { "type": "string", "enum": ["STRONG BUY", "BUY", "HOLD", "SELL", "STRONG SELL"] },
+            "conviction": { "type": "string", "enum": ["High", "Medium", "Low"] },
+            "executive_takeaway": { "type": "string" },
+            "key_catalysts": { "type": "array", "items": { "type": "string" } }
+          },
+          "required": ["title", "current_market_price", "recommendation", "executive_takeaway"]
+        },
+        "slide_2": {
+          "type": "object",
+          "title": "Business Model, Moat & Industry Tailwinds",
+          "properties": {
+            "title": { "type": "string" },
+            "core_revenue_streams": { "type": "array", "items": { "type": "string" } },
+            "competitive_moat": { "type": "string" },
+            "industry_growth_tailwinds": { "type": "array", "items": { "type": "string" } },
+            "peer_comparison": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "peer_name": { "type": "string" },
+                  "market_share_pct": { "type": "number" },
+                  "pe_multiple": { "type": "number" },
+                  "roce_pct": { "type": "number" }
+                }
+              }
+            }
+          },
+          "required": ["title", "competitive_moat", "core_revenue_streams"]
+        },
+        "slide_3": {
+          "type": "object",
+          "title": "Financial Health, Cash Flow & Balance Sheet Audit",
+          "properties": {
+            "title": { "type": "string" },
+            "historical_metrics": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "period": { "type": "string" },
+                  "revenue": { "type": "string" },
+                  "ebitda_margin_pct": { "type": "number" },
+                  "pat": { "type": "string" },
+                  "roce_pct": { "type": "number" },
+                  "operating_cash_flow": { "type": "string" },
+                  "free_cash_flow": { "type": "string" },
+                  "cfo_pat_ratio": { "type": "number" },
+                  "debt_to_equity": { "type": "number" }
+                }
+              }
+            },
+            "cagr_summary": {
+              "type": "object",
+              "properties": {
+                "sales_cagr_3y": { "type": "number" },
+                "pat_cagr_3y": { "type": "number" }
+              }
+            },
+            "governance_forensics": {
+              "type": "object",
+              "properties": {
+                "promoter_pledge_pct": { "type": "number" },
+                "auditor_qualification": { "type": "string" },
+                "related_party_transactions_flag": { "type": "string" }
+              }
+            }
+          },
+          "required": ["title", "historical_metrics", "governance_forensics"]
+        },
+        "slide_4": {
+          "type": "object",
+          "title": "Valuation Modeling & Target Price Breakdown",
+          "properties": {
+            "title": { "type": "string" },
+            "dcf_model": {
+              "type": "object",
+              "properties": {
+                "wacc_pct": { "type": "number" },
+                "terminal_growth_rate_pct": { "type": "number" },
+                "intrinsic_fair_value": { "type": "number" },
+                "margin_of_safety_pct": { "type": "number" }
+              }
+            },
+            "multiples_model": {
+              "type": "object",
+              "properties": {
+                "current_pe": { "type": "number" },
+                "median_5y_pe": { "type": "number" },
+                "target_pe": { "type": "number" },
+                "projected_eps_12m": { "type": "number" }
+              }
+            },
+            "scenario_analysis": {
+              "type": "object",
+              "properties": {
+                "bull_case_target": { "type": "number" },
+                "base_case_target": { "type": "number" },
+                "bear_case_target": { "type": "number" }
+              }
+            }
+          },
+          "required": ["title", "dcf_model", "scenario_analysis"]
+        },
+        "slide_5": {
+          "type": "object",
+          "title": "Critical Risks, Pre-Mortem & Invalidation Triggers",
+          "properties": {
+            "title": { "type": "string" },
+            "key_risks": { "type": "array", "items": { "type": "string" } },
+            "downside_scenarios": { "type": "array", "items": { "type": "string" } },
+            "thesis_invalidation_criteria": { "type": "string" },
+            "structural_stop_loss": { "type": "string" }
+          },
+          "required": ["title", "key_risks", "thesis_invalidation_criteria"]
+        },
+        "slide_6": {
+          "type": "object",
+          "title": "Conclusion Report — Analyst's Closing Note",
+          "properties": {
+            "title": { "type": "string", "enum": ["Conclusion Report — Analyst's Closing Note"] },
+            "paragraph": {
+              "type": "string",
+              "description": "Exactly one single paragraph containing 120-160 words with strongest reason, biggest risk, suitability decision, and exact verdict string."
+            },
+            "word_count": { "type": "integer", "minimum": 120, "maximum": 160 },
+            "strongest_reason": { "type": "string" },
+            "biggest_risk": { "type": "string" },
+            "suitability_decision": { "type": "string" },
+            "review_trigger": { "type": "string" },
+            "final_verdict": { "type": "string", "enum": ["STRONG BUY", "BUY", "HOLD", "SELL", "STRONG SELL"] },
+            "conviction": { "type": "string", "enum": ["High", "Medium", "Low"] },
+            "time_horizon": { "type": "string", "enum": ["3–6 months", "6–12 months", "3+ years"] },
+            "raw_verdict_line": {
+              "type": "string",
+              "pattern": "^Final Verdict: (STRONG BUY|BUY|HOLD|SELL|STRONG SELL) \\| Conviction: (High|Medium|Low) \\| Time Horizon: (3–6 months|6–12 months|3\\+ years)\\.$"
+            }
+          },
+          "required": ["title", "paragraph", "word_count", "final_verdict", "conviction", "time_horizon", "raw_verdict_line"]
+        }
+      },
+      "required": ["slide_1", "slide_2", "slide_3", "slide_4", "slide_5", "slide_6"]
+    },
+    "voice_briefing_script": {
+      "type": "object",
+      "properties": {
+        "spoken_opening": { "type": "string" },
+        "key_highlights": { "type": "array", "items": { "type": "string" } },
+        "spoken_closing_note": { "type": "string" }
+      },
+      "required": ["spoken_opening", "spoken_closing_note"]
+    },
+    "sources_and_traceability": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim": { "type": "string" },
+          "source_name": { "type": "string" },
+          "source_url": { "type": "string" },
+          "reporting_period": { "type": "string" },
+          "retrieval_timestamp": { "type": "string" }
+        },
+        "required": ["claim", "source_name", "reporting_period"]
+      }
+    }
+  },
+  "required": ["report_metadata", "slides", "voice_briefing_script", "sources_and_traceability"]
+}

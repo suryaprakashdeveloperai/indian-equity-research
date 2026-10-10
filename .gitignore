@@ -2,3 +2,9 @@
 .packages
 build/
 *.zip
+.env
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+tests/output_report/

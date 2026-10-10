@@ -1,0 +1,134 @@
+{
+  "name": "F.R.I.D.A.Y. - Workflow B: Voice Call Notifications & Live Conversation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "voice-milestone-call",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "node-voice-webhook-trigger",
+      "name": "Webhook Trigger (/voice-milestone-call)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [100, 300],
+      "webhookId": "voice-milestone-trigger-v1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $input.first().json;\n\nconst milestone = payload.milestone || 'report_completed';\nconst ticker = (payload.ticker || 'STOCK').toUpperCase();\nconst company_name = payload.company_name || ticker;\nconst phone_number = payload.phone_number || '+916382480091';\n\n// Check CALLS_ENABLED safety flag from environment or payload override\nconst calls_enabled = (process.env.CALLS_ENABLED || 'false').toLowerCase() === 'true';\n\nconst allowed_milestones = payload.enabled_milestones || ['report_started', 'report_completed', 'critical_failure'];\nconst milestone_allowed = allowed_milestones.includes(milestone);\n\nconst should_call = calls_enabled && milestone_allowed;\n\nlet spoken_text = '';\nif (milestone === 'report_started') {\n  spoken_text = `Hello! This is F.R.I.D.A.Y., your AI financial analyst. I have initiated an institutional research audit on ${company_name} (${ticker}). Ingesting filings and concalls now.`;\n} else if (milestone === 'report_completed') {\n  spoken_text = `Hello! Your six-slide institutional research report on ${company_name} (${ticker}) is complete with high conviction. Would you like me to walk you through our valuation model or discuss the key risks?`;\n} else if (milestone === 'critical_failure') {\n  spoken_text = `F.R.I.D.A.Y. alert: The research run on ${ticker} encountered a missing filing gap and was halted to preserve verification integrity.`;\n} else {\n  spoken_text = `F.R.I.D.A.Y. milestone update for ${ticker}: ${milestone}.`;\n}\n\nreturn [{\n  json: {\n    milestone,\n    ticker,\n    company_name,\n    phone_number,\n    calls_enabled,\n    milestone_allowed,\n    should_call,\n    spoken_text,\n    call_id: `CALL_${Date.now()}`,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "node-evaluate-policy",
+      "name": "1. Evaluate Safety & Milestone Policy",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.should_call }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "node-if-call-enabled",
+      "name": "2. Is Call Authorized & Enabled?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [540, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/api/voice/call-me",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "phone_number", "value": "={{ $json.phone_number }}" },
+            { "name": "ticker", "value": "={{ $json.ticker }}" },
+            { "name": "milestone", "value": "={{ $json.milestone }}" }
+          ]
+        },
+        "options": {
+          "timeout": 8000
+        }
+      },
+      "id": "node-dispatch-telephony",
+      "name": "3A. Dispatch Outbound Telephony Call",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [780, 200],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\n// Safe dry-run response when CALLS_ENABLED is false\nreturn [{\n  json: {\n    status: 'DRY_RUN_LOGGED',\n    message: 'Outbound call suppressed by safety flag (CALLS_ENABLED=false). To enable cellular calls, set CALLS_ENABLED=true in .env.',\n    call_details: data\n  }\n}];"
+      },
+      "id": "node-log-dry-run",
+      "name": "3B. Log Safe Dry-Run (Safety Lock Active)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [780, 420]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json, null, 2) }}",
+        "options": {}
+      },
+      "id": "node-respond-voice-webhook",
+      "name": "4. Return Call Dispatch Status",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1020, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger (/voice-milestone-call)": {
+      "main": [
+        [
+          { "node": "1. Evaluate Safety & Milestone Policy", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "1. Evaluate Safety & Milestone Policy": {
+      "main": [
+        [
+          { "node": "2. Is Call Authorized & Enabled?", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "2. Is Call Authorized & Enabled?": {
+      "main": [
+        [
+          { "node": "3A. Dispatch Outbound Telephony Call", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "3B. Log Safe Dry-Run (Safety Lock Active)", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "3A. Dispatch Outbound Telephony Call": {
+      "main": [
+        [
+          { "node": "4. Return Call Dispatch Status", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "3B. Log Safe Dry-Run (Safety Lock Active)": {
+      "main": [
+        [
+          { "node": "4. Return Call Dispatch Status", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

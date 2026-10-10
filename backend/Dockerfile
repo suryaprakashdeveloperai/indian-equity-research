@@ -7,6 +7,10 @@ COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ /app/backend/
+COPY services/ /app/services/
+COPY schemas/ /app/schemas/
+COPY prompts/ /app/prompts/
+COPY n8n/ /app/n8n/
 COPY index.html /app/index.html
 
 EXPOSE 8000
