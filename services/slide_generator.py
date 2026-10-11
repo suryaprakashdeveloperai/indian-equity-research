@@ -216,7 +216,7 @@ class SlideReportGenerator:
                 f"I am ready to answer any questions you have about this report!"
             )
         }
-
+        full_report = {
             "report_metadata": {
                 "report_id": report_id,
                 "ticker": ticker.upper(),

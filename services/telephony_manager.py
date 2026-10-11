@@ -14,7 +14,7 @@ import urllib.request
 import urllib.parse
 import json
 import base64
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Tuple
 
 class TelephonyManager:
 
@@ -30,7 +30,7 @@ class TelephonyManager:
         return os.getenv("NOTIFICATION_PHONE", "+916382480091").strip()
 
     @staticmethod
-    def should_trigger_call(milestone: str, user_enabled_milestones: Optional[List[str]] = None) -> Tuple_Bool_Reason := Tuple[bool, str]:
+    def should_trigger_call(milestone: str, user_enabled_milestones: Optional[List[str]] = None) -> Tuple[bool, str]:
         """
         Evaluates whether a call should be placed based on safety flags and milestone policy.
         """
