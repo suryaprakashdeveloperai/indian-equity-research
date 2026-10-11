@@ -6,14 +6,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY backend/ /app/backend/
-COPY services/ /app/services/
-COPY schemas/ /app/schemas/
-COPY prompts/ /app/prompts/
-COPY n8n/ /app/n8n/
-COPY index.html /app/index.html
+# Copy complete application source
+COPY . /app/
 
-ENV PORT=8000
 EXPOSE 8000 10000
 
-CMD ["sh", "-c", "uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
