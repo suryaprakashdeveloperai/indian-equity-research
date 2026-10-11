@@ -140,7 +140,21 @@ def serve_frontend():
     </html>
     """
 
+@app.on_event("startup")
+async def startup_banner():
+    port = os.environ.get("PORT", "8000")
+    print("=" * 65, flush=True)
+    print("🚀 F.R.I.D.A.Y. 2.0 DALAL STREET WEALTH DIRECTOR // ENGINE STARTED", flush=True)
+    print(f"📡 Fast HTTP Port Binding Active on: http://0.0.0.0:{port}", flush=True)
+    print("🌐 Health Check Endpoints: /, /health, /healthz, /api/health", flush=True)
+    print("=" * 65, flush=True)
+
 # --- Health & Tickers ---
+@app.get("/healthz")
+@app.get("/health")
+def fast_health():
+    return {"status": "ok", "app": "friday-wealth-engine", "healthy": True}
+
 @app.get("/api/health")
 def health_check():
     return {
