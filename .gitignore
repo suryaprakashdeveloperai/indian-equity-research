@@ -8,3 +8,6 @@ __pycache__/
 *.pyo
 .pytest_cache/
 tests/output_report/
+screener_*.html
+fetch_real_screener.ps1
+update_ui.ps1
