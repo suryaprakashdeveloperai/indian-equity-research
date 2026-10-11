@@ -64,28 +64,36 @@
       overflow-x: hidden;
     }
 
-    /* Top Navigation HUD - Neo-Brutalist Day Theme */
+    /* Top Navigation HUD - Responsive Neo-Brutalist 2-Tier Architecture */
     header {
       background: #ffffff;
       border-bottom: 3.5px solid #000000;
       box-shadow: 0 4px 0px #000000;
-      padding: 14px 28px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 12px 24px;
       position: sticky;
       top: 0;
       z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .header-tier-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 12px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
     .brand-avatar {
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       border-radius: 12px;
       background: #ffe600;
       border: 3px solid #000000;
@@ -93,17 +101,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      position: relative;
+      font-size: 22px;
+      flex-shrink: 0;
     }
     .brand-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 900;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       color: #000000;
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
     .live-badge {
       background: #bbf7d0;
@@ -132,28 +141,58 @@
       font-weight: 700;
     }
 
-    /* Controls Panel */
-    .controls-panel {
+    .header-call-wrap {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-shrink: 0;
     }
-    .lang-btn {
-      background: #e9d5ff;
+    .call-text-mobile {
+      display: none;
+    }
+    .call-text-desk {
+      display: inline;
+    }
+
+    /* Private Hotline Call Button */
+    .hotline-btn {
+      background: #ff0077;
+      color: #ffffff;
       border: 2.5px solid #000000;
-      box-shadow: 3px 3px 0px #000000;
-      color: #000000;
-      padding: 8px 14px;
+      box-shadow: 4px 4px 0px #000000;
+      padding: 8px 16px;
       border-radius: 8px;
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.15s;
+      white-space: nowrap;
     }
-    .lang-btn:hover {
-      background: #d8b4fe;
-      transform: translate(-1px, -1px);
-      box-shadow: 4px 4px 0px #000000;
+    .hotline-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #000000;
+      background: #e6006b;
+    }
+
+    /* Controls Panel & Action Tiers */
+    .header-tier-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .header-search-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 240px;
+      max-width: 480px;
     }
 
     .search-box {
@@ -163,8 +202,8 @@
       border: 2.5px solid #000000;
       box-shadow: 3px 3px 0px #000000;
       border-radius: 8px;
-      padding: 6px 14px;
-      width: 220px;
+      padding: 6px 12px;
+      flex: 1;
       transition: all 0.15s;
     }
     .search-box:focus-within {
@@ -183,45 +222,136 @@
       width: 100%;
     }
 
-    /* Private Hotline Call Button */
-    .hotline-btn {
-      background: #ff0077;
-      color: #ffffff;
-      border: 2.5px solid #000000;
-      box-shadow: 4px 4px 0px #000000;
-      padding: 9px 18px;
-      border-radius: 8px;
-      font-size: 13px;
+    .header-audit-btn {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border: 2.5px solid #000000 !important;
+      box-shadow: 3px 3px 0px #000000 !important;
+      padding: 7px 14px;
+      font-size: 11px;
       font-weight: 900;
       cursor: pointer;
+      flex-shrink: 0;
+      font-family: 'JetBrains Mono', monospace;
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+    .header-audit-btn:hover {
+      background: #0369a1 !important;
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px #000000 !important;
+    }
+
+    .header-chips-row {
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.15s;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
     }
-    .hotline-btn:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0px #000000;
-      background: #e6006b;
+    .header-chips-row::-webkit-scrollbar {
+      display: none;
     }
 
-    /* Voice Tester Button */
+    .header-chip {
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 7px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 8px;
+      border: 2px solid #000000;
+      box-shadow: 2.5px 2.5px 0px #000000;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .header-chip:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3.5px 3.5px 0px #000000;
+    }
+
+    .lang-btn {
+      background: #e9d5ff;
+      border: 2.5px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      color: #000000;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .lang-btn:hover {
+      background: #d8b4fe;
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px #000000;
+    }
+
     .voice-tester-btn {
       background: #00e5ff;
       border: 2.5px solid #000000;
       box-shadow: 3px 3px 0px #000000;
       color: #000000;
-      padding: 8px 12px;
+      padding: 7px 12px;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 900;
       cursor: pointer;
       transition: all 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .voice-tester-btn:hover {
       background: #ffe600;
       transform: translate(-1px, -1px);
       box-shadow: 4px 4px 0px #000000;
+    }
+
+    .chip-n8n {
+      background: #ffedd5 !important;
+      color: #c2410c !important;
+      border-color: #000000 !important;
+    }
+    .chip-deck {
+      background: #dcfce7 !important;
+      color: #15803d !important;
+      border-color: #000000 !important;
+    }
+    .chip-screener {
+      background: #e0f2fe !important;
+      color: #0369a1 !important;
+      border-color: #000000 !important;
+    }
+
+    @media (min-width: 1200px) {
+      header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 28px;
+      }
+      .header-tier-main {
+        width: auto;
+        justify-content: flex-start;
+      }
+      .header-tier-actions {
+        width: auto;
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+      }
+      .header-search-row {
+        flex: initial;
+        min-width: 220px;
+      }
     }
 
     /* Sectors & Tickers Bar */
@@ -509,18 +639,20 @@
     /* Grid Layouts */
     .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 20px;
     }
 
     /* Tables */
     .table-container {
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       border: 2.5px solid #000000;
       border-radius: 10px;
       margin-top: 14px;
       background: #ffffff;
       box-shadow: 4px 4px 0px #000000;
+      max-width: 100%;
     }
     table {
       width: 100%;
@@ -736,20 +868,25 @@
       display: none;
       align-items: center;
       justify-content: center;
+      padding: 12px;
     }
     .phone-overlay.active { display: flex; }
 
     .phone-body {
-      width: 450px;
+      width: 100%;
+      max-width: 420px;
+      max-height: 90vh;
+      overflow-y: auto;
       background: #ffffff;
       border: 3.5px solid #000000;
-      border-radius: 28px;
-      box-shadow: 10px 10px 0px #000000;
-      padding: 30px 24px;
+      border-radius: 24px;
+      box-shadow: 8px 8px 0px #000000;
+      padding: 24px 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
       color: #000000;
+      box-sizing: border-box;
     }
     .avatar-glow {
       width: 100px;
@@ -1144,7 +1281,7 @@
     /* 4-GRID INTERACTIVE VISUAL CHARTS */
     .chart-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 22px;
       margin-bottom: 24px;
     }
@@ -1365,59 +1502,391 @@
     .n8n-pipe-btn.active { color: #ffffff !important; background: #ff5500 !important; }
     .tab-item.tab-gem.active { color: #ffffff !important; background: #ff0077 !important; }
     .ticker-chip.gem-chip.active { color: #ffffff !important; background: #ff0077 !important; }
+
+    /* ========================================================================= */
+    /* COMPREHENSIVE RESPONSIVE MOBILE ADAPTATION SYSTEM (MAX-WIDTH: 768px & 480px) */
+    /* ========================================================================= */
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      /* Navigation HUD Mobile Adaptation */
+      header {
+        padding: 8px 10px;
+        gap: 8px;
+      }
+      .brand {
+        gap: 8px;
+      }
+      .brand-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+        border-radius: 8px;
+        border-width: 2px;
+      }
+      .brand-title {
+        font-size: 13px;
+        gap: 4px;
+        line-height: 1.2;
+      }
+      .brand-title-desk {
+        display: none;
+      }
+      .brand-subtitle {
+        display: none;
+      }
+      .live-badge, .voice-badge {
+        font-size: 8.5px;
+        padding: 1px 4px;
+        border-width: 1.5px !important;
+      }
+      .header-call-btn {
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+        border-radius: 6px;
+      }
+      .call-text-desk {
+        display: none;
+      }
+      .call-text-mobile {
+        display: inline;
+        font-weight: 900;
+      }
+      .header-tier-actions {
+        flex-direction: column;
+        gap: 6px;
+      }
+      .header-search-row {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        gap: 6px;
+      }
+      .search-box {
+        flex: 1;
+        width: auto;
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+      .header-audit-btn {
+        padding: 6px 12px;
+        font-size: 11px;
+      }
+      .header-chips-row {
+        width: 100%;
+        gap: 6px;
+      }
+      .header-chip {
+        padding: 5px 9px;
+        font-size: 10px;
+      }
+
+      /* Container & Section Padding */
+      .container {
+        padding: 10px 10px 28px 10px;
+      }
+      .sectors-bar {
+        padding: 8px 10px;
+        gap: 6px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .sectors-bar::-webkit-scrollbar {
+        display: none;
+      }
+      .ticker-chip {
+        padding: 5px 10px;
+        font-size: 11px;
+        flex-shrink: 0;
+      }
+      .sector-label {
+        font-size: 10px;
+        flex-shrink: 0;
+      }
+      .status-bar {
+        padding: 8px 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        font-size: 11px;
+      }
+      .status-indicator {
+        font-size: 11px;
+      }
+
+      /* Tabs Mobile Adaptation */
+      .tab-bar {
+        gap: 6px;
+        margin-bottom: 16px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .tab-bar::-webkit-scrollbar {
+        display: none;
+      }
+      .tab-item {
+        padding: 8px 12px;
+        font-size: 11px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      /* Cards & Containers */
+      .card, .brutal-card {
+        padding: 16px 12px;
+        box-shadow: 4px 4px 0px #000000;
+        margin-bottom: 14px;
+      }
+      .brutal-hero-voice {
+        padding: 16px 12px;
+        gap: 12px;
+      }
+      .brutal-hero-voice h2 {
+        font-size: 17px !important;
+      }
+      .voice-hero-btn-row {
+        display: flex;
+        width: 100%;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .mic-record-btn, .briefing-speaker-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 8px !important;
+        font-size: 12px !important;
+      }
+      .stock-hero-banner {
+        padding: 14px 12px;
+      }
+      .stock-hero-banner h1 {
+        font-size: 18px !important;
+        line-height: 1.25;
+      }
+      .stock-hero-verdict {
+        text-align: left !important;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 2px solid #000000;
+        width: 100%;
+      }
+
+      /* Charts Grid */
+      .chart-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .chart-box {
+        padding: 12px 10px;
+        box-shadow: 4px 4px 0px #000000;
+      }
+      .chart-box-title {
+        font-size: 13.5px;
+      }
+      .chart-canvas-wrap {
+        height: 230px;
+        padding: 4px;
+      }
+
+      /* Peer Comparison Arena */
+      .comparison-arena {
+        padding: 14px 10px;
+      }
+      .compare-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      #peerSelectDropdown {
+        width: 100%;
+        font-size: 12px;
+      }
+
+      /* Grid Layouts & Data Tables */
+      .grid-2, .quant-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .table-container {
+        box-shadow: 3px 3px 0px #000000;
+      }
+      table th, table td {
+        padding: 8px 10px;
+        font-size: 11px;
+      }
+      .compare-table th, .compare-table td {
+        padding: 8px 8px;
+        font-size: 11px;
+      }
+
+      /* Slide Deck & Automation Studio */
+      .slide-card-presentation {
+        padding: 16px 12px;
+        min-height: auto;
+      }
+      .slide-header-row {
+        flex-direction: column;
+        gap: 6px;
+      }
+      .slide-header-row h3 {
+        font-size: 17px !important;
+      }
+      .slide-tab-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+      .n8n-studio-banner {
+        padding: 14px 12px;
+      }
+      .n8n-studio-banner h2 {
+        font-size: 18px !important;
+      }
+      .n8n-pipeline-tabs {
+        flex-direction: column;
+        gap: 6px;
+      }
+      .n8n-pipe-btn {
+        width: 100%;
+        font-size: 12px;
+      }
+      .news-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 14px;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      /* Decision Tiles 2x2 Grid on Mobile */
+      .decision-tiles-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        margin-bottom: 16px !important;
+      }
+      .decision-tiles-grid .brutal-card {
+        padding: 10px 8px !important;
+        box-shadow: 3px 3px 0px #000000 !important;
+        border-radius: 8px !important;
+      }
+      .decision-tiles-grid .brutal-card > div:first-child {
+        font-size: 9px !important;
+        line-height: 1.2;
+      }
+      .decision-tiles-grid .brutal-card > div:nth-child(2) {
+        font-size: 14px !important;
+        margin-top: 4px !important;
+        line-height: 1.2;
+      }
+      .decision-tiles-grid .brutal-card > div:nth-child(3) {
+        font-size: 10px !important;
+        margin-top: 2px !important;
+        line-height: 1.2;
+      }
+
+      /* Fundamental Badges 2x2 Grid */
+      .fundamental-badges-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+      }
+      .fundamental-badges-grid > div {
+        padding: 8px 8px !important;
+      }
+      .fundamental-badges-grid > div > div:first-child {
+        font-size: 8.5px !important;
+      }
+      .fundamental-badges-grid > div > div:nth-child(2) {
+        font-size: 13px !important;
+      }
+      .shareholding-segment {
+        font-size: 9px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .phone-body {
+        padding: 16px 12px;
+        border-radius: 18px;
+      }
+      .avatar-glow {
+        width: 64px;
+        height: 64px;
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+      .caller-name {
+        font-size: 18px;
+      }
+      .call-chat-stream {
+        height: 120px;
+        padding: 10px;
+        font-size: 12px;
+        margin: 12px 0;
+      }
+      .call-chip {
+        padding: 4px 8px;
+        font-size: 10px;
+      }
+    }
   </style>
 </head>
 <body>
 
   <!-- Top Header Navigation -->
   <header>
-    <div class="brand">
-      <div class="brand-avatar">👩‍💼</div>
-      <div>
-        <div class="brand-title">
-          F.R.I.D.A.Y. 2.0 // DALAL STREET WEALTH DESK
-          <span class="live-badge">20Y VETERAN</span>
-          <span class="voice-badge">FEMALE TEEN VOICE</span>
+    <div class="header-tier-main">
+      <div class="brand">
+        <div class="brand-avatar">👩‍💼</div>
+        <div class="brand-info">
+          <div class="brand-title">
+            <span>F.R.I.D.A.Y. 2.0</span>
+            <span class="brand-title-desk">// DALAL STREET</span>
+            <span class="live-badge">20Y VET</span>
+            <span class="voice-badge">FEMALE TEEN</span>
+          </div>
+          <div class="brand-subtitle">Tanglish AI Wealth Director &amp; Autonomous 8-Agent Desk</div>
         </div>
-        <div class="brand-subtitle">Tanglish AI Wealth Director &amp; Autonomous 8-Agent Desk</div>
+      </div>
+
+      <div class="header-call-wrap">
+        <button class="hotline-btn header-call-btn" onclick="openPhoneCallModal('+916382480091')">
+          📞 <span class="call-text-desk">CALL ME (+91 6382480091)</span><span class="call-text-mobile">CALL</span>
+        </button>
       </div>
     </div>
 
-    <div class="controls-panel">
-      <!-- Voice Selector & Tester -->
-      <button class="voice-tester-btn" onclick="testFemaleVoice()">
-        ▶ TEST FEMALE VOICE
-      </button>
-
-      <!-- Language Toggle -->
-      <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">
-        🌐 <span id="langText">TANGLISH (தமிழ் + EN)</span>
-      </button>
-
-      <!-- n8n Automation & 6-Slide Quick Jump -->
-      <button class="voice-tester-btn" onclick="switchTab('tab-n8n')" style="background: rgba(255, 109, 0, 0.15); border-color: #ff6d00; color: #ff6d00; font-weight: 800;">
-        ⚡ N8N WORKFLOWS
-      </button>
-      <button class="voice-tester-btn" onclick="switchTab('tab-deck')" style="background: rgba(0, 230, 118, 0.15); border-color: var(--emerald); color: var(--emerald); font-weight: 800;">
-        📑 6-SLIDE DECK
-      </button>
-
-      <!-- Direct Screener.in Reference Link -->
-      <a class="voice-tester-btn" id="headerScreenerBtn" href="https://www.screener.in/company/DIXON/consolidated/" target="_blank" style="background: rgba(0, 229, 255, 0.15); border-color: var(--cyan); color: var(--cyan); text-decoration: none; display: flex; align-items: center; gap: 4px; font-weight: 800;" title="View authoritative consolidated financials on Screener.in">
-        🔗 SCREENER.IN
-      </a>
-
-      <!-- Universal Search -->
-      <div class="search-box">
-        <span style="color: var(--cyan); margin-right: 6px;">🔍</span>
-        <input type="text" class="search-input" id="tickerSearchInput" placeholder="SEARCH TICKER..." onkeydown="if(event.key==='Enter') searchTicker()">
+    <div class="header-tier-actions">
+      <!-- Universal Search Row -->
+      <div class="header-search-row">
+        <div class="search-box">
+          <span style="color: var(--cyan); margin-right: 6px;">🔍</span>
+          <input type="text" class="search-input" id="tickerSearchInput" placeholder="SEARCH TICKER (DIXON, HAL, RELIANCE)..." onkeydown="if(event.key==='Enter') searchTicker()">
+        </div>
+        <button class="header-audit-btn" onclick="searchTicker()">AUDIT</button>
       </div>
-      <button class="ticker-chip" style="background: var(--cyan); color: #000; border-color: var(--cyan);" onclick="searchTicker()">AUDIT</button>
 
-      <!-- Call My Private Phone Button -->
-      <button class="hotline-btn" onclick="openPhoneCallModal('+916382480091')">
-        📞 CALL ME (+91 6382480091)
-      </button>
+      <!-- Quick Action Chips (Touch-Scrollable Row) -->
+      <div class="header-chips-row">
+        <button class="voice-tester-btn header-chip" onclick="testFemaleVoice()">
+          ▶ VOICE TEST
+        </button>
+        <button class="lang-btn header-chip" id="langToggleBtn" onclick="toggleLanguage()">
+          🌐 <span id="langText">TANGLISH (தமிழ்)</span>
+        </button>
+        <button class="voice-tester-btn header-chip chip-n8n" onclick="switchTab('tab-n8n')">
+          ⚡ N8N
+        </button>
+        <button class="voice-tester-btn header-chip chip-deck" onclick="switchTab('tab-deck')">
+          📑 6-SLIDE DECK
+        </button>
+        <a class="voice-tester-btn header-chip chip-screener" id="headerScreenerBtn" href="https://www.screener.in/company/DIXON/consolidated/" target="_blank" title="View authoritative consolidated financials on Screener.in">
+          🔗 SCREENER.IN
+        </a>
+      </div>
     </div>
   </header>
 
@@ -1484,7 +1953,7 @@
             </div>
           </div>
           
-          <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="voice-hero-btn-row" style="display: flex; align-items: center; gap: 12px;">
             <button class="mic-record-btn" id="voiceMicBtn" onclick="toggleVoiceRecognition()">
               <span id="micIconSpan">🎙️</span> <span id="micBtnLabel">TALK TO FRIDAY</span>
             </button>
@@ -1515,7 +1984,7 @@
       </div>
 
       <!-- 2. ACTIVE STOCK HEADER BANNER (NEO-BRUTALIST) -->
-      <div class="brutal-card" style="border-left: 6px solid var(--yellow); margin-bottom: 20px;">
+      <div class="brutal-card stock-hero-banner" style="border-left: 6px solid var(--yellow); margin-bottom: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
           <div>
             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
@@ -1533,7 +2002,7 @@
             </div>
           </div>
 
-          <div style="text-align: right;">
+          <div class="stock-hero-verdict" style="text-align: right;">
             <div style="font-size: 11px; font-weight: bold; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">INSTITUTIONAL SIGN-OFF</div>
             <div style="font-size: 22px; font-weight: 900; color: var(--emerald); font-family: 'Space Grotesk', sans-serif;" id="heroActionVerdict">
               ACCUMULATE (TRANCHE 1/2)
@@ -1554,7 +2023,7 @@
       </div>
 
       <!-- 3. TOP EXECUTIVE DECISION TILES (NEO-BRUTALIST) -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
+      <div class="decision-tiles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
         <div class="brutal-card" style="box-shadow: 4px 4px 0px var(--emerald); border-color: #000;">
           <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">ACTION SIGNAL (RL PPO)</div>
           <div style="font-size: 20px; font-weight: 900; color: var(--emerald); margin-top: 6px; font-family: 'Space Grotesk', sans-serif;" id="actionSignal">ACCUMULATE (TRANCHE 1/2)</div>
@@ -1661,7 +2130,7 @@
         </div>
 
         <!-- Detailed Fundamental Badges Grid -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 16px;">
+        <div class="fundamental-badges-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 16px;">
           <div style="background: #ffffff; border: 2px solid #000; box-shadow: 2px 2px 0px #000; padding: 12px; border-radius: 8px;">
             <div style="font-size: 10px; color: var(--text-muted); font-family: monospace;">52-WEEK HIGH / LOW</div>
             <div style="font-size: 15px; font-weight: 800; color: #000; margin-top: 2px;" id="detailHighLow">₹ 17,440 / ₹ 9,600</div>
@@ -2130,7 +2599,7 @@
     <!-- TAB G: 🧠 QUANT & ML VALUATION LAB (ZERO HARDCODING PROOF) -->
     <div id="tab-ml-lab" class="tab-content" style="display: none;">
       <!-- Hero Header -->
-      <div class="card" style="background: linear-gradient(135deg, rgba(12, 18, 28, 0.95), rgba(19, 28, 43, 0.95)); border-color: rgba(0, 229, 255, 0.35);">
+      <div class="card brutal-card">
         <div class="card-header">
           <div>
             <div class="badge badge-cyan">AUTONOMOUS QUANTITATIVE &amp; MACHINE LEARNING DESK</div>
@@ -2618,7 +3087,7 @@
     <!-- TAB I: ðŸ“‘ 6-SLIDE INSTITUTIONAL DECK & SLIDE 6 AUDITOR -->
     <div id="tab-deck" class="tab-content" style="display: none;">
       <!-- Hero Header -->
-      <div class="card" style="background: linear-gradient(135deg, rgba(12, 18, 28, 0.95), rgba(16, 23, 36, 0.95)); border-color: rgba(0, 230, 118, 0.35);">
+      <div class="card brutal-card">
         <div class="card-header">
           <div>
             <div class="badge badge-emerald">INSTITUTIONAL PRESENTATION DECK</div>
@@ -3763,10 +4232,11 @@
       const minVal = Math.min(...allVals) * 0.88;
       const maxVal = Math.max(...allVals) * 1.10;
 
-      const padL = 75;
-      const padR = 40;
-      const padT = 38;
-      const padB = 42;
+      const isMobile = w < 440;
+      const padL = isMobile ? 48 : 75;
+      const padR = isMobile ? 18 : 40;
+      const padT = isMobile ? 28 : 38;
+      const padB = isMobile ? 32 : 42;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
@@ -3776,7 +4246,7 @@
       // Horizontal Gridlines & Price Ticks
       ctx.strokeStyle = '#e2e8f0';
       ctx.lineWidth = 1;
-      ctx.font = 'bold 10px "JetBrains Mono", monospace';
+      ctx.font = isMobile ? 'bold 8.5px "JetBrains Mono", monospace' : 'bold 10px "JetBrains Mono", monospace';
       ctx.fillStyle = '#475569';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -3789,7 +4259,7 @@
         ctx.moveTo(padL, y);
         ctx.lineTo(w - padR, y);
         ctx.stroke();
-        ctx.fillText('\u20B9' + Math.round(v).toLocaleString(), padL - 8, y);
+        ctx.fillText('\u20B9' + Math.round(v).toLocaleString(), padL - 6, y);
       }
 
       // Guideline 1: DCF Fair Value (Dashed Gold)
@@ -3804,7 +4274,8 @@
       ctx.stroke();
       ctx.fillStyle = '#b45309';
       ctx.textAlign = 'left';
-      ctx.fillText('DCF FAIR: \u20B9' + fairVal.toLocaleString(), padL + 8, fairY - 8);
+      ctx.font = isMobile ? 'bold 8.5px "JetBrains Mono", monospace' : 'bold 10px "JetBrains Mono", monospace';
+      ctx.fillText((isMobile ? 'DCF: \u20B9' : 'DCF FAIR: \u20B9') + fairVal.toLocaleString(), padL + 6, fairY - 6);
       ctx.restore();
 
       // Guideline 2: Stop-Loss Floor (Dashed Red)
@@ -3819,7 +4290,8 @@
       ctx.stroke();
       ctx.fillStyle = '#b91c1c';
       ctx.textAlign = 'left';
-      ctx.fillText('STOP-LOSS: \u20B9' + stopLoss.toLocaleString(), padL + 8, stopY - 8);
+      ctx.font = isMobile ? 'bold 8.5px "JetBrains Mono", monospace' : 'bold 10px "JetBrains Mono", monospace';
+      ctx.fillText((isMobile ? 'SL: \u20B9' : 'STOP-LOSS: \u20B9') + stopLoss.toLocaleString(), padL + 6, stopY - 6);
       ctx.restore();
 
       // Translucent Gradient Area Under Curve
@@ -3849,23 +4321,26 @@
         const y = getY(p.val);
 
         ctx.beginPath();
-        ctx.arc(x, y, 6.5, 0, Math.PI * 2);
+        ctx.arc(x, y, isMobile ? 5 : 6.5, 0, Math.PI * 2);
         ctx.fillStyle = '#000000';
         ctx.fill();
 
         ctx.beginPath();
-        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+        ctx.arc(x, y, isMobile ? 3.5 : 4.5, 0, Math.PI * 2);
         ctx.fillStyle = (i === 1) ? '#ff0077' : '#ffe600';
         ctx.fill();
 
-        ctx.font = 'bold 10px "Space Grotesk", sans-serif';
+        const displayLabel = isMobile 
+          ? (p.label === '1Y Ago' ? '1Y' : p.label === 'CMP (Now)' ? 'CMP' : p.label === '6M Forecast' ? '6M' : p.label === '12M Base' ? '12M' : p.label === '12M Bull' ? 'Bull' : '24M')
+          : p.label;
+        ctx.font = isMobile ? 'bold 8.5px "Space Grotesk", sans-serif' : 'bold 10px "Space Grotesk", sans-serif';
         ctx.fillStyle = '#0f172a';
         ctx.textAlign = 'center';
-        ctx.fillText(p.label, x, h - 14);
+        ctx.fillText(displayLabel, x, h - (isMobile ? 10 : 14));
 
-        ctx.font = 'bold 10px "JetBrains Mono", monospace';
+        ctx.font = isMobile ? 'bold 8.5px "JetBrains Mono", monospace' : 'bold 10px "JetBrains Mono", monospace';
         ctx.fillStyle = '#000000';
-        ctx.fillText('\u20B9' + p.val.toLocaleString(), x, y - 10);
+        ctx.fillText('\u20B9' + p.val.toLocaleString(), x, y - (isMobile ? 7 : 10));
       });
     }
 
@@ -3882,35 +4357,36 @@
       const pat = fund.history_pat || [100, 150, 210, 310, 450];
 
       const maxVal = Math.max(...sales, ...pat) * 1.18;
-      const padL = 75;
-      const padR = 25;
-      const padT = 38;
-      const padB = 42;
+      const isMobile = w < 440;
+      const padL = isMobile ? 48 : 75;
+      const padR = isMobile ? 14 : 25;
+      const padT = isMobile ? 30 : 38;
+      const padB = isMobile ? 32 : 42;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
       // Top Legend
-      ctx.font = 'bold 11px "Space Grotesk", sans-serif';
+      ctx.font = isMobile ? 'bold 9.5px "Space Grotesk", sans-serif' : 'bold 11px "Space Grotesk", sans-serif';
       ctx.fillStyle = '#ffe600';
-      ctx.fillRect(padL, 10, 14, 14);
+      ctx.fillRect(padL, 8, 12, 12);
       ctx.lineWidth = 1.5;
       ctx.strokeStyle = '#000000';
-      ctx.strokeRect(padL, 10, 14, 14);
+      ctx.strokeRect(padL, 8, 12, 12);
       ctx.fillStyle = '#000000';
       ctx.textAlign = 'left';
-      ctx.fillText('Sales Revenue (\u20B9 Cr)', padL + 20, 22);
+      ctx.fillText(isMobile ? 'Sales (\u20B9 Cr)' : 'Sales Revenue (\u20B9 Cr)', padL + 16, 18);
 
-      const patLegX = padL + 180;
+      const patLegX = isMobile ? padL + 96 : padL + 180;
       ctx.fillStyle = '#00e5ff';
-      ctx.fillRect(patLegX, 10, 14, 14);
-      ctx.strokeRect(patLegX, 10, 14, 14);
+      ctx.fillRect(patLegX, 8, 12, 12);
+      ctx.strokeRect(patLegX, 8, 12, 12);
       ctx.fillStyle = '#000000';
-      ctx.fillText('Net PAT (\u20B9 Cr)', patLegX + 20, 22);
+      ctx.fillText(isMobile ? 'PAT (\u20B9 Cr)' : 'Net PAT (\u20B9 Cr)', patLegX + 16, 18);
 
       // Gridlines
       ctx.strokeStyle = '#e2e8f0';
       ctx.lineWidth = 1;
-      ctx.font = 'bold 10px "JetBrains Mono", monospace';
+      ctx.font = isMobile ? 'bold 8.5px "JetBrains Mono", monospace' : 'bold 10px "JetBrains Mono", monospace';
       ctx.fillStyle = '#475569';
       ctx.textAlign = 'right';
 
@@ -3921,11 +4397,11 @@
         ctx.moveTo(padL, y);
         ctx.lineTo(w - padR, y);
         ctx.stroke();
-        ctx.fillText('\u20B9' + Math.round(v).toLocaleString(), padL - 8, y + 3);
+        ctx.fillText('\u20B9' + Math.round(v).toLocaleString(), padL - 6, y + 3);
       }
 
       const groupW = plotW / labels.length;
-      const barW = Math.min(26, groupW * 0.32);
+      const barW = isMobile ? Math.min(16, groupW * 0.32) : Math.min(26, groupW * 0.32);
 
       labels.forEach((lbl, i) => {
         const groupCenterX = padL + i * groupW + groupW / 2;
@@ -3933,35 +4409,36 @@
         const pVal = pat[i];
 
         const sH = (sVal / maxVal) * plotH;
-        const sX = groupCenterX - barW - 3;
+        const sX = groupCenterX - barW - 2;
         const sY = padT + plotH - sH;
 
         ctx.fillStyle = '#ffe600';
         ctx.fillRect(sX, sY, barW, sH);
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.5;
         ctx.strokeStyle = '#000000';
         ctx.strokeRect(sX, sY, barW, sH);
 
-        ctx.font = 'bold 9px "JetBrains Mono", monospace';
+        ctx.font = isMobile ? 'bold 7.5px "JetBrains Mono", monospace' : 'bold 9px "JetBrains Mono", monospace';
         ctx.fillStyle = '#000000';
         ctx.textAlign = 'center';
-        ctx.fillText(sVal.toLocaleString(), sX + barW / 2, sY - 5);
+        ctx.fillText(sVal.toLocaleString(), sX + barW / 2, sY - 4);
 
         const pH = (pVal / maxVal) * plotH;
-        const pX = groupCenterX + 3;
+        const pX = groupCenterX + 2;
         const pY = padT + plotH - pH;
 
         ctx.fillStyle = '#00e5ff';
         ctx.fillRect(pX, pY, barW, pH);
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.5;
         ctx.strokeStyle = '#000000';
         ctx.strokeRect(pX, pY, barW, pH);
 
-        ctx.fillText(pVal.toLocaleString(), pX + barW / 2, pY - 5);
+        ctx.fillText(pVal.toLocaleString(), pX + barW / 2, pY - 4);
 
-        ctx.font = 'bold 11px "Space Grotesk", sans-serif';
+        const displayLbl = isMobile ? lbl.replace(' (TTM)', '').replace(' (E)', '') : lbl;
+        ctx.font = isMobile ? 'bold 9px "Space Grotesk", sans-serif' : 'bold 11px "Space Grotesk", sans-serif';
         ctx.fillStyle = '#000000';
-        ctx.fillText(lbl, groupCenterX, h - 14);
+        ctx.fillText(displayLbl, groupCenterX, h - (isMobile ? 10 : 14));
       });
     }
 
@@ -3973,43 +4450,44 @@
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, w, h);
 
+      const isMobile = w < 440;
       const bands = [
-        { label: 'Stop-Loss Floor', val: ml.dcf.stop_loss_price, color: '#ff2247' },
-        { label: 'Current CMP', val: fund.current_price, color: '#94a3b8' },
-        { label: 'DCF Intrinsic Fair', val: ml.dcf.intrinsic_fair, color: '#ffe600' },
-        { label: '12M Target Base', val: ml.supervised.target_12m_base, color: '#00e5ff' },
-        { label: '24M Target Horizon', val: ml.supervised.target_24m_base, color: '#00d659' }
+        { label: isMobile ? 'Stop-Loss' : 'Stop-Loss Floor', val: ml.dcf.stop_loss_price, color: '#ff2247' },
+        { label: isMobile ? 'CMP' : 'Current CMP', val: fund.current_price, color: '#94a3b8' },
+        { label: isMobile ? 'DCF Fair' : 'DCF Intrinsic Fair', val: ml.dcf.intrinsic_fair, color: '#ffe600' },
+        { label: isMobile ? '12M Base' : '12M Target Base', val: ml.supervised.target_12m_base, color: '#00e5ff' },
+        { label: isMobile ? '24M Target' : '24M Target Horizon', val: ml.supervised.target_24m_base, color: '#00d659' }
       ];
 
       const maxVal = Math.max(...bands.map(b => b.val)) * 1.18;
-      const padL = 145;
-      const padR = 85;
-      const padT = 20;
-      const padB = 25;
+      const padL = isMobile ? 86 : 145;
+      const padR = isMobile ? 58 : 85;
+      const padT = isMobile ? 16 : 20;
+      const padB = isMobile ? 18 : 25;
       const plotW = w - padL - padR;
       const rowH = (h - padT - padB) / bands.length;
 
       bands.forEach((b, i) => {
         const y = padT + i * rowH;
         const barH = rowH * 0.58;
-        const barW = Math.max(16, (b.val / maxVal) * plotW);
+        const barW = Math.max(14, (b.val / maxVal) * plotW);
 
-        ctx.font = 'bold 11px "Space Grotesk", sans-serif';
+        ctx.font = isMobile ? 'bold 9.5px "Space Grotesk", sans-serif' : 'bold 11px "Space Grotesk", sans-serif';
         ctx.fillStyle = '#000000';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
-        ctx.fillText(b.label, padL - 12, y + barH / 2);
+        ctx.fillText(b.label, padL - (isMobile ? 6 : 12), y + barH / 2);
 
         ctx.fillStyle = b.color;
         ctx.fillRect(padL, y, barW, barH);
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.5;
         ctx.strokeStyle = '#000000';
         ctx.strokeRect(padL, y, barW, barH);
 
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
+        ctx.font = isMobile ? 'bold 9.5px "JetBrains Mono", monospace' : 'bold 11px "JetBrains Mono", monospace';
         ctx.fillStyle = '#000000';
         ctx.textAlign = 'left';
-        ctx.fillText('\u20B9' + b.val.toLocaleString(), padL + barW + 10, y + barH / 2);
+        ctx.fillText('\u20B9' + b.val.toLocaleString(), padL + barW + (isMobile ? 6 : 10), y + barH / 2);
       });
     }
 
@@ -4029,9 +4507,10 @@
         { label: 'Public & Retail', pct: sh.public, color: '#ff0077' }
       ];
 
-      const centerX = Math.min(w * 0.36, 140);
+      const isMobile = w < 440;
+      const centerX = isMobile ? Math.round(w * 0.28) : Math.min(w * 0.36, 140);
       const centerY = h / 2;
-      const outerR = Math.min(centerX - 18, h / 2 - 18, 88);
+      const outerR = isMobile ? Math.min(centerX - 10, h / 2 - 14, 66) : Math.min(centerX - 18, h / 2 - 18, 88);
       const innerR = outerR * 0.58;
 
       let currentAngle = -Math.PI / 2;
@@ -4043,7 +4522,7 @@
         ctx.closePath();
         ctx.fillStyle = s.color;
         ctx.fill();
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 2;
         ctx.strokeStyle = '#000000';
         ctx.stroke();
         currentAngle += sliceAngle;
@@ -4054,39 +4533,40 @@
       ctx.arc(centerX, centerY, innerR - 2, 0, Math.PI * 2);
       ctx.fillStyle = '#ffffff';
       ctx.fill();
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1.5;
       ctx.strokeStyle = '#000000';
       ctx.stroke();
 
-      ctx.font = 'bold 9px "JetBrains Mono", monospace';
+      ctx.font = isMobile ? 'bold 8px "JetBrains Mono", monospace' : 'bold 9px "JetBrains Mono", monospace';
       ctx.fillStyle = '#475569';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('TOTAL', centerX, centerY - 6);
-      ctx.font = '900 12px "Space Grotesk", sans-serif';
+      ctx.fillText('TOTAL', centerX, centerY - (isMobile ? 5 : 6));
+      ctx.font = isMobile ? '900 10.5px "Space Grotesk", sans-serif' : '900 12px "Space Grotesk", sans-serif';
       ctx.fillStyle = '#000000';
-      ctx.fillText('100%', centerX, centerY + 8);
+      ctx.fillText('100%', centerX, centerY + (isMobile ? 7 : 8));
 
       // Legend on Right Side
-      const legX = centerX + outerR + 24;
-      const legRowH = 26;
-      const legStartY = centerY - (slices.length * legRowH) / 2 + 8;
+      const legX = isMobile ? centerX + outerR + 14 : centerX + outerR + 24;
+      const legRowH = isMobile ? 22 : 26;
+      const legStartY = centerY - (slices.length * legRowH) / 2 + (isMobile ? 4 : 8);
 
       slices.forEach((s, idx) => {
         const y = legStartY + idx * legRowH;
         ctx.fillStyle = s.color;
-        ctx.fillRect(legX, y - 6, 14, 14);
-        ctx.lineWidth = 2;
+        ctx.fillRect(legX, y - 5, isMobile ? 10 : 14, isMobile ? 10 : 14);
+        ctx.lineWidth = 1.5;
         ctx.strokeStyle = '#000000';
-        ctx.strokeRect(legX, y - 6, 14, 14);
+        ctx.strokeRect(legX, y - 5, isMobile ? 10 : 14, isMobile ? 10 : 14);
 
-        ctx.font = 'bold 11px "Space Grotesk", sans-serif';
+        ctx.font = isMobile ? 'bold 9.5px "Space Grotesk", sans-serif' : 'bold 11px "Space Grotesk", sans-serif';
         ctx.fillStyle = '#000000';
         ctx.textAlign = 'left';
-        ctx.fillText(s.label + ':', legX + 22, y + 4);
+        const lblText = isMobile ? (s.label.split(' ')[0] + ':') : (s.label + ':');
+        ctx.fillText(lblText, legX + (isMobile ? 14 : 22), y + 3);
 
-        ctx.font = '900 12px "JetBrains Mono", monospace';
-        ctx.fillText(s.pct + '%', legX + 130, y + 4);
+        ctx.font = isMobile ? '900 10px "JetBrains Mono", monospace' : '900 12px "JetBrains Mono", monospace';
+        ctx.fillText(s.pct + '%', legX + (isMobile ? 80 : 130), y + 3);
       });
     }
 
@@ -4402,16 +4882,20 @@
       }
     }
 
-    // Auto-redraw charts on window resize to ensure crisp pixel density
+    // Auto-redraw charts on window resize to ensure crisp pixel density with debounce
+    let chartResizeDebounce = null;
     window.addEventListener('resize', () => {
-      if (typeof currentTicker !== 'undefined' && typeof FUNDAMENTALS_REGISTRY !== 'undefined' && FUNDAMENTALS_REGISTRY[currentTicker]) {
-        const f = FUNDAMENTALS_REGISTRY[currentTicker];
-        const m = QuantMLEngine.runFullPipeline(f);
-        renderPriceTrajectoryChart(f, m);
-        renderFinancialGrowthChart(f);
-        renderDcfCompassChart(f, m);
-        renderShareholdingDonutChart(f);
-      }
+      clearTimeout(chartResizeDebounce);
+      chartResizeDebounce = setTimeout(() => {
+        if (typeof currentTicker !== 'undefined' && typeof FUNDAMENTALS_REGISTRY !== 'undefined' && FUNDAMENTALS_REGISTRY[currentTicker]) {
+          const f = FUNDAMENTALS_REGISTRY[currentTicker];
+          const m = QuantMLEngine.runFullPipeline(f);
+          renderPriceTrajectoryChart(f, m);
+          renderFinancialGrowthChart(f);
+          renderDcfCompassChart(f, m);
+          renderShareholdingDonutChart(f);
+        }
+      }, 150);
     });
 
     // =========================================================================
