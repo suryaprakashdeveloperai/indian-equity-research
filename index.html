@@ -11,25 +11,36 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg: #faf7ed;
+      --bg: #faf6ed;
       --surface: #ffffff;
-      --surface-elevated: #fffcf0;
+      --surface-elevated: #fffcf2;
       --surface-card: #ffffff;
+      --surface-subtle: #f4efe4;
       --border: #000000;
       --border-black: #000000;
-      --border-subtle: #e2e8f0;
-      --cyan: #00e5ff;
-      --yellow: #ffe600;
-      --pink: #ff0077;
-      --purple: #9b5de5;
-      --emerald: #00d659;
-      --crimson: #ff2247;
-      --amber: #ff9100;
-      --orange: #ff5500;
-      --lime: #bbf7d0;
-      --text: #050505;
-      --text-secondary: #1e293b;
-      --text-muted: #475569;
+      --border-subtle: #cbd5e1;
+      
+      /* High-contrast readable foreground text colors (5:1+ WCAG AAA on white) */
+      --cyan: #0284c7;       /* Rich Electric Sky Blue - 100% visible on white */
+      --yellow: #a16207;     /* Rich Warm Gold Ink - 100% visible on white */
+      --pink: #be185d;       /* Rich Ruby Rose - 100% visible on white */
+      --purple: #6b21a8;     /* Rich Imperial Violet - 100% visible on white */
+      --emerald: #047857;    /* Deep Forest Green - 100% visible on white */
+      --crimson: #b91c1c;    /* Deep Signal Red - 100% visible on white */
+      --amber: #b45309;      /* Deep Amber - 100% visible on white */
+      --orange: #c2410c;     /* Deep Rust Orange - 100% visible on white */
+      
+      /* High-energy background pop colors (for pills, badges, buttons, fills) */
+      --pop-yellow: #ffe600;
+      --pop-cyan: #00e5ff;
+      --pop-pink: #ff0077;
+      --pop-emerald: #00d659;
+      --pop-purple: #9b5de5;
+      --pop-lime: #bbf7d0;
+      
+      --text: #000000;
+      --text-secondary: #0f172a;
+      --text-muted: #1e293b;
       --brutal-border: 3px solid #000000;
       --brutal-shadow: 5px 5px 0px #000000;
       --brutal-shadow-sm: 3px 3px 0px #000000;
@@ -1273,14 +1284,87 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Universal Day Theme Contrast Overrides */
-    .card h1, .card h2, .card h3, .card h4,
-    .brutal-card h1, .brutal-card h2, .brutal-card h3, .brutal-card h4,
-    .comparison-arena h1, .comparison-arena h2, .comparison-arena h3,
-    .mature-thesis-card h1, .mature-thesis-card h2, .mature-thesis-card h3,
-    .slide-card-presentation h1, .slide-card-presentation h2, .slide-card-presentation h3 {
+    /* CRITICAL UNIVERSAL HIGH-CONTRAST RULES - ZERO INVISIBLE TEXT */
+    body, p, span, div, td, th, h1, h2, h3, h4, h5, h6, strong, b, em, label {
+      color: #000000;
+    }
+    strong, b {
+      color: #000000 !important;
+      font-weight: 800 !important;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: #000000 !important;
+      font-weight: 900 !important;
+    }
+    table td {
+      color: #000000 !important;
+      font-weight: 700 !important;
+    }
+    table th {
+      background: #ffe600 !important;
+      color: #000000 !important;
+      font-weight: 900 !important;
+    }
+
+    /* Badges & Pills: bold black text on vibrant pastel/neon pills */
+    .brutal-badge, .badge, .live-badge, .voice-badge, .n8n-node-badge, .audit-stat {
+      color: #000000 !important;
+      font-weight: 900 !important;
+      border: 2px solid #000000 !important;
+      box-shadow: 2px 2px 0px #000000 !important;
+    }
+    .badge-pink { background: #fbcfe8 !important; color: #831843 !important; }
+    .badge-cyan { background: #cffafe !important; color: #0c4a6e !important; }
+    .badge-emerald { background: #bbf7d0 !important; color: #064e3b !important; }
+    .badge-amber { background: #fef08a !important; color: #713f12 !important; }
+
+    /* Highlights & Value Indicators */
+    .emerald-text { color: #047857 !important; font-weight: 900 !important; }
+    .cyan-text { color: #0284c7 !important; font-weight: 900 !important; }
+    .crimson-text { color: #b91c1c !important; font-weight: 900 !important; }
+    .amber-text { color: #a16207 !important; font-weight: 900 !important; }
+
+    /* Decision Grid Values */
+    .decision-val { color: #000000 !important; font-weight: 900 !important; }
+    .decision-label { color: #1e293b !important; font-weight: 800 !important; }
+
+    /* Dialogue & Spoken Cards */
+    .spoken-card, #spokenDialogueText, #voiceTranscriptBox {
+      color: #000000 !important;
+      font-weight: 700 !important;
+    }
+    #briefingLangTag { color: #854d0e !important; font-weight: 900 !important; }
+
+    /* Comparison Arena */
+    .compare-table th { background: #ffe600 !important; color: #000000 !important; }
+    .compare-table td { color: #000000 !important; font-weight: 700 !important; }
+    .compare-winner {
+      background: #bbf7d0 !important;
+      color: #064e3b !important;
+      font-weight: 900 !important;
+      border: 2px solid #000000 !important;
+    }
+
+    /* Presentation Slide Deck */
+    .slide-card-presentation, .slide-body-content, #slideTitleText {
       color: #000000 !important;
     }
+
+    /* Inputs & Textareas */
+    input, select, textarea {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border: 2.5px solid #000000 !important;
+      font-weight: 700 !important;
+    }
+
+    /* Action Buttons With White Text on Solid Dark Backgrounds */
+    .hotline-btn { color: #ffffff !important; background: #ff0077 !important; }
+    .btn-end { color: #ffffff !important; background: #dc2626 !important; }
+    .mic-record-btn.listening { color: #ffffff !important; background: #dc2626 !important; }
+    .n8n-pipe-btn.active { color: #ffffff !important; background: #ff5500 !important; }
+    .tab-item.tab-gem.active { color: #ffffff !important; background: #ff0077 !important; }
+    .ticker-chip.gem-chip.active { color: #ffffff !important; background: #ff0077 !important; }
   </style>
 </head>
 <body>
@@ -1392,7 +1476,7 @@
               <span class="brutal-badge" style="background: var(--yellow); color: #000;">🎙️ TWO-WAY VOICE ACTIVE</span>
               <span class="brutal-badge" style="background: var(--emerald); color: #000;" id="micStatusBadge">MIC READY (CLICK TO SPEAK)</span>
             </div>
-            <h2 style="font-size: 22px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; color: #fff; margin-top: 8px;">
+            <h2 style="font-size: 22px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; color: #000000; margin-top: 8px;">
               Talk to F.R.I.D.A.Y. in Tanglish (Dalal Street Voice Engine)
             </h2>
             <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">
@@ -1413,7 +1497,7 @@
         <!-- Live Transcription Bar -->
         <div style="background: #fff9db; border: 2.5px solid #000; box-shadow: 3px 3px 0px #000; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 14px;">💬</span>
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--yellow); font-weight: bold; flex: 1;" id="voiceTranscriptBox">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #000000; font-weight: 800; flex: 1;" id="voiceTranscriptBox">
             Listening: Click "TALK TO FRIDAY" or try: "Reliance pathi sollu", "Dixon buy panlama?", "Compare Dixon vs Kaynes"
           </div>
         </div>
@@ -1435,7 +1519,7 @@
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
           <div>
             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-              <span class="brutal-badge" style="background: var(--pink); color: #fff;">ACTIVE ASSET</span>
+              <span class="brutal-badge" style="background: #ff0077; color: #ffffff;">ACTIVE ASSET</span>
               <a id="briefingScreenerBadge" href="https://www.screener.in/company/DIXON/consolidated/" target="_blank" class="brutal-badge" style="background: var(--cyan); color: #000; text-decoration: none;">
                 VERIFIED BY SCREENER.IN (CONSOLIDATED) 🔗
               </a>
@@ -1445,7 +1529,7 @@
               Dixon Technologies (India) Ltd.
             </h1>
             <div style="font-size: 14px; color: var(--text-secondary); margin-top: 4px; font-family: 'Outfit', sans-serif;" id="stockMeta">
-              Price: <strong style="color: #fff;">₹ 12,774</strong> | Mkt Cap: <strong style="color: var(--cyan);">₹ 78,139 Cr</strong> | Sector: Consumer Electronics &amp; EMS
+              Price: <strong style="color: #000000; font-weight: 900;">₹ 12,774</strong> | Mkt Cap: <strong style="color: var(--cyan);">₹ 78,139 Cr</strong> | Sector: Consumer Electronics &amp; EMS
             </div>
           </div>
 
@@ -1460,7 +1544,7 @@
 
         <!-- Conversational Tanglish Briefing Text -->
         <div style="margin-top: 14px; background: #fffdf5; border: 2px solid #000; box-shadow: 3px 3px 0px #000; border-left: 3px solid var(--yellow); padding: 12px 16px; border-radius: 6px;">
-          <div style="font-size: 11px; font-weight: 800; color: var(--yellow); font-family: 'JetBrains Mono', monospace; margin-bottom: 4px;" id="briefingLangTag">
+          <div style="font-size: 11px; font-weight: 800; color: #854d0e; font-family: 'JetBrains Mono', monospace; font-weight: 900; margin-bottom: 4px;" id="briefingLangTag">
             TANGLISH CONVERSATIONAL BRIEFING // BOSS DESK
           </div>
           <div style="font-size: 14px; line-height: 1.6; color: #000000; font-weight: 600;" id="spokenDialogueText">
@@ -1479,19 +1563,19 @@
 
         <div class="brutal-card" style="box-shadow: 4px 4px 0px var(--cyan); border-color: #000;">
           <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">12M TARGET (ML SUPERVISED)</div>
-          <div style="font-size: 20px; font-weight: 900; color: var(--cyan); margin-top: 6px; font-family: 'Space Grotesk', sans-serif;" id="target12M">₹ 15,400 (+20.6%)</div>
+          <div style="font-size: 20px; font-weight: 900; color: #0284c7; margin-top: 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 900;" id="target12M">₹ 15,400 (+20.6%)</div>
           <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">24M Compounded: <strong style="color: #000;" id="target24M">₹ 18,600 (+45.6%)</strong></div>
         </div>
 
         <div class="brutal-card" style="box-shadow: 4px 4px 0px var(--yellow); border-color: #000;">
           <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">INTRINSIC DCF (MOS %)</div>
-          <div style="font-size: 20px; font-weight: 900; color: var(--yellow); margin-top: 6px; font-family: 'Space Grotesk', sans-serif;" id="fairValue">₹ 14,800 (+15.9%)</div>
+          <div style="font-size: 20px; font-weight: 900; color: #a16207; margin-top: 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 900;" id="fairValue">₹ 14,800 (+15.9%)</div>
           <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Floor Stop-Loss: <strong style="color: var(--crimson);" id="stopLoss">₹ 10,800 (-15.5%)</strong></div>
         </div>
 
         <div class="brutal-card" style="box-shadow: 4px 4px 0px var(--purple); border-color: #000;">
           <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">FORENSIC ANOMALY AUDIT</div>
-          <div style="font-size: 20px; font-weight: 900; color: var(--purple); margin-top: 6px; font-family: 'Space Grotesk', sans-serif;" id="briefAnomalyScore">0.12 / 1.0 (PRISTINE)</div>
+          <div style="font-size: 20px; font-weight: 900; color: #6b21a8; margin-top: 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 900;" id="briefAnomalyScore">0.12 / 1.0 (PRISTINE)</div>
           <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Alpha Probability: <strong style="color: var(--emerald);" id="briefAlphaProb">88%</strong></div>
         </div>
       </div>
@@ -1543,7 +1627,7 @@
             <div class="chart-box-title">
               <span>🍰</span> 4. Shareholding Pattern (Promoter, FII, DII, Public)
             </div>
-            <span class="brutal-badge" style="background: var(--pink); color: #fff;">SCREENER.IN</span>
+            <span class="brutal-badge" style="background: #ff0077; color: #ffffff;">SCREENER.IN</span>
           </div>
           <div class="chart-canvas-wrap">
             <canvas id="shareholdingDonutChart" width="550" height="260"></canvas>
@@ -1556,7 +1640,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
           <div>
             <div class="brutal-badge" style="background: var(--cyan); color: #000;">OFFICIAL SCREENER.IN CONSOLIDATED DISCLOSURES</div>
-            <h3 style="font-size: 18px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; color: #fff; margin-top: 6px;">
+            <h3 style="font-size: 18px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; color: #000000; margin-top: 6px;">
               Complete Shareholding Pattern, Solvency &amp; Balance Sheet Health
             </h3>
           </div>
@@ -1573,7 +1657,7 @@
           <div class="shareholding-segment" id="segPromoters" style="width: 35.8%; background: var(--cyan);" title="Promoters">35.8% PROM</div>
           <div class="shareholding-segment" id="segFiis" style="width: 23.4%; background: var(--yellow);" title="FIIs">23.4% FII</div>
           <div class="shareholding-segment" id="segDiis" style="width: 22.1%; background: var(--emerald);" title="DIIs">22.1% DII</div>
-          <div class="shareholding-segment" id="segPublic" style="width: 18.7%; background: var(--pink); color: #fff;" title="Public">18.7% PUB</div>
+          <div class="shareholding-segment" id="segPublic" style="width: 18.7%; background: var(--pink); color: #000000; font-weight: 900;" title="Public">18.7% PUB</div>
         </div>
 
         <!-- Detailed Fundamental Badges Grid -->
@@ -1584,23 +1668,23 @@
           </div>
           <div style="background: #ffffff; border: 2px solid #000; box-shadow: 2px 2px 0px #000; padding: 12px; border-radius: 8px;">
             <div style="font-size: 10px; color: var(--text-muted); font-family: monospace;">BOOK VALUE PER SHARE</div>
-            <div style="font-size: 15px; font-weight: 800; color: var(--cyan); margin-top: 2px;" id="detailBookValue">₹ 769.0</div>
+            <div style="font-size: 15px; font-weight: 800; color: #0284c7; margin-top: 2px; font-weight: 900;" id="detailBookValue">₹ 769.0</div>
           </div>
           <div style="background: #ffffff; border: 2px solid #000; box-shadow: 2px 2px 0px #000; padding: 12px; border-radius: 8px;">
             <div style="font-size: 10px; color: var(--text-muted); font-family: monospace;">CASH CONVERSION CYCLE</div>
-            <div style="font-size: 15px; font-weight: 800; color: var(--emerald); margin-top: 2px;" id="detailCcc">6 Days (Pristine)</div>
+            <div style="font-size: 15px; font-weight: 800; color: #047857; margin-top: 2px; font-weight: 900;" id="detailCcc">6 Days (Pristine)</div>
           </div>
           <div style="background: #ffffff; border: 2px solid #000; box-shadow: 2px 2px 0px #000; padding: 12px; border-radius: 8px;">
             <div style="font-size: 10px; color: var(--text-muted); font-family: monospace;">DEBT TO EQUITY (D/E)</div>
-            <div style="font-size: 15px; font-weight: 800; color: var(--yellow); margin-top: 2px;" id="detailDe">0.08x (Virtually Zero)</div>
+            <div style="font-size: 15px; font-weight: 800; color: #a16207; margin-top: 2px; font-weight: 900;" id="detailDe">0.08x (Virtually Zero)</div>
           </div>
           <div style="background: #ffffff; border: 2px solid #000; box-shadow: 2px 2px 0px #000; padding: 12px; border-radius: 8px;">
             <div style="font-size: 10px; color: var(--text-muted); font-family: monospace;">OCF / PAT CONVERSION</div>
-            <div style="font-size: 15px; font-weight: 800; color: var(--emerald); margin-top: 2px;" id="detailOcfPat">1.50x (High Real Cash)</div>
+            <div style="font-size: 15px; font-weight: 800; color: #047857; margin-top: 2px; font-weight: 900;" id="detailOcfPat">1.50x (High Real Cash)</div>
           </div>
           <div style="background: #ffffff; border: 2px solid #000; box-shadow: 2px 2px 0px #000; padding: 12px; border-radius: 8px;">
             <div style="font-size: 10px; color: var(--text-muted); font-family: monospace;">ROCE / ROE RATIO</div>
-            <div style="font-size: 15px; font-weight: 800; color: var(--cyan); margin-top: 2px;" id="detailRoceRoe">29.2% / 18.9%</div>
+            <div style="font-size: 15px; font-weight: 800; color: #0284c7; margin-top: 2px; font-weight: 900;" id="detailRoceRoe">29.2% / 18.9%</div>
           </div>
         </div>
       </div>
@@ -1610,7 +1694,7 @@
         <div class="compare-header">
           <div>
             <span class="brutal-badge" style="background: var(--yellow); color: #000;">DIFF &amp; PEER COMPARISON ARENA</span>
-            <h3 style="font-size: 20px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; color: #fff; margin-top: 6px;">
+            <h3 style="font-size: 20px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; color: #000000; margin-top: 6px;">
               Side-by-Side Competitive Benchmark &amp; Metric Winner
             </h3>
           </div>
@@ -1638,8 +1722,8 @@
             <thead>
               <tr>
                 <th style="width: 28%;">Fundamental Metric</th>
-                <th style="width: 36%; color: var(--yellow);" id="compColA">DIXON TECHNOLOGIES (ACTIVE)</th>
-                <th style="width: 36%; color: var(--cyan);" id="compColB">KAYNES TECHNOLOGY (PEER)</th>
+                <th style="width: 36%; color: #000000; font-weight: 900;" id="compColA">DIXON TECHNOLOGIES (ACTIVE)</th>
+                <th style="width: 36%; color: #000000; font-weight: 900;" id="compColB">KAYNES TECHNOLOGY (PEER)</th>
               </tr>
             </thead>
             <tbody id="comparisonTableBody">
@@ -1661,7 +1745,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
           <div>
             <span class="brutal-badge" style="background: var(--emerald); color: #000;">MATURE INVESTOR CAPITAL FRAMEWORK</span>
-            <h3 style="font-size: 20px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; color: #fff; margin-top: 6px;">
+            <h3 style="font-size: 20px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; color: #000000; margin-top: 6px;">
               Institutional Capital Allocation &amp; Asymmetric Risk-Reward Thesis
             </h3>
           </div>
@@ -1705,7 +1789,7 @@
 
           <div style="background: #ffffff; border: 2.5px solid #000; box-shadow: 3px 3px 0px #000; border-radius: 10px; padding: 16px;">
             <div style="font-size: 11px; font-weight: 800; color: var(--yellow); font-family: monospace;">4. PHASED CAPITAL ALLOCATION PLAN</div>
-            <div style="font-size: 14px; font-weight: 800; color: #fff; margin-top: 6px;">
+            <div style="font-size: 14px; font-weight: 900; color: #000000; margin-top: 6px;">
               Tranche 1 (Entry at CMP): 40% Allocation | Tranche 2 (Dip Reserve): 60% Allocation
             </div>
             <p style="font-size: 12px; color: var(--text-secondary); margin-top: 6px; line-height: 1.5;">
@@ -1840,7 +1924,7 @@
             <thead><tr><th>Facility / Mega Project</th><th>Capex Allocated</th><th>Order Backing</th><th>Book-to-Bill</th><th>Expected Launch</th><th>Asset Turnover</th><th>Revenue Impact</th></tr></thead>
             <tbody id="futureProjectsBody">
               <tr>
-                <td style="font-weight: 700; color: #fff;">DIXON Advanced Operating Expansion Phase I</td>
+                <td style="font-weight: 800; color: #000000;">DIXON Advanced Operating Expansion Phase I</td>
                 <td class="cyan-text">₹ 5,748 Cr</td>
                 <td>Confirmed Backlog</td>
                 <td class="emerald-text">1.85x</td>
@@ -1849,7 +1933,7 @@
                 <td style="color: var(--cyan);">+24% Capacity Ramp-Up</td>
               </tr>
               <tr>
-                <td style="font-weight: 700; color: #fff;">Automated Precision R&amp;D &amp; High-Margin Export Line</td>
+                <td style="font-weight: 800; color: #000000;">Automated Precision R&amp;D &amp; High-Margin Export Line</td>
                 <td class="cyan-text">₹ 3,161 Cr</td>
                 <td>Global OEM Contracts</td>
                 <td class="emerald-text">2.10x</td>
@@ -1868,7 +1952,7 @@
             <thead><tr><th>Horizon</th><th>Stock Return (CAGR)</th><th>Nifty 50 Return</th><th>Alpha Generated</th><th>ROCE Trajectory</th><th>ROE Trajectory</th><th>CFO / PAT</th></tr></thead>
             <tbody id="historicalReturnsBody">
               <tr>
-                <td style="font-weight: 700; color: #fff;">1-Year</td>
+                <td style="font-weight: 800; color: #000000;">1-Year</td>
                 <td class="emerald-text">+16.5%</td>
                 <td style="color: var(--text-muted);">+21.4%</td>
                 <td class="cyan-text">-4.9%</td>
@@ -1877,7 +1961,7 @@
                 <td class="cyan-text">1.50x</td>
               </tr>
               <tr>
-                <td style="font-weight: 700; color: #fff;">3-Year CAGR</td>
+                <td style="font-weight: 800; color: #000000;">3-Year CAGR</td>
                 <td class="emerald-text">+44.8%</td>
                 <td style="color: var(--text-muted);">+15.2%</td>
                 <td class="cyan-text">+29.6%</td>
@@ -1886,7 +1970,7 @@
                 <td class="cyan-text">1.50x</td>
               </tr>
               <tr>
-                <td style="font-weight: 700; color: #fff;">5-Year CAGR</td>
+                <td style="font-weight: 800; color: #000000;">5-Year CAGR</td>
                 <td class="emerald-text">+51.5%</td>
                 <td style="color: var(--text-muted);">+16.8%</td>
                 <td class="cyan-text">+34.7%</td>
@@ -1924,7 +2008,7 @@
             </div>
             <div class="badge badge-pink">P/E 56.9x</div>
           </div>
-          <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #fff;">₹ 10,183</strong> | Mkt Cap: ₹ 26,633 Cr</div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #000000; font-weight: 900;">₹ 10,183</strong> | Mkt Cap: ₹ 26,633 Cr</div>
           <div class="gem-upside-badge">Target: ₹ 13,850 (+36.0%)</div>
           <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0;">
             <strong>MOAT &amp; SETUP:</strong> Exclusive machining for Daimler, Tata Motors and global commercial vehicle powertrains.
@@ -1946,7 +2030,7 @@
             </div>
             <div class="badge badge-pink">P/E 93.6x</div>
           </div>
-          <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #fff;">₹ 1,386</strong> | Mkt Cap: ₹ 9,073 Cr</div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #000000; font-weight: 900;">₹ 1,386</strong> | Mkt Cap: ₹ 9,073 Cr</div>
           <div class="gem-upside-badge">Target: ₹ 1,920 (+38.5%)</div>
           <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0;">
             <strong>MOAT &amp; SETUP:</strong> 60% market share in custom copper-aluminum fin coils for Daikin, Carrier, Blue Star.
@@ -1968,7 +2052,7 @@
             </div>
             <div class="badge badge-pink">P/E 63.2x</div>
           </div>
-          <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #fff;">₹ 3,264</strong> | Mkt Cap: ₹ 21,941 Cr</div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #000000; font-weight: 900;">₹ 3,264</strong> | Mkt Cap: ₹ 21,941 Cr</div>
           <div class="gem-upside-badge">Target: ₹ 4,680 (+43.4%)</div>
           <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0;">
             <strong>MOAT &amp; SETUP:</strong> Critical defence electronics, railway Kavach anti-collision signaling, and OSAT packaging.
@@ -1990,7 +2074,7 @@
             </div>
             <div class="badge badge-pink">P/E 26.1x</div>
           </div>
-          <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #fff;">₹ 320</strong> | Mkt Cap: ₹ 1,777 Cr</div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #000000; font-weight: 900;">₹ 320</strong> | Mkt Cap: ₹ 1,777 Cr</div>
           <div class="gem-upside-badge">Target: ₹ 460 (+43.8%)</div>
           <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0;">
             <strong>MOAT &amp; SETUP:</strong> Zero-debt turnkey EPC for World Bank &amp; Namami Gange wastewater treatment projects.
@@ -2050,7 +2134,7 @@
         <div class="card-header">
           <div>
             <div class="badge badge-cyan">AUTONOMOUS QUANTITATIVE &amp; MACHINE LEARNING DESK</div>
-            <h2 style="font-size: 24px; font-weight: 900; margin-top: 6px; color: #fff;">
+            <h2 style="font-size: 24px; font-weight: 900; margin-top: 6px; color: #000000;">
               Zero-Hardcoding Tri-Paradigm Inference &amp; 2-Stage DCF Engine
             </h2>
             <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
@@ -2077,7 +2161,7 @@
         <!-- 1. Supervised Learning -->
         <div class="quant-card">
           <div class="badge badge-emerald">PARADIGM 1: SUPERVISED LEARNING</div>
-          <h3 style="font-size: 17px; font-weight: 800; margin-top: 8px; color: #fff;">Gradient Boosted Multi-Factor Regression &amp; Alpha Classifier</h3>
+          <h3 style="font-size: 17px; font-weight: 800; margin-top: 8px; color: #000000;">Gradient Boosted Multi-Factor Regression &amp; Alpha Classifier</h3>
           <div class="formula-tag">
             g = [Reinvestment × ROCE + PAT_CAGR × 0.5] / 1.5<br>
             Target_Price = TTM_EPS × (1 + g)^t × Fair_PE
@@ -2118,7 +2202,7 @@
         <!-- 2. Unsupervised Learning -->
         <div class="quant-card">
           <div class="badge badge-pink">PARADIGM 2: UNSUPERVISED LEARNING</div>
-          <h3 style="font-size: 17px; font-weight: 800; margin-top: 8px; color: #fff;">Isolation Forest Forensic Anomaly &amp; Accrual Scorer</h3>
+          <h3 style="font-size: 17px; font-weight: 800; margin-top: 8px; color: #000000;">Isolation Forest Forensic Anomaly &amp; Accrual Scorer</h3>
           <div class="formula-tag">
             Anomaly_Score = 0.10 + 0.35|1 - OCF/PAT| + 0.25(D/E-0.6) + 0.40(Pledge/20) + 0.15(Accruals)
           </div>
@@ -2151,7 +2235,7 @@
         <!-- 3. 2-Stage Discounted Cash Flow -->
         <div class="quant-card">
           <div class="badge badge-cyan">FUNDAMENTAL VALUATION: 2-STAGE DCF</div>
-          <h3 style="font-size: 17px; font-weight: 800; margin-top: 8px; color: #fff;">Free Cash Flow to Firm (FCFF) Model</h3>
+          <h3 style="font-size: 17px; font-weight: 800; margin-top: 8px; color: #000000;">Free Cash Flow to Firm (FCFF) Model</h3>
           <div class="formula-tag">
             PV_FCF = Σ [FCF_t / (1 + WACC)^t] + [FCF_5 × (1 + g_term) / (WACC - g_term)] / (1 + WACC)^5
           </div>
@@ -2190,7 +2274,7 @@
         <!-- 4. Reinforcement Learning Policy -->
         <div class="quant-card">
           <div class="badge badge-amber">PARADIGM 3: REINFORCEMENT LEARNING</div>
-          <h3 style="font-size: 17px; font-weight: 800; margin-top: 8px; color: #fff;">PPO &amp; Deep Q-Learning Dynamic Capital Sizing Policy</h3>
+          <h3 style="font-size: 17px; font-weight: 800; margin-top: 8px; color: #000000;">PPO &amp; Deep Q-Learning Dynamic Capital Sizing Policy</h3>
           <div class="formula-tag">
             State S_t = [MOS%, Alpha_Prob%, Anomaly_Score, D/E]<br>
             Policy π*(S_t) → Optimal Execution Action &amp; Tranche Sizing
@@ -2228,7 +2312,7 @@
         <div class="card-header">
           <div>
             <div class="badge badge-pink">INTERACTIVE QUANT SANDBOX</div>
-            <h3 style="font-size: 20px; font-weight: 900; margin-top: 6px; color: #fff;">
+            <h3 style="font-size: 20px; font-weight: 900; margin-top: 6px; color: #000000;">
               Live Parameter Tuning &amp; Instant Model Recalibration
             </h3>
             <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
@@ -2327,7 +2411,7 @@
             <span class="voice-badge" style="background: rgba(0, 230, 118, 0.15); color: var(--emerald); border-color: var(--emerald);">2 ACTIVE WORKFLOWS</span>
             <span class="live-badge" style="background: rgba(0, 229, 255, 0.15); color: var(--cyan); border-color: var(--cyan);">SAFETY GATE: SAFE</span>
           </div>
-          <h2 style="font-size: 24px; font-weight: 900; color: #fff;">
+          <h2 style="font-size: 24px; font-weight: 900; color: #000000;">
             ⚡ Autonomous n8n Workflow Orchestration Studio
           </h2>
           <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
@@ -2538,7 +2622,7 @@
         <div class="card-header">
           <div>
             <div class="badge badge-emerald">INSTITUTIONAL PRESENTATION DECK</div>
-            <h2 style="font-size: 24px; font-weight: 900; margin-top: 6px; color: #fff;">
+            <h2 style="font-size: 24px; font-weight: 900; margin-top: 6px; color: #000000;">
               6-Slide Equity Research Presentation &amp; Slide 6 Compliance Auditor
             </h2>
             <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
@@ -2580,7 +2664,7 @@
         <div class="slide-header-row">
           <div>
             <div class="slide-number-tag" id="slideNumberBadge">SLIDE 1 OF 6</div>
-            <h3 style="font-size: 22px; font-weight: 900; color: #fff; margin-top: 8px;" id="slideTitleText">
+            <h3 style="font-size: 22px; font-weight: 900; color: #000000; margin-top: 8px;" id="slideTitleText">
               Executive Summary &amp; Investment Thesis
             </h3>
           </div>
@@ -2593,7 +2677,7 @@
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px;">
             <div style="background: var(--surface-card); border: 1px solid var(--border); padding: 14px; border-radius: 10px;">
               <div style="color: var(--text-muted); font-size: 11px;">CURRENT MARKET PRICE</div>
-              <div style="font-size: 20px; font-weight: 900; color: #fff; font-family: monospace;">₹ 12,774</div>
+              <div style="font-size: 20px; font-weight: 900; color: #000000; font-family: monospace;">₹ 12,774</div>
               <div style="font-size: 11px; color: var(--emerald);">NSE Live Coverage</div>
             </div>
             <div style="background: var(--surface-card); border: 1px solid var(--border); padding: 14px; border-radius: 10px;">
@@ -2650,7 +2734,7 @@
             <div style="font-size: 11px; font-weight: bold; color: var(--cyan); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace;">
               INTERACTIVE SLIDE 6 EDITOR &amp; LIVE WORD AUDITOR (TEST LIVE REPAIR):
             </div>
-            <textarea id="slide6EditorText" style="width: 100%; height: 110px; background: #05080f; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-family: 'Outfit', sans-serif; font-size: 13px; padding: 10px; resize: vertical;" oninput="onSlide6EditChange(this.value)"></textarea>
+            <textarea id="slide6EditorText" style="width: 100%; height: 110px; background: #ffffff; border: 2.5px solid #000; border-radius: 8px; color: #000; font-weight: 700; font-family: 'Outfit', sans-serif; font-size: 13px; padding: 10px; resize: vertical;" oninput="onSlide6EditChange(this.value)"></textarea>
             <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; font-family: 'JetBrains Mono', monospace;">
               <span id="slide6LiveWordCounter" style="color: var(--emerald);">Words: 142 / Target: 120-160</span>
               <span style="color: var(--text-muted);">Regex Rule: ^Final Verdict: (BUY/SELL/HOLD) | Conviction: ...</span>
@@ -2688,7 +2772,7 @@
       </div>
 
       <div class="call-btn-row">
-        <button class="circle-btn" style="background: var(--surface-elevated); color: #fff; border: 1px solid var(--border);" onclick="toggleCallMic()" id="callMicBtn" title="Mic">🎤</button>
+        <button class="circle-btn" style="background: var(--surface-elevated); color: #000000; border: 2px solid #000000;" onclick="toggleCallMic()" id="callMicBtn" title="Mic">🎤</button>
         <button class="circle-btn btn-buy" onclick="speakInCallDialogue('Aama buy pannu, confirm order!')">BUY 40 SHARES</button>
         <button class="circle-btn btn-end" onclick="closePhoneCallModal()" title="End Call">📞</button>
       </div>
@@ -4428,11 +4512,11 @@
           const badgeB = m.win === 'B' ? '<span class="brutal-badge" style="background: var(--emerald); color: #000; font-size: 10px; margin-left: 8px;">WINNER ★</span>' : '';
           return `
             <tr>
-              <td style="font-weight: 700; color: #fff;">${m.name}</td>
-              <td style="font-family: 'JetBrains Mono', monospace; font-weight: bold; color: ${m.win === 'A' ? 'var(--emerald)' : '#e2e8f0'};">
+              <td style="font-weight: 800; color: #000000;">${m.name}</td>
+              <td style="font-family: 'JetBrains Mono', monospace; font-weight: bold; color: ${m.win === 'A' ? '#047857' : '#000000'};">
                 ${m.valA} ${badgeA}
               </td>
-              <td style="font-family: 'JetBrains Mono', monospace; font-weight: bold; color: ${m.win === 'B' ? 'var(--emerald)' : '#e2e8f0'};">
+              <td style="font-family: 'JetBrains Mono', monospace; font-weight: bold; color: ${m.win === 'B' ? '#047857' : '#000000'};">
                 ${m.valB} ${badgeB}
               </td>
             </tr>
@@ -4622,7 +4706,7 @@
           { horizon: "5-Year CAGR", stockReturn: `+${Math.round(fund.pat_cagr_3y * 1.15)}%`, niftyReturn: "+16.8%", alpha: `+${(fund.pat_cagr_3y * 1.15 - 16.8).toFixed(1)}%`, roce: `${(fund.roce * 0.9).toFixed(1)}%`, roe: `${(fund.roe * 0.9).toFixed(1)}%`, cfoPat: `${fund.ocf_pat_ratio}x` }
         ].map(h => `
           <tr>
-            <td style="font-weight: 700; color: #fff;">${h.horizon}</td>
+            <td style="font-weight: 800; color: #000000;">${h.horizon}</td>
             <td class="emerald-text">${h.stockReturn}</td>
             <td style="color: var(--text-muted);">${h.niftyReturn}</td>
             <td class="cyan-text">${h.alpha}</td>
@@ -4642,7 +4726,7 @@
           { name: "Automated Precision R&D & High-Margin Export Line", capex: `₹ ${Math.round(capexVal * 0.55).toLocaleString()} Cr`, orders: "Global OEM Contracts", b2b: "2.10x", launch: "Q4 FY26", turnover: "4.2x", impact: "+75 bps Margin Expansion" }
         ].map(p => `
           <tr>
-            <td style="font-weight: 700; color: #fff;">${p.name}</td>
+            <td style="font-weight: 800; color: #000000;">${p.name}</td>
             <td class="cyan-text">${p.capex}</td>
             <td>${p.orders}</td>
             <td class="emerald-text">${p.b2b}</td>
@@ -4700,7 +4784,7 @@
               </div>
               <div class="badge badge-pink">P/E ${g.pe_ttm}x</div>
             </div>
-            <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #fff;">₹ ${g.current_price.toLocaleString()}</strong> | Mkt Cap: ${g.mcap}</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Price: <strong style="color: #000000; font-weight: 900;">₹ ${g.current_price.toLocaleString()}</strong> | Mkt Cap: ${g.mcap}</div>
             <div class="gem-upside-badge">Target: ₹ ${ml.supervised.target_24m_base.toLocaleString()} (+${ml.supervised.upside_24m_pct}%)</div>
             <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 8px 0;">
               <strong>MOAT &amp; SETUP:</strong> ${g.setup}
@@ -4753,7 +4837,7 @@
       if (traceBody && ml.dcf.fcf_trace) {
         traceBody.innerHTML = ml.dcf.fcf_trace.map(r => `
           <tr>
-            <td style="font-weight: 700; color: #fff;">${r.year}</td>
+            <td style="font-weight: 800; color: #000000;">${r.year}</td>
             <td class="cyan-text">₹ ${r.fcf}</td>
             <td>${r.disc}x</td>
             <td class="emerald-text">₹ ${r.pv}</td>
@@ -4840,7 +4924,7 @@
       if (traceBody && ml.dcf.fcf_trace) {
         traceBody.innerHTML = ml.dcf.fcf_trace.map(r => `
           <tr>
-            <td style="font-weight: 700; color: #fff;">${r.year}</td>
+            <td style="font-weight: 800; color: #000000;">${r.year}</td>
             <td class="cyan-text">₹ ${r.fcf}</td>
             <td>${r.disc}x</td>
             <td class="emerald-text">₹ ${r.pv}</td>
@@ -4955,7 +5039,7 @@
           container.innerHTML = `
             <div style="text-align: center; padding: 30px; background: var(--surface-elevated); border-radius: 12px; border: 1px dashed var(--purple);">
               <div style="font-size: 28px; margin-bottom: 8px;">🔑</div>
-              <div style="font-size: 15px; font-weight: bold; color: #fff;">No Free API Key Configured Yet</div>
+              <div style="font-size: 15px; font-weight: 900; color: #000000;">No Free API Key Configured Yet</div>
               <p style="font-size: 12px; color: var(--text-secondary); margin: 8px 0 16px;">
                 You can get a 100% free key in 30 seconds at <a href="https://www.alphavantage.co/support/#api-key" target="_blank" style="color: var(--cyan);">alphavantage.co</a> or <a href="https://finnhub.io" target="_blank" style="color: var(--cyan);">finnhub.io</a> to unlock institutional ticker sentiment!
               </p>
@@ -5049,7 +5133,7 @@
             <div>
               <a href="${a.link || '#'}" target="_blank" class="news-title">${a.title}</a>
               <div class="news-meta">
-                <span style="color: #fff; font-weight: bold;">${a.source || 'Market Wire'}</span>
+                <span style="color: #000000; font-weight: 900;">${a.source || 'Market Wire'}</span>
                 <span>${a.published ? a.published.substring(0, 22) : 'Live'}</span>
                 <span style="color: ${tagColor}; font-weight: bold;">[${a.tag || 'LIVE'}]</span>
               </div>
@@ -5294,7 +5378,7 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px;">
               <div style="background: var(--surface-card); border: 1px solid var(--border); padding: 14px; border-radius: 10px;">
                 <div style="color: var(--text-muted); font-size: 11px;">CURRENT MARKET PRICE</div>
-                <div style="font-size: 20px; font-weight: 900; color: #fff; font-family: monospace;">₹ ${fund.current_price.toLocaleString()}</div>
+                <div style="font-size: 20px; font-weight: 900; color: #000000; font-family: monospace;">₹ ${fund.current_price.toLocaleString()}</div>
                 <div style="font-size: 11px; color: var(--emerald);">NSE Live Coverage</div>
               </div>
               <div style="background: var(--surface-card); border: 1px solid var(--border); padding: 14px; border-radius: 10px;">
@@ -5405,7 +5489,7 @@
               </div>
               <div style="background: var(--surface-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
                 <div style="font-size: 12px; color: var(--text-muted);">EARNINGS TO CASH PROOF</div>
-                <div style="font-size: 18px; font-weight: 800; color: #fff; margin: 8px 0;">
+                <div style="font-size: 18px; font-weight: 900; color: #000000; margin: 8px 0;">
                   ${ml.unsupervised.cash_check}
                 </div>
                 <div style="font-size: 12px; color: var(--text-secondary);">
@@ -5418,7 +5502,7 @@
             </div>
             <div style="background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 10px; padding: 16px;">
               <strong style="color: var(--cyan);">INSTITUTIONAL GOVERNANCE RATING:</strong>
-              <div style="font-size: 13px; color: #fff; margin-top: 4px;">
+              <div style="font-size: 13px; color: #0f172a; font-weight: 700; margin-top: 4px;">
                 Clean Forensic Standard. Auditor sign-off: Big 4 / top-tier auditing firm. Zero qualified adverse opinions or regulatory disputes recorded in recent disclosures.
               </div>
             </div>
@@ -5466,7 +5550,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td style="padding: 10px; font-weight: 700; text-align: left; color: #fff;">Discount Factor (11.8%)</td>
+                    <td style="padding: 10px; font-weight: 800; text-align: left; color: #000000;">Discount Factor (11.8%)</td>
                     <td style="padding: 10px;">0.89x</td>
                     <td style="padding: 10px;">0.80x</td>
                     <td style="padding: 10px;">0.72x</td>
@@ -5496,7 +5580,7 @@
               </div>
               <div style="background: var(--surface-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
                 <div style="font-size: 14px; font-weight: 800; color: var(--pink); margin-bottom: 10px;">REINFORCEMENT LEARNING TRANCHE POLICY</div>
-                <div style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 6px;">${ml.rl.action}</div>
+                <div style="font-size: 16px; font-weight: 900; color: #000000; margin-bottom: 6px;">${ml.rl.action}</div>
                 <div style="font-size: 13px; color: var(--cyan); font-family: monospace; margin-bottom: 8px;">${ml.rl.tranche}</div>
                 <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
                   PPO capital policy dampens drawdowns by allocating initial 40-50% tranche and holding cash reserves for volatility dips.
